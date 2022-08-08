@@ -1,0 +1,7 @@
+{
+  "name": "js13kgames_2022",
+  "dependencies": {},
+  "globalDependencies": {
+    "babylonjs": "registry:dt/babylonjs#2.3.0+20160513001857"
+  }
+}
