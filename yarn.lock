@@ -1900,6 +1900,11 @@ babel-plugin-polyfill-regenerator@^0.4.0:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.3.2"
 
+babylonjs@^5.18.0:
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-5.18.0.tgz#59e246785a5c98c583c6c5deb9eb3513123969c8"
+  integrity sha512-d4WrcR3e1FOnOlEtOofRH+OniZT4cx6EuDvKB0OkqnPnjD7ALuo5cmJDQmILWnDTOJRqojK7Psz9etEeNDionA==
+
 bach@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/bach/-/bach-1.2.0.tgz#4b3ce96bf27134f79a1b414a51c14e34c3bd9880"
@@ -10287,11 +10292,6 @@ webpack-merge@^5.7.3, webpack-merge@^5.8.0:
   dependencies:
     clone-deep "^4.0.1"
     wildcard "^2.0.0"
-
-webpack-preprocessor-loader@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/webpack-preprocessor-loader/-/webpack-preprocessor-loader-1.2.0.tgz#cba7da4b7fca5626427507c66aac9c055cfe3763"
-  integrity sha512-BR8IDox/sZDlV0Mjc81wkImlfVBF2LplPymd1NioM6ovmcGI7zgVgmZN4f2nSlhB3ECCidcBEcq4FB6tltYXcg==
 
 webpack-sources@^1.4.0:
   version "1.4.3"

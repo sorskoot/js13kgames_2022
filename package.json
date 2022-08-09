@@ -70,6 +70,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "babylonjs": "^5.18.0",
     "gulp-file-inline": "^2.2.3",
     "gulp-preprocess": "^4.0.2",
     "gulp-wrap-js": "^0.4.1",

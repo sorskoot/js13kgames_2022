@@ -17,20 +17,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
-                use: [{
-                    loader: 'webpack-preprocessor-loader',
-                    options: {
-                        debug: process.env.NODE_ENV !== 'product',
-                        directives: {
-                            foo: false,
-                        },
-                        params: {
-                            ENV: process.env.NODE_ENV,
-                        },
-                        verbose: false,
-                    },
-                }]
+                exclude: /node_modules/,               
                 // use: {
                 //     loader: 'babel-loader',
                 //     options: {

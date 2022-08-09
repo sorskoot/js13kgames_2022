@@ -13,9 +13,9 @@ module.exports = merge(common, {
 
         hot: true,
         //inline: true, 
-        https: false,
+        //https: true,
         // port:1337,     
-      //  disableHostCheck: true,
+        //disableHostCheck: true,
         host: 'localhost',
         // contentBase: __dirname+'/dist',
         //key: fs.readFileSync('c0dr.key'),

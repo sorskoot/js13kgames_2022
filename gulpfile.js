@@ -80,10 +80,10 @@ function production() {
         })))
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))
-        // .pipe(roadroller({
-        //     contextBits:24,
-        //     maxMemoryMB:500
-        // }))
+        .pipe(roadroller({
+            contextBits:24,
+            maxMemoryMB:500
+        }))
         .pipe(gulp.dest('./dist/'));
 };
 
@@ -128,9 +128,9 @@ function f() {
         })))
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))        
-        .pipe(roadroller({
-             contextBits:24
-        }))
+        // .pipe(roadroller({
+        //      contextBits:24
+        // }))
         .pipe(gulp.dest('./dist/'));
 };
 

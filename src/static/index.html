@@ -3,9 +3,25 @@
     <head>
         <meta charset="UTF-8">
         <title>To be named later</title>
-        <script src="https://js13kgames.com/webxr-src/2022/babylon.js"></script>
+        <script src="https://js13kgames.com/webxr-src/2022/babylon.js"></script>        
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #c {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
     </head>
-    <body>
+<body>
+    <canvas id="c"></canvas>
         <script src="main.js"></script>
     </body>
 </html>

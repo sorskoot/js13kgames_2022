@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "allowJs": true,
+        "checkJs": true
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "webpack.*.js"
+    ]
+}
