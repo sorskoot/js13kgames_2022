@@ -7,6 +7,7 @@ const roadroller = require('./gulp/gulp-roadroller');
 const gulpif = require('gulp-if');
 const gulpCopy = require('gulp-copy');
 const webp = require('gulp-webp');
+const preprocess = require("gulp-preprocess");
 //const inlinesource = require('gulp-inline-source');
 const htmlmin = require('gulp-htmlmin');
 const fileInline = require('gulp-file-inline');
@@ -58,6 +59,7 @@ gulp.task('watch', function () {
 function production() {
     return gulp.src(['./src/shaders/*.glsl', './src/index.js', './src/classes/*.js'])
         //   .pipe(sourcemaps.init())
+        .pipe(preprocess())
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
             compress: {
@@ -78,10 +80,10 @@ function production() {
         })))
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))
-        .pipe(roadroller({
-            contextBits:24,
-            maxMemoryMB:500
-        }))
+        // .pipe(roadroller({
+        //     contextBits:24,
+        //     maxMemoryMB:500
+        // }))
         .pipe(gulp.dest('./dist/'));
 };
 
@@ -106,6 +108,7 @@ function inlinesource() {
 function f() {
     return gulp.src(['./src/shaders/*.glsl', './src/index.js', './src/classes/*.js'])
         //   .pipe(sourcemaps.init())
+        .pipe(preprocess())
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
             compress: {
@@ -124,10 +127,10 @@ function f() {
             }
         })))
         .pipe(gulpif(isShader, glslify()))
-        .pipe(concat('main.js'))
-        // .pipe(roadroller({
-        //     contextBits:24
-        // }))
+        .pipe(concat('main.js'))        
+        .pipe(roadroller({
+             contextBits:24
+        }))
         .pipe(gulp.dest('./dist/'));
 };
 

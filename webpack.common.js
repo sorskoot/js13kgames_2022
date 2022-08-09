@@ -7,8 +7,8 @@ module.exports = {
         filename: '[name].js'
     },
     plugins: [
-         new CopyPlugin({
-            patterns:[
+        new CopyPlugin({
+            patterns: [
                 { from: './src/static/', to: './' }
             ]
         }),
@@ -18,6 +18,19 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
+                use: [{
+                    loader: 'webpack-preprocessor-loader',
+                    options: {
+                        debug: process.env.NODE_ENV !== 'product',
+                        directives: {
+                            foo: false,
+                        },
+                        params: {
+                            ENV: process.env.NODE_ENV,
+                        },
+                        verbose: false,
+                    },
+                }]
                 // use: {
                 //     loader: 'babel-loader',
                 //     options: {

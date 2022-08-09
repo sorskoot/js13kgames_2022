@@ -4,7 +4,8 @@
   "description": "entry for js13kgames 2022",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode development --config webpack.dev",
+    "buildwp": "webpack --mode production --config webpack.prod",
+    "prod": "gulp prod",
     "start": "webpack-dev-server --config webpack.dev"
   },
   "repository": {
@@ -70,6 +71,7 @@
   },
   "dependencies": {
     "gulp-file-inline": "^2.2.3",
+    "gulp-preprocess": "^4.0.2",
     "gulp-wrap-js": "^0.4.1",
     "roadroller": "^2.1.0"
   }

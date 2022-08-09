@@ -15,7 +15,7 @@ class App {
         camera.attachControl(canvas, true);
         var light1= new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
         var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
-
+// @ifdef DEBUG
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
@@ -27,7 +27,7 @@ class App {
                 }
             }
         });
-
+// @endif
         // run the main render loop
         engine.runRenderLoop(() => {
             scene.render();
