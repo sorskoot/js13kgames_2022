@@ -1,23 +1,28 @@
+import {sound} from './lib/sound';
 
 class App {
+
+    /** @type BABYLON.Scene */
     scene;
+    /** @type HTMLCanvasElement */
+    canvas;
 
     constructor() {
-        this.canvas = document.getElementById("c");
+        sound.InitAudio();            
+        this.canvas = document.querySelector("#c");
         // initialize babylon scene and engine
         this.engine = new BABYLON.Engine(this.canvas, true);
         this.createScene().then(() => {
             this.engine.runRenderLoop(() => {
                 this.scene.render();
             });
-        });
+        });       
     }
 
     async createScene() {
         // create the canvas html element and attach it to the webpage
-
+        
         this.scene = new BABYLON.Scene(this.engine);
-
 
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
         camera.attachControl(this.canvas, true);
