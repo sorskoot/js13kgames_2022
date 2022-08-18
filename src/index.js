@@ -7,17 +7,52 @@ class App {
     scene;
     /** @type HTMLCanvasElement */
     canvas;    
+    
+    /** @type BABYLON.WebXRInputSource[] */
+    controllers = [];
+    
+    /** @type BABYLON.SpotLight */
+    flashlight;
 
     constructor() {
-        sound.InitAudio();            
+                  
         this.canvas = document.querySelector("#c");
         // initialize babylon scene and engine
-        this.engine = new BABYLON.Engine(this.canvas, true);
-        this.createScene().then(() => {
+        this.engine = new BABYLON.Engine(this.canvas, true);       
+        
+        this.createScene().then(() => {            
             this.engine.runRenderLoop(() => {
+                if (this.controllers) {
+                    this.controllers.forEach(controller => {
+                      this.handleController(controller);
+                    });
+                  }
                 this.scene.render();
             });
         });       
+    }
+    triggerPressed=false;
+    /**
+     * 
+     * @param {BABYLON.WebXRInputSource} controller 
+     */
+    handleController(controller){
+        if(controller.inputSource.handedness == "right"){
+           this.box.position.copyFrom(controller.grip.position);
+           this.box.rotationQuaternion = controller.grip.rotationQuaternion;           
+           if(controller.inputSource.gamepad.buttons[0].value==1 && !this.triggerPressed){
+            this.triggerPressed=true;
+            sound.play(4);            
+           }else{
+            if(controller.inputSource.gamepad.buttons[0].value<.5 && this.triggerPressed){
+                this.triggerPressed=false;
+            }
+           }
+        }else{
+            this.flashlight.position.copyFrom(controller.grip.position);
+            this.flashlight.direction = controller.grip.getDirection(new BABYLON.Vector3(0,-1,0));
+        }
+                
     }
 
     async createScene() {
@@ -27,13 +62,14 @@ class App {
         this.scene.clearColor = BABYLON.Color4.FromHexString("#000000");
         this.scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
         this.scene.fogColor = BABYLON.Color3.FromHexString("#000000");
-        this.scene.fogDensity=.1;
+        this.scene.fogDensity=.2;
         var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 1.7, -3), this.scene);
         camera.attachControl(this.canvas, true);
-        var light1 = new BABYLON.PointLight("light1", 
-            new BABYLON.Vector3(0, 4, -3), this.scene);            
-        var b = new BABYLON.ShadowGenerator(1024, light1);      
-              
+        var light1 = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.scene);            
+        light1.diffuse = BABYLON.Color3.FromHexString("#080040");
+
+        this.box = BABYLON.MeshBuilder.CreateBox("controller",{size:.1});
+
         var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
         myMaterial.diffuseTexture = new BABYLON.Texture("sprites.png", this.scene,false,true,4);
         myMaterial.diffuseTexture.hasAlpha = true;    
@@ -44,6 +80,18 @@ class App {
 
         var postProcess = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, .8, camera);
 
+        this.flashlight = new BABYLON.SpotLight("light", 
+        new BABYLON.Vector3(0, 1.5, -3),
+        new BABYLON.Vector3(0, -1, -0), Math.PI/3, .5, this.scene);
+        this.flashlight.diffuse = new BABYLON.Color3(1, 1, 1);
+        this.flashlight.specular = new BABYLON.Color3(1, 1, 1);
+        this.flashlight.range = 50;
+        this.flashlight.shadowEnabled = true;
+        var b = new BABYLON.ShadowGenerator(1024, this.flashlight);   
+        b.useBlurExponentialShadowMap = true;
+        b.useKernelBlur = true;
+        b.blurKernel = 64;
+        
         var mat =  new BABYLON.StandardMaterial("ground");        
         var t = BABYLON.Texture.CreateFromBase64String("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACqUlEQVR42k1SW1PaUBBOZ+rYVsVaUAmEYEICIRdIuBhMgAQDCN64iFKntlanfWhnfPOh/fVfs8fS6cPOnrP7nd09+33csOPC65dg6yUsL86RzryHkkvi/tMYYV2BrShwh1kUGgk0TAFKZgu8vIO260CxE+DU5jpqXhZSkceJW4Ik5lCW97GzuY1J5COKqjDbIqxyHsmNN7i/sNGa6cgIG8iXt8CZrSwGtyo0K42mWWQTFNw1/H7+ivGsguiGx95OAlZVRLMtYYtfg6Cvs3xF48E1TQlOoEDK7EJMJlmx6UxlYOpI05TcFJb9KvS4iXogMoxq7eNAEsEtpwGrRsGua0MxUshV19l91ZW8bPM4cjQMFyHLkb1LbIJbAef9Q+bTyW3mJz2dFe55KpuCLB/bYuL8zR9jj38Lji6rIv8bxahoUUyh6uXR6adwcuTBtnL/8mRc09DYISdvsgd0Psi9ZyCKyeIutMJrlqOuNBV5upv2K3Cr0Qk8HJVYYjpycXgmYBq2cLcIWIyMMPSY8LNZiNFVG1zUrb1QEghoD2sMRIDRsIxhU0EYC41itINVo+XAYwx1Lg1w44HPEhRYfYXOTz9/IKwYCAaxcBw1plJm3cnkXBaXoYn56TG4jqWibVmMX6KItkyLcqIMHm4mGHXb6J7oMJsy9Jj34EKLVSmgqvCYf5bAyQKPu/kVEwnxTFTRtnfTSYQ9FUYljYpZhW+ZaNQ19pWPp0OE7QI7c18eIxi1HFMaiYWCRBkJKFjsoeOKMBpFeGcK/MjE0/cFw/RIdJoAzj1U4DhFJlfaBSWJd+c4C8+XUbMtFgsCHZPHPo76AjL5FEaR8TLBTajh1/O3+FEG17cdPCzHMPwMzm9F9AMb/XjUUusD9Eb8xbqE68kE9Z6Eui/icuHjD2FilZlFjG/sAAAAAElFTkSuQmCC","ground", this.scene);
         t.onLoadObservable.add(() => {
@@ -64,12 +112,13 @@ class App {
 
             var skeleton = skeletons[0];
             var mesh = meshes[0];            
-            mesh.material = myMaterial;              
+            mesh.material = myMaterial;    
+                   
             mesh.translate(BABYLON.Vector3.Up(), .8)
-            meshes[1].material = myMaterial;
-            
-            meshes[2].material = myMaterial;            
+            meshes[1].material = myMaterial;         
+            meshes[2].material = myMaterial;                   
             meshes[3].material = myMaterial;
+      
             
 
           //  mesh.animations.push(xSlide);
@@ -122,7 +171,48 @@ class App {
             }
         });
         // @endif        
-        const xrHelper = await this.scene.createDefaultXRExperienceAsync();        
+        const xrHelper = await this.scene.createDefaultXRExperienceAsync({
+            disableNearInteraction:true,
+            disablePointerSelection:true,
+            disableTeleportation:true,            
+            inputOptions:{                
+                doNotLoadControllerMeshes:true            
+            }
+        });        
+       
+        // xrHelper.baseExperience.onStateChangedObservable.add(state => {
+        //     switch (state) {
+        //         case BABYLON.WebXRState.ENTERING_XR:
+        //             break;
+        //         case BABYLON.WebXRState.EXITING_XR:
+        //             break;
+        //         case BABYLON.WebXRState.IN_XR:
+        //             var xrInput = new BABYLON.WebXRInput(xrHelper.sessionManager, camera, {/*options*/});
+        //             console.log(xrInput);
+        //             break;
+        //         case BABYLON.WebXRState.NOT_IN_XR:
+        //             break;
+        //     }
+        // });
+        
+        // I get a controller, but no gamepad support.
+        xrHelper.input.onControllerAddedObservable.add(controller => {
+            console.log('controller found', controller);
+            
+            this.controllers.push(controller);
+            // // This part is never called:
+            // controller.onMotionControllerInitObservable.add(motionController => {
+            //     console.log('never called', motionController);
+            //     var thumbstick = motionController.getComponent(BABYLON.WebXRControllerComponent.THUMBSTICK_TYPE);
+            //     if (thumbstick) {
+            //         thumbstick.onAxisValueChangedObservable.add(value => console.log('never found', value));
+            //     }
+            // });
+        });
+        xrHelper.baseExperience.onStateChangedObservable.add((eventData)=>{
+            console.log(eventData);
+            sound.InitAudio();  
+        });
         return this.scene;
     }
 }
