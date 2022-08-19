@@ -48,10 +48,10 @@ class App {
 
             var hitInfo = this.ray.intersectsMeshes(this.enemies);
 
-            if(hitInfo.length){
+            if (hitInfo.length) {
                 hitInfo[0].pickedMesh.setEnabled(false);
                 //this.bat.setEnabled(false);
-            }else{
+            } else {
                 //this.bat.setEnabled(true);
             }
 
@@ -84,17 +84,7 @@ class App {
             new BABYLON.Vector3(.01, 0.74, 0),
         ];
 
-        //Create lathe
-        this.bat = BABYLON.MeshBuilder.CreateLathe("bat", { shape: batShape, cap: 3, tessellation: 5 });
-        this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
-        var rayHelper = new BABYLON.RayHelper(this.ray);
 
-        var localMeshDirection = new BABYLON.Vector3(0, 1, 0);
-        var localMeshOrigin = new BABYLON.Vector3(0, 0, 0);
-        var length = 1;
-
-        rayHelper.attachToMesh(this.bat, localMeshDirection, localMeshOrigin, length);
-        rayHelper.show(this.scene);
 
 
 
@@ -105,6 +95,22 @@ class App {
         var s = this.scene;
         const ground = BABYLON.MeshBuilder.CreateTiledGround("ground", { xmin: -32, zmin: -32, xmax: 32, zmax: 32, subdivisions: { w: 100, h: 100 } });
         ground.receiveShadows = true;
+
+        //Create Baseball bat
+        this.bat = BABYLON.MeshBuilder.CreateLathe("bat", { 
+            shape: batShape, cap: 3, tessellation: 5,sideOrientation:BABYLON.Mesh.DOUBLESIDE, 
+            frontUVs: new BABYLON.Vector4(0.4375, 0, 0.5, 0.375) }); 
+        this.bat.material = myMaterial;
+        this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
+        var rayHelper = new BABYLON.RayHelper(this.ray);
+
+        var localMeshDirection = new BABYLON.Vector3(0, 1, 0);
+        var localMeshOrigin = new BABYLON.Vector3(0, 0, 0);
+        var length = 1;
+
+        rayHelper.attachToMesh(this.bat, localMeshDirection, localMeshOrigin, length);
+       // rayHelper.show(this.scene);
+
 
         var postProcess = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, .8, camera);
 
@@ -130,59 +136,59 @@ class App {
         ground.material = mat;
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
-        BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models), 
-            this.scene, (meshes, particleSystems)=> {
+        BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models),
+            this.scene, (meshes, particleSystems) => {
 
-            var mesh = meshes[0];
-            mesh.material = myMaterial;
-            
-            mesh.translate(BABYLON.Vector3.Up(), .8)
-            this.enemies.push(mesh);
+                var mesh = meshes[0];
+                mesh.material = myMaterial;
 
-            meshes[1].material = myMaterial;
-            meshes[2].material = myMaterial;
-            meshes[3].material = myMaterial;
+                mesh.translate(BABYLON.Vector3.Up(), .8)
+                this.enemies.push(mesh);
 
-
-
-            //  mesh.animations.push(xSlide);
-            b.addShadowCaster(mesh);
-            s.beginAnimation(mesh, 0, 100, true);
-
-            for (let i = 0; i < 10; i++) {
-                var skeleton2 = mesh.clone(`skeleton${i}`, mesh.parent);
-                s.beginAnimation(skeleton2, 0, 100, true, .97 + Math.random() * .6);
-                skeleton2.position.x = Math.random() * 8 - 4;
-                skeleton2.position.z = Math.random() * 8;
-                b.addShadowCaster(skeleton2);
-                this.enemies.push(skeleton2);
-            }
-
-            for (let i = 0; i < 30; i++) {
-                var ts = meshes[Math.floor(Math.random() * 3) + 1].clone(`tombstone${i}`, mesh.parent);
-                ts.position.x = Math.random() * 32 - 16;
-                ts.position.z = Math.random() * 32;
-                ts.rotation.z += Math.random() * .5 - .25;
-                ts.rotation.x += Math.random() * .5 - .25;
-                ts.rotation.y += Math.random() * .5 - .25;
-                b.addShadowCaster(ts);
-            }
-            meshes[1].visibility = 0;
-            meshes[2].visibility = 0;
-            meshes[3].visibility = 0;
+                meshes[1].material = myMaterial;
+                meshes[2].material = myMaterial;
+                meshes[3].material = myMaterial;
 
 
 
-            // mesh.rotation.x = Math.PI * .25;
-            // skeleton.bones[12].setRotation(new BABYLON.Vector3(Math.PI * .25,0,0));
-            //  s.registerBeforeRender(function () {
+                //  mesh.animations.push(xSlide);
+                b.addShadowCaster(mesh);
+                s.beginAnimation(mesh, 0, 100, true);
 
-            //      skeleton.bones[12].rotation.x = 20 ;//.rotate(BABYLON.Axis.X, .01, BABYLON.Space.LOCAL, mesh);
-            // // 	//skeleton.bones[1].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
-            // // 	//skeleton.bones[2].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
+                for (let i = 0; i < 10; i++) {
+                    var skeleton2 = mesh.clone(`skeleton${i}`, mesh.parent);
+                    s.beginAnimation(skeleton2, 0, 100, true, .97 + Math.random() * .6);
+                    skeleton2.position.x = Math.random() * 8 - 4;
+                    skeleton2.position.z = Math.random() * 8;
+                    b.addShadowCaster(skeleton2);
+                    this.enemies.push(skeleton2);
+                }
 
-            // });                        
-        });
+                for (let i = 0; i < 30; i++) {
+                    var ts = meshes[Math.floor(Math.random() * 3) + 1].clone(`tombstone${i}`, mesh.parent);
+                    ts.position.x = Math.random() * 32 - 16;
+                    ts.position.z = Math.random() * 32;
+                    ts.rotation.z += Math.random() * .5 - .25;
+                    ts.rotation.x += Math.random() * .5 - .25;
+                    ts.rotation.y += Math.random() * .5 - .25;
+                    b.addShadowCaster(ts);
+                }
+                meshes[1].visibility = 0;
+                meshes[2].visibility = 0;
+                meshes[3].visibility = 0;
+
+
+
+                // mesh.rotation.x = Math.PI * .25;
+                // skeleton.bones[12].setRotation(new BABYLON.Vector3(Math.PI * .25,0,0));
+                //  s.registerBeforeRender(function () {
+
+                //      skeleton.bones[12].rotation.x = 20 ;//.rotate(BABYLON.Axis.X, .01, BABYLON.Space.LOCAL, mesh);
+                // // 	//skeleton.bones[1].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
+                // // 	//skeleton.bones[2].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
+
+                // });                        
+            });
         // @ifdef DEBUG
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
