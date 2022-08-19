@@ -38,8 +38,9 @@ class App {
      */
     handleController(controller){
         if(controller.inputSource.handedness == "right"){
-           this.box.position.copyFrom(controller.grip.position);
-           this.box.rotationQuaternion = controller.grip.rotationQuaternion;           
+           this.bat.position.copyFrom(controller.grip.position);
+           this.bat.rotationQuaternion = controller.grip.rotationQuaternion;  
+           this.bat.rotate(BABYLON.Vector3.Right(), Math.PI/2)         
            if(controller.inputSource.gamepad.buttons[0].value==1 && !this.triggerPressed){
             this.triggerPressed=true;
             sound.play(4);            
@@ -67,8 +68,18 @@ class App {
         camera.attachControl(this.canvas, true);
         var light1 = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.scene);            
         light1.diffuse = BABYLON.Color3.FromHexString("#080040");
-
-        this.box = BABYLON.MeshBuilder.CreateBox("controller",{size:.1});
+        
+        const batShape = [
+		    new BABYLON.Vector3(.025, 0),
+            new BABYLON.Vector3(.025, .01, 0),
+            new BABYLON.Vector3(.013, .02, 0),
+            new BABYLON.Vector3(.03, .64, 0),
+            new BABYLON.Vector3(.031, .83, 0),
+            new BABYLON.Vector3(.01, .84, 0),
+        ];
+        
+        //Create lathe
+        this.bat = BABYLON.MeshBuilder.CreateLathe("bat", {shape: batShape, cap:3 });
 
         var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
         myMaterial.diffuseTexture = new BABYLON.Texture("sprites.png", this.scene,false,true,4);
