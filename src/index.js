@@ -85,9 +85,6 @@ class App {
         ];
 
 
-
-
-
         var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
         myMaterial.diffuseTexture = new BABYLON.Texture("sprites.png", this.scene, false, true, 4);
         myMaterial.diffuseTexture.hasAlpha = true;
@@ -122,9 +119,9 @@ class App {
         this.flashlight.range = 50;
         this.flashlight.shadowEnabled = true;
         var b = new BABYLON.ShadowGenerator(1024, this.flashlight);
-        b.useBlurExponentialShadowMap = true;
-        b.useKernelBlur = true;
-        b.blurKernel = 64;
+       // b.useBlurExponentialShadowMap = true;
+    //    b.useKernelBlur = true;
+     //   b.blurKernel = 64;
 
         var mat = new BABYLON.StandardMaterial("ground");
         var t = BABYLON.Texture.CreateFromBase64String("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACqUlEQVR42k1SW1PaUBBOZ+rYVsVaUAmEYEICIRdIuBhMgAQDCN64iFKntlanfWhnfPOh/fVfs8fS6cPOnrP7nd09+33csOPC65dg6yUsL86RzryHkkvi/tMYYV2BrShwh1kUGgk0TAFKZgu8vIO260CxE+DU5jpqXhZSkceJW4Ik5lCW97GzuY1J5COKqjDbIqxyHsmNN7i/sNGa6cgIG8iXt8CZrSwGtyo0K42mWWQTFNw1/H7+ivGsguiGx95OAlZVRLMtYYtfg6Cvs3xF48E1TQlOoEDK7EJMJlmx6UxlYOpI05TcFJb9KvS4iXogMoxq7eNAEsEtpwGrRsGua0MxUshV19l91ZW8bPM4cjQMFyHLkb1LbIJbAef9Q+bTyW3mJz2dFe55KpuCLB/bYuL8zR9jj38Lji6rIv8bxahoUUyh6uXR6adwcuTBtnL/8mRc09DYISdvsgd0Psi9ZyCKyeIutMJrlqOuNBV5upv2K3Cr0Qk8HJVYYjpycXgmYBq2cLcIWIyMMPSY8LNZiNFVG1zUrb1QEghoD2sMRIDRsIxhU0EYC41itINVo+XAYwx1Lg1w44HPEhRYfYXOTz9/IKwYCAaxcBw1plJm3cnkXBaXoYn56TG4jqWibVmMX6KItkyLcqIMHm4mGHXb6J7oMJsy9Jj34EKLVSmgqvCYf5bAyQKPu/kVEwnxTFTRtnfTSYQ9FUYljYpZhW+ZaNQ19pWPp0OE7QI7c18eIxi1HFMaiYWCRBkJKFjsoeOKMBpFeGcK/MjE0/cFw/RIdJoAzj1U4DhFJlfaBSWJd+c4C8+XUbMtFgsCHZPHPo76AjL5FEaR8TLBTajh1/O3+FEG17cdPCzHMPwMzm9F9AMb/XjUUusD9Eb8xbqE68kE9Z6Eui/icuHjD2FilZlFjG/sAAAAAElFTkSuQmCC", "ground", this.scene);
@@ -149,6 +146,7 @@ class App {
                 meshes[2].material = myMaterial;
                 meshes[3].material = myMaterial;
 
+                meshes[4].material = myMaterial;
 
 
                 //  mesh.animations.push(xSlide);
@@ -164,7 +162,7 @@ class App {
                     this.enemies.push(skeleton2);
                 }
 
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < 100; i++) {
                     var ts = meshes[Math.floor(Math.random() * 3) + 1].clone(`tombstone${i}`, mesh.parent);
                     ts.position.x = Math.random() * 32 - 16;
                     ts.position.z = Math.random() * 32;
@@ -173,12 +171,27 @@ class App {
                     ts.rotation.y += Math.random() * .5 - .25;
                     b.addShadowCaster(ts);
                 }
+                
+
+                for (let i = 0; i < 10; i++) {
+                    var w = meshes[4].clone('wall', mesh.parent);
+                    w.rotate(new BABYLON.Vector3(0,0,1),-Math.PI/2);
+                    w.position.z = i*.64 - 3.2;
+                    w.receiveShadows = true;
+                }
+
+                for (let i = 0; i < 10; i++) {
+                    var w = meshes[4].clone('wall', mesh.parent);
+                    w.rotate(new BABYLON.Vector3(0,0,1),Math.PI/2);
+                    w.position.z = i*.64 - 3.2;
+                    w.position.x += 7
+                    w.receiveShadows = true;
+                }
+
                 meshes[1].visibility = 0;
                 meshes[2].visibility = 0;
                 meshes[3].visibility = 0;
-
-
-
+                meshes[4].visibility = 0;
                 // mesh.rotation.x = Math.PI * .25;
                 // skeleton.bones[12].setRotation(new BABYLON.Vector3(Math.PI * .25,0,0));
                 //  s.registerBeforeRender(function () {

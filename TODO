@@ -15,13 +15,19 @@ Game idea:
 
 
 Must have:
-    - A title 
+    - A Title 
     - Skelton Spawning
         # how to make it clear where they are spawning? 
     - Hitting Skeletons
 
 Should have:
-
+    - Increasing difficulty in waves of skeletons. 
+        Maybe different places in the graveyard. It would be really nice to have some
+        way of focussing the attention of the player in a direction. Maybe by drawing a 
+        wall or foliage or something.
+        Level 1, only skeletons from the front
+        Level 2, from the front and the back
+        Level x, all directions
 
 Could have:
 
@@ -32,12 +38,18 @@ Would like:
 Random ideas:
     items: 
         - Shovel
-        - Bat
         - Flashlight
+        - Bat        
         - Gun
         - Grenade        
 
-      
+
+
+    Title ideas:
+        # - SVG Might be a nice way to go with text and effects
+        # - Might need to draw SVG to canvas http://jsfiddle.net/Na6X5/
+        - https://codepen.io/gabecrockett/pen/QWWzRvm
+        - https://codepen.io/lbebber/pen/KwGEQv
 
 
 

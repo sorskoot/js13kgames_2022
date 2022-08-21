@@ -53,6 +53,13 @@ export const models = {
     ,"uvs":[0.437,0,0.375,1,0.375,0,0.25,0.001,0.188,1,0.188,0,0.437,1,0.25,1.001,0.188,1]
     ,"indices":[0,1,2,3,4,5,0,6,1,3,7,8]
     ,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":9,"indexStart":0,"indexCount":12}]
-    ,"instances":[]}
+    ,"instances":[]},
+    {"name":"Wall","id":"Wall","materialId":"Material.001","billboardMode":0,"position":[-3.5399,0,0],"rotation":[-1.5708,0,0],"scaling":[0.32,1,0.64],"isVisible":true,"isEnabled":true,"pickable":false
+,"positions":[1,0,1,-1,0,2,-1,0,1,1,0,0,-1,0,1,-1,0,0,1,0,2,-1,0,3,-1,0,2,1,0,2,1,0,1,-1,0,1,1,0,3]
+,"normals":[0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0]
+,"uvs":[0.625,0,0.563,1,0.563,0,0.562,0.001,0.5,1,0.5,0,0.687,0,0.625,1,0.625,0,0.625,1,0.562,1.001,0.5,1,0.687,1]
+,"indices":[0,1,2,3,4,5,6,7,8,0,9,1,3,10,11,6,12,7]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":13,"indexStart":0,"indexCount":18}]
+,"instances":[]}
     ]
 }
