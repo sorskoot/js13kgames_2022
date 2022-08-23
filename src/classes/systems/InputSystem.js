@@ -1,6 +1,6 @@
+import { CollisionCheck } from "../components/CollisionCheck";
 import { ControllerInput } from "../components/ControllerInput";
 import { MeshEntity } from "../components/MeshEntity";
-import { Position } from "../components/Position";
 import { Entity } from "../secs";
 
 export class InputSystem {
@@ -35,14 +35,10 @@ export class InputSystem {
             //         this.triggerPressed = false;
             //     }
             // }
-
-            // var hitInfo = this.ray.intersectsMeshes(this.enemies);
-            // if (hitInfo.length) {
-            //     hitInfo[0].pickedMesh.setEnabled(false);
-            //     //this.bat.setEnabled(false);
-            // } else {
-            //     //this.bat.setEnabled(true);
-            //}            
+            var colCheck = entity.get(CollisionCheck);
+            if(colCheck){
+                colCheck.check();
+            }                       
         }
     }
 }

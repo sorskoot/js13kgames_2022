@@ -9,12 +9,16 @@ import { ShadowSystem } from './classes/systems/ShadowSystem';
 import { ShadowCaster } from './classes/components/ShadowCaster';
 import { Position } from './classes/components/Position';
 import { AIController } from './classes/components/AIController';
+import { CollisionCheck } from './classes/components/CollisionCheck';
 
 class App {
     /** @type BABYLON.Scene */
     scene;
     /** @type HTMLCanvasElement */
     canvas;
+    
+    camera2;
+
     /** @type BABYLON.WebXRInputSource[] */
     controllers = [];
     /** @type BABYLON.SpotLight */
@@ -31,7 +35,7 @@ class App {
         this.canvas = document.querySelector("#c");
         // initialize babylon scene and engine
         this.engine = new BABYLON.Engine(this.canvas, true);
-
+        
         this.createScene().then(() => {
             secs.registerSystems([
                 this.inputSystem,
@@ -61,12 +65,12 @@ class App {
         this.scene.fogColor = BABYLON.Color3.FromHexString("#000000");
         this.scene.fogDensity = .2;
 
-        var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 0, 0), this.scene);
-        camera.attachControl(this.canvas, true);
+        this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 0, 0), this.scene);
+        this.camera.attachControl(this.canvas, true);
 
         var light1 = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.scene);
-        //light1.diffuse = BABYLON.Color3.FromHexString("#080040");
-        light1.diffuse = BABYLON.Color3.FromHexString("#888888");
+        light1.diffuse = BABYLON.Color3.FromHexString("#080040");
+        //light1.diffuse = BABYLON.Color3.FromHexString("#888888");
 
         const batShape = [
             new BABYLON.Vector3(.025, -0.1),
@@ -105,7 +109,8 @@ class App {
         //Create bat Entity
         secs.createEntity([
             new ControllerInput("right"),
-            new MeshEntity(this.bat)
+            new MeshEntity(this.bat),
+            new CollisionCheck(this.ray)
         ]);                               
 
         this.flashlight = new BABYLON.SpotLight("light",
@@ -124,10 +129,6 @@ class App {
             new ControllerInput("left"),
             new MeshEntity(flashlightMesh)
         ]);
-
-        // b.useBlurExponentialShadowMap = true;
-        //    b.useKernelBlur = true;
-        //   b.blurKernel = 64;
 
         var mat = new BABYLON.StandardMaterial("ground");
         
@@ -152,16 +153,20 @@ class App {
                 mesh.translate(BABYLON.Vector3.Up(), .8)
                 this.enemies.push(mesh);
 
-                this.spawner = new Spawner(s,
-                    mesh, new BABYLON.Vector3(0, 0, 10), 2000);
+                this.spawner = new Spawner(s, mesh, new BABYLON.Vector3(0, 0, 10), 7000);
                 this.spawner.start();
+
+                this.spawner2 = new Spawner(s, mesh, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
+                this.spawner2.start();
+
+                this.spawner3 = new Spawner(s, mesh, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
+                this.spawner3.start();
 
                 meshes[1].material = this.spriteMaterial;
                 meshes[2].material = this.spriteMaterial;
                 meshes[3].material = this.spriteMaterial;
-
                 meshes[4].material = this.spriteMaterial;
-
+                meshes[4].receiveShadows = true;
 
                 //  mesh.animations.push(xSlide);
             //    b.addShadowCaster(mesh);
@@ -183,18 +188,18 @@ class App {
 
 
                 for (let i = 0; i < 10; i++) {
-                    var w = meshes[4].clone('wall', mesh.parent);
+                    var w = meshes[4].createInstance(`wall${i}`);
                     w.rotate(new BABYLON.Vector3(0, 0, 1), -Math.PI / 2);
                     w.position.z = i * .64 - 3.2;
-                    w.receiveShadows = true;
+                    
                 }
 
                 for (let i = 0; i < 10; i++) {
-                    var w = meshes[4].clone('wall', mesh.parent);
+                    var w = meshes[4].createInstance(`wall${i+10}`);
                     w.rotate(new BABYLON.Vector3(0, 0, 1), Math.PI / 2);
                     w.position.z = i * .64 - 3.2;
                     w.position.x += 7
-                    w.receiveShadows = true;
+               
                 }
 
                 meshes[1].setEnabled(false)
@@ -262,5 +267,4 @@ class App {
     }
 }
 
-
-new App();
+window.app = new App();

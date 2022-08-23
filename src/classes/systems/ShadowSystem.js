@@ -1,5 +1,3 @@
-import { MeshEntity } from "../components/MeshEntity";
-
 export class ShadowSystem{    
     
     constructor(light){

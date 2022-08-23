@@ -7,3 +7,4 @@ export class MeshEntity {
         this.mesh = mesh;
     }
 }
+
