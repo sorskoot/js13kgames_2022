@@ -2,12 +2,7 @@ Preparation:
     ✔ Build pipeline
     ✔ SFX @done(22-08-13 18:47)   
         - Audio lib is too old, it needs to be replaced. It might be worth testing if just a base64 encode .wav isn't as good since that what is generated anyway, but we might be able to skip the entire library because audio is in Babylon.
-    ✘ Pixel Shader @cancelled(22-08-19 17:31) Not needed (probably)
-    Place holders:
-        ☐ Title screen
-        ☐ Game over screen
-    Code:
-        ☐ Game states
+    ✘ Pixel Shader @cancelled(22-08-19 17:31) Not needed (probably)    
         
 
 Game idea:
@@ -15,25 +10,35 @@ Game idea:
 
 
 Must have:
-    - A Title 
-    - Skelton Spawning
+    ☐ A Title 
+    ☐ A Gameover screen
+    ☐ Skelton Spawning
         # how to make it clear where they are spawning? 
-    - Hitting Skeletons
+    ☐ Move skeletons towards player
+    ☐ Hitting Skeletons
+    ☐ Die if hit by skelly
+    ☐ Keep count of how many re-killed
 
 Should have:
-    - Increasing difficulty in waves of skeletons. 
+    ☐ Indicate being hit with postprocessing effect turning screen red for a flash
+        https://doc.babylonjs.com/divingDeeper/postProcesses/usePostProcesses#custom-postprocesses
+    ☐ Increasing difficulty in waves of skeletons. 
         Maybe different places in the graveyard. It would be really nice to have some
         way of focussing the attention of the player in a direction. Maybe by drawing a 
         wall or foliage or something.
         Level 1, only skeletons from the front
         Level 2, from the front and the back
         Level x, all directions
+    ☐ Nice sound effects
+    ☐ Particle effects when hitting the skeleton
 
 Could have:
-
+    ☐ A nightsky texture, with a big moon
+    ☐ Paths between the graves    
+    ☐ Music
 
 Would like:
-
+    ☐ Bigger graves and tombs
 
 Random ideas:
     items: 
