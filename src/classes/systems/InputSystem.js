@@ -21,7 +21,6 @@ export class InputSystem {
     handleController(entity, controller) {
         var inputEntity = entity.get(ControllerInput);
         if (controller.inputSource.handedness == inputEntity.handedness) {
-
             var mesh = entity.get(MeshEntity).mesh;
             mesh.position.copyFrom(controller.grip.position);
             mesh.rotationQuaternion = controller.grip.rotationQuaternion;

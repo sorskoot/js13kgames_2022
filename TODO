@@ -1,21 +1,21 @@
+Current Size: 8453 bytes
+
 Preparation:
     ✔ Build pipeline
     ✔ SFX @done(22-08-13 18:47)   
         - Audio lib is too old, it needs to be replaced. It might be worth testing if just a base64 encode .wav isn't as good since that what is generated anyway, but we might be able to skip the entire library because audio is in Babylon.
     ✘ Pixel Shader @cancelled(22-08-19 17:31) Not needed (probably)    
         
-
 Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
-
 
 Must have:
     ☐ A Title 
     ☐ A Gameover screen
-    ☐ Skelton Spawning
+    ✔ Skelton Spawning @done(22-08-23 23:55)
         # how to make it clear where they are spawning? 
-    ☐ Move skeletons towards player
-    ☐ Hitting Skeletons
+    ✔ Move skeletons towards player @done(22-08-23 23:55)
+    ✔ Hitting Skeletons @done(22-08-23 23:55)
     ☐ Die if hit by skelly
     ☐ Keep count of how many re-killed
 
@@ -30,12 +30,15 @@ Should have:
         Level 2, from the front and the back
         Level x, all directions
     ☐ Nice sound effects
-    ☐ Particle effects when hitting the skeleton
+    ✔ Particle effects when hitting the skeleton @done(22-08-24 21:28)
+    ☐ Die after a couple of hits
+    ☐ Particles flow in direction of hit
 
 Could have:
     ☐ A nightsky texture, with a big moon
     ☐ Paths between the graves    
     ☐ Music
+        https://sb.bitsnbites.eu/?data=U0JveA4C7dg_S8NAGMfx3yVNqVqo6GDHDnbVwVWwi4OCL0BwE7Gl4lJKpRTS0FIHWxAHsYsvQgffhLOuLqLvwaHmT4utJYMgBfH7CfdcnuOOPLlkuo81KaOso8GN_JaW5lbykswgZazVjhLrZtsxPsuKYtCXyienlep01C9ZjhlfjBmPq6daO6u73nT0Wu3ORW86_rSelAAAAAAAAAB8Z5WasmrdJen28m405kg5KZsy1uRV-iMvdcx3BQAAAAAAAGbv-aCgnUMpndGWn9oKDhtz85V8opCUzBip_7WsH9732T8AAAAAAAAAQ0_Fgh6LKrwmjsobfv6WNPZDRrn3xG5w2DicFfU9tgsAAAAAAABADPuqK_PStKVN7QX5vWOsxvlC7treT0ZTjGWHTfLCvDW2vB3GxliMuDMpvjNZSWv0aHeyEndWm-nFjNf5zwAAAAAAAPAPfAI
 
 Would like:
     ☐ Bigger graves and tombs
@@ -55,6 +58,7 @@ Random ideas:
         # - Might need to draw SVG to canvas http://jsfiddle.net/Na6X5/
         - https://codepen.io/gabecrockett/pen/QWWzRvm
         - https://codepen.io/lbebber/pen/KwGEQv
-
+        
+        Transparent text in a texture => https://playground.babylonjs.com/#5ZCGRM#2847
 
 
