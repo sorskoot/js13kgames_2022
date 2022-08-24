@@ -1,4 +1,4 @@
-Current Size: 8457 bytes
+Current Size: 9289 bytes
 
 Preparation:
     ✔ Build pipeline
@@ -10,8 +10,11 @@ Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
 
 Must have:
-    ☐ A Title 
-    ☐ A Gameover screen
+    GameStates:
+        ✔ A Title @done(22-08-24 23:02)
+        ☐ A Gameover screen
+        ✔ Playing @done(22-08-24 23:02)
+        ☐ Switching states
     ✔ Skelton Spawning @done(22-08-23 23:55)
         # how to make it clear where they are spawning? 
     ✔ Move skeletons towards player @done(22-08-23 23:55)
@@ -20,6 +23,7 @@ Must have:
     ☐ Keep count of how many re-killed
 
 Should have:
+    ☐ Clear Entities when no longer used. 
     ☐ Indicate being hit with postprocessing effect turning screen red for a flash
         https://doc.babylonjs.com/divingDeeper/postProcesses/usePostProcesses#custom-postprocesses
     ☐ Increasing difficulty in waves of skeletons. 
@@ -42,6 +46,7 @@ Could have:
 
 Would like:
     ☐ Bigger graves and tombs
+    ☐ Make battery of flashlight slowly drain
 
 Random ideas:
     items: 
