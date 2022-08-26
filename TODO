@@ -9,6 +9,10 @@ Preparation:
 Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
 
+Bugs:
+    ☐ @critical When exiting VR all title are shown at the same time
+    ☐ @high When exiting VR the skeletons are still shown
+
 Must have:
     GameStates:
         ✔ A Title @done(22-08-24 23:02)
