@@ -25,19 +25,36 @@ export class InputSystem {
             mesh.position.copyFrom(controller.grip.position);
             mesh.rotationQuaternion = controller.grip.rotationQuaternion;
             mesh.rotate(BABYLON.Vector3.Right(), Math.PI / 2);
-            
-            // if (controller.inputSource.gamepad.buttons[0].value == 1 && !this.triggerPressed) {
-            //     this.triggerPressed = true;
-            //     sound.play(4);
-            // } else {
-            //     if (controller.inputSource.gamepad.buttons[0].value < .5 && this.triggerPressed) {
-            //         this.triggerPressed = false;
-            //     }
-            // }
             var colCheck = entity.get(CollisionCheck);
-            if(colCheck){
+            if (colCheck) {
                 colCheck.check();
-            }                       
+            }
+            if (controller.inputSource.gamepad.buttons[0].value == 1 && !this.triggerPressed) {
+                this.triggerPressed = true;
+                window.app.gotTrigger();
+            } else {
+                if (controller.inputSource.gamepad.buttons[0].value < .5 && this.triggerPressed) {
+                    this.triggerPressed = false;
+                }
+            }
+        }
+
+
+    }
+    trackDirection(entity, controller, deltaTime) {
+        var inputEntity = entity.get(ControllerInput);
+        if (controller.inputSource.handedness == inputEntity.handedness) {
+            if (this.lastPosition) {
+                //distance since last frame            
+                var distance =
+                    controller.grip.position.subtract(this.lastPosition).length();
+                //direction since last frame
+                var direction =
+                    controller.grip.position.subtract(this.lastPosition).normalize();
+                var speed = distance / deltaTime;
+                var force = direction.scale(speed);
+            }
+            this.lastPosition = controller.grip.position;
         }
     }
 }

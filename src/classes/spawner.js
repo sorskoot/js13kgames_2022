@@ -32,6 +32,7 @@ export class Spawner {
         this._timeout = setTimeout(() => {
             this._t = setInterval(() => {
                 var skeleton2 = this.basemesh.createInstance(`skeleton`);
+                skeleton2.parent = window.app.enemyParent;
                 this.scene.beginAnimation(skeleton2, 0, 100, true, .97 + Math.random() * .6);
                 skeleton2.position.copyFrom(this.position);
                 skeleton2.lookAt(new BABYLON.Vector3(0, 0, 0))

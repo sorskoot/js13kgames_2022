@@ -1,4 +1,4 @@
-Current Size: 9289 bytes
+Current Size: 9568 bytes
 
 Preparation:
     ✔ Build pipeline
@@ -12,14 +12,14 @@ Game idea:
 Must have:
     GameStates:
         ✔ A Title @done(22-08-24 23:02)
-        ☐ A Gameover screen
+        ✔ A Gameover screen @done(22-08-26 12:08)
         ✔ Playing @done(22-08-24 23:02)
-        ☐ Switching states
+        ✔ Switching states @done(22-08-26 12:08)
     ✔ Skelton Spawning @done(22-08-23 23:55)
         # how to make it clear where they are spawning? 
     ✔ Move skeletons towards player @done(22-08-23 23:55)
     ✔ Hitting Skeletons @done(22-08-23 23:55)
-    ☐ Die if hit by skelly
+    ✔ Die if hit by skelly @done(22-08-26 12:08)
     ☐ Keep count of how many re-killed
 
 Should have:
@@ -62,8 +62,10 @@ Random ideas:
         # - SVG Might be a nice way to go with text and effects
         # - Might need to draw SVG to canvas http://jsfiddle.net/Na6X5/
         - https://codepen.io/gabecrockett/pen/QWWzRvm
-        - https://codepen.io/lbebber/pen/KwGEQv
-        
+        - https://codepen.io/lbebber/pen/KwGEQv        
         Transparent text in a texture => https://playground.babylonjs.com/#5ZCGRM#2847
+
+        To get the screen to turn red, maybe a very dense red fog might give the
+        effect instead of a post filter.
 
 
