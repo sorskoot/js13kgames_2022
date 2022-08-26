@@ -23,7 +23,7 @@ Must have:
     ☐ Keep count of how many re-killed
 
 Should have:
-    ☐ Clear Entities when no longer used. 
+    ✔ Clear Entities when no longer used. @done(22-08-26 13:44)
     ☐ Indicate being hit with postprocessing effect turning screen red for a flash
         https://doc.babylonjs.com/divingDeeper/postProcesses/usePostProcesses#custom-postprocesses
     ☐ Increasing difficulty in waves of skeletons. 
@@ -33,16 +33,25 @@ Should have:
         Level 1, only skeletons from the front
         Level 2, from the front and the back
         Level x, all directions
-    ☐ Nice sound effects
+    ☐ Sound effects
     ✔ Particle effects when hitting the skeleton @done(22-08-24 21:28)
     ☐ Die after a couple of hits
     ☐ Particles flow in direction of hit
+    ☐ UI showing how many skeletons killed  
+        material.forceDepthWrite   
+        material.needDepthPrePass         
+    ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
+
 
 Could have:
+    ☐ Nice sound effects
+    ☐ Controller rumble on hit
     ☐ A nightsky texture, with a big moon
-    ☐ Paths between the graves    
+    ☐ Paths between the graves        
     ☐ Music
         https://sb.bitsnbites.eu/?data=U0JveA4C7dg_S8NAGMfx3yVNqVqo6GDHDnbVwVWwi4OCL0BwE7Gl4lJKpRTS0FIHWxAHsYsvQgffhLOuLqLvwaHmT4utJYMgBfH7CfdcnuOOPLlkuo81KaOso8GN_JaW5lbykswgZazVjhLrZtsxPsuKYtCXyienlep01C9ZjhlfjBmPq6daO6u73nT0Wu3ORW86_rSelAAAAAAAAAB8Z5WasmrdJen28m405kg5KZsy1uRV-iMvdcx3BQAAAAAAAGbv-aCgnUMpndGWn9oKDhtz85V8opCUzBip_7WsH9732T8AAAAAAAAAQ0_Fgh6LKrwmjsobfv6WNPZDRrn3xG5w2DicFfU9tgsAAAAAAABADPuqK_PStKVN7QX5vWOsxvlC7treT0ZTjGWHTfLCvDW2vB3GxliMuDMpvjNZSWv0aHeyEndWm-nFjNf5zwAAAAAAAPAPfAI
+    ☐ instructions on how to play
+
 
 Would like:
     ☐ Bigger graves and tombs

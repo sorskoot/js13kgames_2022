@@ -12,19 +12,25 @@ export class CollisionCheck{
         constructor(ray){            
             this.ray=ray;
         }
-        check(){
+
+        /**
+        * @param {import("../systems/InputSystem").MotionData} data
+        */
+        check(data){
             var enemies = secs.match(EnemyEntity).map(e=>e.get(MeshEntity).mesh);
             var hitInfo = this.ray.intersectsMeshes(enemies);
             if (hitInfo.length) {
                 hitInfo[0].pickedMesh.dispose();
-                sound.play(0);
+               //sound.play(0);
 
                 //TODO: figure out a way to remove the entity as well
                 const particleSystem = BABYLON.ParticleHelper.CreateDefault(
                     hitInfo[0].pickedPoint, 500);
                     
                 //particleSystem.createDirectedSphereEmitter(1, BABYLON.Vector3.Left(), BABYLON.Vector3.Up())
-                particleSystem.createSphereEmitter(.32,1);
+                particleSystem.createDirectedCylinderEmitter(.32,.64, 1, 
+                    new BABYLON.Vector3(data.direction.x * .5, data.direction.y * .5, data.direction.z * .5),
+                    new BABYLON.Vector3(data.direction.x * 1.5, data.direction.y * 1.5, data.direction.z * 1.5));                    
                 
                 const dt = new BABYLON.DynamicTexture("name",{width:5, height:5});    
                 var ctx = dt.getContext();
@@ -33,10 +39,13 @@ export class CollisionCheck{
                 dt.update();
                 particleSystem.particleTexture = dt;     
                 
-                particleSystem.emitRate = 500;
+                particleSystem.emitRate = 2500;
                 particleSystem.targetStopDuration = 0.1;
                 particleSystem.disposeOnStop = true;
                 
+                particleSystem.minEmitPower = .1;
+                particleSystem.maxEmitPower = data.speed*1000 * 4;
+
                 particleSystem.color1 = BABYLON.Color4.FromHexString("#d2d1b4");
                 particleSystem.color2 = BABYLON.Color4.FromHexString("#acb38c");
                 particleSystem.colorDead = BABYLON.Color4.FromHexString("#41452e");                

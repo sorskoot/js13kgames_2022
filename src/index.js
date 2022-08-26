@@ -71,10 +71,11 @@ class App {
 
             //secs.match(ShadowSystem).map(e=>this.shadow.add(e));
             this.engine.runRenderLoop(() => {
-                secs.match(ControllerInput).map(e => this.inputSystem.controllers(e));
+                let dt = this.engine.getDeltaTime();                        
+                secs.match(ControllerInput).map(e => this.inputSystem.controllers(e,dt));
                 switch (this.state) {
                     case STATES.GAME:
-                        let dt = this.engine.getDeltaTime();
+                        
                         secs.match(AIController).map(e => e.get(AIController).update(dt, e));
                         //secs.match(Motion).map(this.physics.move.bind(this.physics, delta));                                                                                               
                         break;
@@ -369,7 +370,7 @@ class App {
 
         const pressTrigger = BABYLON.MeshBuilder.CreatePlane("PressTrigger" + titleText, { width: 3, height: .75 });
         pressTrigger.parent = titlescreen;
-        pressTrigger.position = new BABYLON.Vector3(0, 1, 2);
+        pressTrigger.position = new BABYLON.Vector3(0, 1.75, 2);
 
         const pressTriggerTexture = new BABYLON.DynamicTexture("dynamic texture" + titleText, { width: 1200, height: 300 });
         const textureContext = pressTriggerTexture.getContext();
