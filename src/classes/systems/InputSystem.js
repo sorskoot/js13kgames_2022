@@ -3,13 +3,10 @@ import { ControllerInput } from "../components/ControllerInput";
 import { MeshEntity } from "../components/MeshEntity";
 import { Entity } from "../secs";
 
-/** @typedef MotionData
- * @property {BABYLON.Vector3} force
+/** @typedef MotionData 
  * @property {number} speed
  * @property {BABYLON.Vector3} direction
 */
-
-
 export class InputSystem {
     
     xrControllers = [];    
@@ -59,14 +56,13 @@ export class InputSystem {
             if (this.lastPosition[inputEntity.handedness]) {
                 //distance since last frame                    
                 var distance =
-                    controller.grip.position.subtract(this.lastPosition[inputEntity.handedness]).length();
+                    BABYLON.Vector3.Distance(this.lastPosition[inputEntity.handedness], controller.grip.position);
+                    
                 //direction since last frame
                 var direction =
                     controller.grip.position.subtract(this.lastPosition[inputEntity.handedness]).normalize();
                 var speed = distance / deltaTime;
-                var force = direction.scale(speed);
                 this.data[inputEntity.handedness] = {
-                    force: force,
                     speed: speed,
                     direction: direction                    
                 }
