@@ -1,4 +1,3 @@
-import { sound } from './lib/sound';
 import { models } from './scene';
 import { Spawner } from './classes/spawner';
 import secs from './classes/secs';
@@ -6,12 +5,10 @@ import { InputSystem } from './classes/systems/InputSystem';
 import { MeshEntity } from './classes/components/MeshEntity';
 import { ControllerInput } from './classes/components/ControllerInput';
 import { ShadowSystem } from './classes/systems/ShadowSystem';
-import { ShadowCaster } from './classes/components/ShadowCaster';
-import { Position } from './classes/components/Position';
 import { AIController } from './classes/components/AIController';
 import { CollisionCheck } from './classes/components/CollisionCheck';
-import { TrajectoryClassifier } from 'babylonjs';
 import { EnemyEntity } from './classes/components/EnemyEntity';
+import ambience from './lib/ambience';
 
 const STATES = { TITLE: 1, GAME: 2, LOSE: 3, INIT: 0 };
 const SPRITESTEXTURE = "data:image/webp;base64,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";
@@ -54,6 +51,9 @@ class App {
     /** @type BABYLON.PointLight */
     light;
 
+    /** @type number */
+    score;
+
     constructor() {
 
         this.canvas = document.querySelector("#c");
@@ -94,6 +94,7 @@ class App {
         this.state = newState;
         switch (newState) {
             case STATES.GAME:
+                this.score = 0;
                 this.titleParent.setEnabled(false);
                 this.gameOverParent.setEnabled(false);
                 this.titleNotVRParent.setEnabled(false);
@@ -118,9 +119,13 @@ class App {
                     this.enemyParent.getChildren().forEach(e => e.dispose());
                 }, 200);
                 this.gameOverParent.setEnabled(true);
+                this.showScore();
                 break;
         }
 
+    }
+    showScore() {
+        console.log(this.score);
     }
 
     gotTrigger() {
@@ -342,6 +347,7 @@ class App {
             this.inXR = state === BABYLON.WebXRState.IN_XR;
             this.changeState(1);
             if (state === BABYLON.WebXRState.IN_XR) {
+                ambience.start();
                 this.camera = xrHelper.baseExperience.camera.leftCamera;
                 xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
                 const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
@@ -350,6 +356,7 @@ class App {
                 this.light.diffuse = BABYLON.Color3.FromHexString("#080040");
                 this.controllerParent.setEnabled(true);
             } else {
+                ambience.pause();
                 this.controllerParent.setEnabled(false);
                 this.camera = this.nonVRCamera;
                 this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
@@ -358,10 +365,7 @@ class App {
 
         xrHelper.input.onControllerAddedObservable.add(controller => {
             this.inputSystem.xrControllers.push(controller);
-        });
-        xrHelper.baseExperience.onStateChangedObservable.add((eventData) => {
-            sound.InitAudio();
-        });
+        });        
         return this.scene;
     }
 

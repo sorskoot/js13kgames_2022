@@ -1,4 +1,3 @@
-import { sound } from "../../lib/sound";
 import secs from "../secs";
 import { EnemyEntity } from "./EnemyEntity";
 import { MeshEntity } from "./MeshEntity";
@@ -17,12 +16,17 @@ export class CollisionCheck{
         * @param {import("../systems/InputSystem").MotionData} data
         */
         check(data){
-            var enemies = secs.match(EnemyEntity).map(e=>e.get(MeshEntity).mesh);
+            var enemyEntities = secs.match(EnemyEntity).map(e=>e.get(MeshEntity));
+            var enemies = enemyEntities.map(e=>e.mesh);
             var hitInfo = this.ray.intersectsMeshes(enemies);
             if (hitInfo.length) {
+                // find picked enemy in list of enemies
+                var enemy = enemyEntities.find(e=>e.mesh==hitInfo[0].pickedMesh);                
+                var enemyEntity = secs.entitiesToComponents.findIndex(e=>e.MeshEntity == enemy);                
                 hitInfo[0].pickedMesh.dispose();
+                secs.entities[enemyEntity].kill();
                //sound.play(0);
-
+                window.app.score++;
                 //TODO: figure out a way to remove the entity as well
                 const particleSystem = BABYLON.ParticleHelper.CreateDefault(
                     hitInfo[0].pickedPoint, 500);
@@ -56,11 +60,7 @@ export class CollisionCheck{
                 // Position where the particles are emitted from
                 
                 particleSystem.start();
-                
-
-                //this.bat.setEnabled(false);
-            } else {
-                //this.bat.setEnabled(true);
-            } 
+          
+            }  
         }
 }
