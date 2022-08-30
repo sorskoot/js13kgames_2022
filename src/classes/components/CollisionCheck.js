@@ -21,10 +21,14 @@ export class CollisionCheck{
             var hitInfo = this.ray.intersectsMeshes(enemies);
             if (hitInfo.length) {
                 // find picked enemy in list of enemies
-                var enemy = enemyEntities.find(e=>e.mesh==hitInfo[0].pickedMesh);                
-                var enemyEntity = secs.entitiesToComponents.findIndex(e=>e.MeshEntity == enemy);                
+                // var enemy = enemyEntities.find(e=>e.mesh==hitInfo[0].pickedMesh);                
+                // if(enemy){
+                //     var enemyEntity = secs.entitiesToComponents.findIndex(e=>e.MeshEntity === enemy);                
+                //     secs.entities[enemyEntity].kill();    
+                // }
+                hitInfo[0].pickedMesh.entity.kill();
                 hitInfo[0].pickedMesh.dispose();
-                secs.entities[enemyEntity].kill();
+                
                //sound.play(0);
                 window.app.score++;
                 //TODO: figure out a way to remove the entity as well

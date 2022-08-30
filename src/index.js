@@ -71,11 +71,11 @@ class App {
 
             //secs.match(ShadowSystem).map(e=>this.shadow.add(e));
             this.engine.runRenderLoop(() => {
-                let dt = this.engine.getDeltaTime();                        
-                secs.match(ControllerInput).map(e => this.inputSystem.controllers(e,dt));
+                let dt = this.engine.getDeltaTime();
+                secs.match(ControllerInput).map(e => this.inputSystem.controllers(e, dt));
                 switch (this.state) {
                     case STATES.GAME:
-                        
+
                         secs.match(AIController).map(e => e.get(AIController).update(dt, e));
                         //secs.match(Motion).map(this.physics.move.bind(this.physics, delta));                                                                                               
                         break;
@@ -265,8 +265,11 @@ class App {
                 //  this.spawner3.start();
 
                 meshes[1].material = this.spriteMaterial;
+                meshes[1].receiveShadows = true;
                 meshes[2].material = this.spriteMaterial;
+                meshes[2].receiveShadows = true;
                 meshes[3].material = this.spriteMaterial;
+                meshes[3].receiveShadows = true;
                 meshes[4].material = this.spriteMaterial;
                 meshes[4].receiveShadows = true;
 
@@ -282,6 +285,7 @@ class App {
                     ts.rotation.z += Math.random() * .5 - .25;
                     ts.rotation.x += Math.random() * .5 - .25;
                     ts.rotation.y += Math.random() * .5 - .25;
+                    
                     this.shadowSystem.add(ts);
                     secs.createEntity([
                         new MeshEntity(ts)
@@ -344,28 +348,37 @@ class App {
         // var postProcess = new BABYLON.PostProcess("Down sample", "./postfx", ["screenSize", "highlightThreshold"], null, 0.25, camera);
 
         xrHelper.baseExperience.onStateChangedObservable.add(state => {
-            this.inXR = state === BABYLON.WebXRState.IN_XR;
-            this.changeState(1);
-            if (state === BABYLON.WebXRState.IN_XR) {
-                ambience.start();
-                this.camera = xrHelper.baseExperience.camera.leftCamera;
-                xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
-                const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
-                const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);
-                this.camCollider.parent = this.camera;
-                this.light.diffuse = BABYLON.Color3.FromHexString("#080040");
-                this.controllerParent.setEnabled(true);
-            } else {
-                ambience.pause();
-                this.controllerParent.setEnabled(false);
-                this.camera = this.nonVRCamera;
-                this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
+
+            switch (state) {
+                case BABYLON.WebXRState.IN_XR:
+                    this.inXR = true;
+                    this.changeState(STATES.TITLE);
+                    ambience.start();
+                    this.camera = xrHelper.baseExperience.camera.leftCamera;
+                    xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
+                    const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
+                    const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);
+                    this.camCollider.parent = this.camera;
+                    this.light.diffuse = BABYLON.Color3.FromHexString("#080040");
+                    this.controllerParent.setEnabled(true);
+                    break;
+                case BABYLON.WebXRState.NOT_IN_XR:
+                    this.inXR = false;
+                    this.changeState(STATES.TITLE);
+                    ambience.pause();
+                    this.controllerParent.setEnabled(false);
+                    this.camera = this.nonVRCamera;
+                    this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
+                    break;
+                case BABYLON.WebXRState.EXITING_XR:
+                case BABYLON.WebXRState.ENTERING_XR:
+                    break;
             }
         });
 
         xrHelper.input.onControllerAddedObservable.add(controller => {
             this.inputSystem.xrControllers.push(controller);
-        });        
+        });
         return this.scene;
     }
 
