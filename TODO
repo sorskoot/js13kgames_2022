@@ -10,8 +10,8 @@ Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
 
 Bugs:
-    ☐ @critical When exiting VR all title are shown at the same time
-    ☐ @high When exiting VR the skeletons are still shown
+    ✔ When exiting VR all title are shown at the same time @done(22-08-30 22:15)
+    ✔ When exiting VR the skeletons are still shown @done(22-08-30 22:15)
 
 Must have:
     GameStates:
@@ -24,7 +24,7 @@ Must have:
     ✔ Move skeletons towards player @done(22-08-23 23:55)
     ✔ Hitting Skeletons @done(22-08-23 23:55)
     ✔ Die if hit by skelly @done(22-08-26 12:08)
-    ☐ Keep count of how many re-killed
+    ✔ Keep count of how many are killed @done(22-08-30 22:42)
 
 Should have:
     ✔ Clear Entities when no longer used. @done(22-08-26 13:44)

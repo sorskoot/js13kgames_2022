@@ -43,7 +43,7 @@ export class Spawner {
                         new MeshEntity(skeleton2),
                         new AIController((Math.random() / 50) + .05),
                         new EnemyEntity()
-                    ]);
+                    ]);                    
                 secs.system.ShadowSystem.add(skeleton2);
                 //b.addShadowCaster(skeleton2);
                 // this.enemies.push(skeleton2);

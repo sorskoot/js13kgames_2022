@@ -47,6 +47,10 @@ class App {
     /** @type BABYLON.Node */
     controllerParent;
     /** @type BABYLON.Node */
+    scoreScreen
+    /** @type BABYLON.Mesh */
+    scorePlane 
+    /** @type BABYLON.Node */
     enemyParent;
     /** @type BABYLON.PointLight */
     light;
@@ -93,8 +97,9 @@ class App {
     async changeState(newState) {
         this.state = newState;
         switch (newState) {
-            case STATES.GAME:
+            case STATES.GAME:                
                 this.score = 0;
+                this.scoreScreen.setEnabled(false);
                 this.titleParent.setEnabled(false);
                 this.gameOverParent.setEnabled(false);
                 this.titleNotVRParent.setEnabled(false);
@@ -103,6 +108,7 @@ class App {
                 this.spawner3.start();
                 break;
             case STATES.TITLE:
+                this.scoreScreen.setEnabled(false);
                 this.titleParent.setEnabled(this.inXR);
                 this.titleNotVRParent.setEnabled(!this.inXR);
                 this.spawner?.stop();
@@ -118,14 +124,31 @@ class App {
                     secs.match(EnemyEntity).forEach(e => e.kill());
                     this.enemyParent.getChildren().forEach(e => e.dispose());
                 }, 200);
-                this.gameOverParent.setEnabled(true);
+                this.gameOverParent.setEnabled(true);                
                 this.showScore();
+                this.scoreScreen.setEnabled(true);
                 break;
         }
 
     }
     showScore() {
-        console.log(this.score);
+
+
+        const scoreTexture = new BABYLON.DynamicTexture("dynamic texture Score", { width: 1200/5, height: 100/5 });        
+        const pressTriggerMaterial = new BABYLON.StandardMaterial("ScoreMat");
+        scoreTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
+
+        pressTriggerMaterial.diffuseTexture = scoreTexture;
+        pressTriggerMaterial.emissiveTexture = scoreTexture;
+        pressTriggerMaterial.specularColor = BABYLON.Color3.Black();
+        this.scorePlane.material = pressTriggerMaterial;
+        const font = "bold 18px monospace";
+
+        scoreTexture.drawText(
+            `${this.score} skeletons killed!`, 18, 18, font, "#c0a48c", "rgba(0,0,0,0)", true, true);
+
+        scoreTexture.hasAlpha = true;
+
     }
 
     gotTrigger() {
@@ -243,25 +266,32 @@ class App {
         this.titleNotVRParent = await this.createTitle("DEATHKEEPER", false);
         this.titleParent = await this.createTitle("DEATHKEEPER", true);
         this.gameOverParent = await this.createTitle(" GAME OVER", true);
+
+        this.scoreScreen = new BABYLON.Node("scoreScreen", this.scene);
+        this.scorePlane = BABYLON.MeshBuilder.CreatePlane("scoreScreen", { width: 3, height: .25 });
+        this.scorePlane.parent = this.scoreScreen;
+        this.shadowSystem.add(this.scorePlane);
+        this.scorePlane.position = new BABYLON.Vector3(0, 1.25, 1.5);
+
         await this.changeState(1);
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
         BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models),
             this.scene, (meshes, particleSystems) => {
 
-                var mesh = meshes[0];
-                mesh.material = this.spriteMaterial;
+                var skeleton = meshes[0];
+                skeleton.material = this.spriteMaterial;
+                skeleton.translate(BABYLON.Vector3.Up(), .8)
+                skeleton.receiveShadows = true;
+                this.enemies.push(skeleton);
 
-                mesh.translate(BABYLON.Vector3.Up(), .8)
-                this.enemies.push(mesh);
-
-                this.spawner = new Spawner(s, mesh, new BABYLON.Vector3(0, 0, 10), 7000);
+                this.spawner = new Spawner(s, skeleton, new BABYLON.Vector3(0, 0, 10), 7000);
                 //  this.spawner.start();
 
-                this.spawner2 = new Spawner(s, mesh, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
+                this.spawner2 = new Spawner(s, skeleton, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
                 // this.spawner2.start();
 
-                this.spawner3 = new Spawner(s, mesh, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
+                this.spawner3 = new Spawner(s, skeleton, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
                 //  this.spawner3.start();
 
                 meshes[1].material = this.spriteMaterial;
@@ -275,7 +305,7 @@ class App {
 
                 //  mesh.animations.push(xSlide);
                 //    b.addShadowCaster(mesh);
-                s.beginAnimation(mesh, 0, 100, true);
+                s.beginAnimation(skeleton, 0, 100, true);
 
 
                 for (let i = 0; i < 100; i++) {
@@ -388,7 +418,7 @@ class App {
         const pressTrigger = BABYLON.MeshBuilder.CreatePlane("PressTrigger" + titleText, { width: 3, height: .75 });
         pressTrigger.parent = titlescreen;
         pressTrigger.position = new BABYLON.Vector3(0, 1.75, 2);
-
+        this.shadowSystem.add(pressTrigger);
         const pressTriggerTexture = new BABYLON.DynamicTexture("dynamic texture" + titleText, { width: 1200, height: 300 });
         const textureContext = pressTriggerTexture.getContext();
         const pressTriggerMaterial = new BABYLON.StandardMaterial("Mat" + titleText);
