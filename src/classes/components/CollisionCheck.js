@@ -1,3 +1,4 @@
+import sfx from "../../lib/sfx";
 import secs from "../secs";
 import { EnemyEntity } from "./EnemyEntity";
 import { MeshEntity } from "./MeshEntity";
@@ -28,7 +29,7 @@ export class CollisionCheck{
                 // }
                 hitInfo[0].pickedMesh.entity.kill();
                 hitInfo[0].pickedMesh.dispose();
-                
+                sfx.play(0);
                //sound.play(0);
                 window.app.score++;
                 //TODO: figure out a way to remove the entity as well

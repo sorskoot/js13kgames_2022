@@ -10,8 +10,8 @@ Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
 
 Bugs:
-    ✔ When exiting VR all title are shown at the same time @done(22-08-30 22:15)
-    ✔ When exiting VR the skeletons are still shown @done(22-08-30 22:15)
+    ☐ When exiting VR all title are shown at the same time
+    ☐ When exiting VR the skeletons are still shown
 
 Must have:
     GameStates:
@@ -45,7 +45,7 @@ Should have:
         material.forceDepthWrite   
         material.needDepthPrePass         
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
-
+    ☐ Add Webmonetization link
 
 Could have:
     Paricles should have a better color in the darkness. not glowing by itself.

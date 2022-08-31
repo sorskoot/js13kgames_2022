@@ -1,6 +1,7 @@
 import { models } from './scene';
 import { Spawner } from './classes/spawner';
 import secs from './classes/secs';
+import sfx from './lib/sfx';
 import { InputSystem } from './classes/systems/InputSystem';
 import { MeshEntity } from './classes/components/MeshEntity';
 import { ControllerInput } from './classes/components/ControllerInput';
@@ -98,7 +99,7 @@ class App {
         this.state = newState;
         switch (newState) {
             case STATES.GAME:                
-                this.score = 0;
+                this.score = 0;                                
                 this.scoreScreen.setEnabled(false);
                 this.titleParent.setEnabled(false);
                 this.gameOverParent.setEnabled(false);

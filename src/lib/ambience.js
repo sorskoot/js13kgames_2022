@@ -9,38 +9,7 @@ const Params = {
 }
 
 const randomWhite = () => Math.random() * 2 - 1;
-class soundfx {
-    // Sound
-    t(i, n) { return (n - i) / n };
 
-    f2(i) {
-        var n = 3e4;
-        if (i > n) return null;
-        var q = Math.pow(this.t(i, n), 3.1);
-        var d = Math.atan(i / 1000 - Math.sin(i / 331) * Math.sin(i / 61) + Math.sin(Math.sin(i / 59) / 39) * (66)) * this.t(i, n);
-        return Math.sin(Math.tan(i * .001) * (Math.random() / 1)) * Math.sin(i * .0009) * q * d;
-    }
-
-
-    f(i) {
-        var n = 2e4;
-        if (i > n) return null;
-        var q = this.t(i, n);
-        return Math.sin(-i * 0.03 * Math.sin(0.09 * i + Math.sin(i / 200)) + Math.sin(i / 100)) * q * q;
-    }
-    play() {
-        // Sound player
-
-        let A = new AudioContext()
-        let m = A.createBuffer(1, 96e3, 48e3)
-        let b = m.getChannelData(0)
-        for (let i = 96e3; i--;)b[i] = this.f(i)
-        let s = A.createBufferSource()
-        s.buffer = m
-        s.connect(A.destination)
-        s.start()
-    }
-}
 class Ambience {
     gNode = [];
     osc = [];
