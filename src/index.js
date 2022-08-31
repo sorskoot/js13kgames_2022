@@ -278,8 +278,8 @@ class App {
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
         BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models),
-            this.scene, (meshes, particleSystems) => {
-
+            this.scene, (meshes, particleSystems, skel, animgr) => {
+                console.log(animgr);
                 var skeleton = meshes[0];
                 skeleton.material = this.spriteMaterial;
                 skeleton.translate(BABYLON.Vector3.Up(), .8)
@@ -306,8 +306,7 @@ class App {
 
                 //  mesh.animations.push(xSlide);
                 //    b.addShadowCaster(mesh);
-                s.beginAnimation(skeleton, 0, 100, true);
-
+                s.beginAnimation(skeleton, 0, 100, true);                
 
                 for (let i = 0; i < 100; i++) {
                     var ts = meshes[Math.floor(Math.random() * 3) + 1].createInstance(`tombstone${i}`);

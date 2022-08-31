@@ -1,4 +1,4 @@
-Current Size: 10040 bytes
+Current Size: 10126 bytes
 
 Preparation:
     ✔ Build pipeline
@@ -46,6 +46,7 @@ Should have:
         material.needDepthPrePass         
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
     ☐ Add Webmonetization link
+    ✔ Animate the rising from the ground of the skeletons @done(22-08-31 22:45)
 
 Could have:
     Paricles should have a better color in the darkness. not glowing by itself.

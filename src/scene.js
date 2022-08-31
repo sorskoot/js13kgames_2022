@@ -1,10 +1,10 @@
 export const models = {
-    "producer": { "name": "Blender", "version": "3.3.0 Beta", "exporter_version": "3.3-beta 1", "file": "_1.babylon" },
-    "autoClear": true, "clearColor": [0.0509, 0.0509, 0.0509], "gravity": [0, -9.81, 0],
-    "materials": [{
-        "name": "Material.001", "id": "Material.001", "customType": "BABYLON.PBRMaterial", "emissive": [0, 0, 0], "reflectivity": [0.5, 0.5, 0.5], "roughness": 0.5, "metallic": 0,
-        "albedoTexture": { "name": "sprites.png", "hasAlpha": true, "level": 1, "coordinatesMode": 0, "coordinatesIndex": 0 }, "useAlphaFromAlbedoTexture": true
-    }],
+    // "producer": { "name": "Blender", "version": "3.3.0 Beta", "exporter_version": "3.3-beta 1", "file": "_1.babylon" },
+    // "autoClear": true, "clearColor": [0.0509, 0.0509, 0.0509], "gravity": [0, -9.81, 0],
+    // "materials": [{
+    //     "name": "Material.001", "id": "Material.001", "customType": "BABYLON.PBRMaterial", "emissive": [0, 0, 0], "reflectivity": [0.5, 0.5, 0.5], "roughness": 0.5, "metallic": 0,
+    //     "albedoTexture": { "name": "sprites.png", "hasAlpha": true, "level": 1, "coordinatesMode": 0, "coordinatesIndex": 0 }, "useAlphaFromAlbedoTexture": true
+    // }],
     "meshes": [{
         "name": "Plane.001",
         "id": "Plane.001",
@@ -34,7 +34,8 @@ export const models = {
             "verticesCount": 83, "indexStart": 0, "indexCount": 84
         }]
         , "instances": [],
-        "animations": [{ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 2.3419999992847806, "values": [0.003843388574529361, -0.19012657335305522, 0, [0.003172824639617277, 0.008150789527368132, 0], [0.003172824639617277, 0.008150789527368132, 0]] }, { "frame": 25, "values": [0.1, 0.0015222520821878138, 0.03, [0, -0.00013129021272804048, 0], [0, -0.0001312906607115637, 0]] }, { "frame": 50, "values": [0, 0.19423644856981923, 0, [-0.0008184867371567691, -0.0021026416153625926, 0.00001603579409734409], [-0.0008184867371567691, -0.0021026416153625926, 0.000016035725922977702]] }, { "frame": 75.18395957947034, "values": [0.1, 0, -0.03, [0.00019980075393701113, -0.00005634573384141068, 0], [0.00019980075393701113, -0.00005634605055441348, 0]] }, { "frame": 100.29121798069308, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }], "ranges": [] }]
+        "animations": [{ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 2.3419999992847806, "values": [0.003843388574529361, -0.19012657335305522, 0, [0.003172824639617277, 0.008150789527368132, 0], [0.003172824639617277, 0.008150789527368132, 0]] }, { "frame": 25, "values": [0.1, 0.0015222520821878138, 0.03, [0, -0.00013129021272804048, 0], [0, -0.0001312906607115637, 0]] }, { "frame": 50, "values": [0, 0.19423644856981923, 0, [-0.0008184867371567691, -0.0021026416153625926, 0.00001603579409734409], [-0.0008184867371567691, -0.0021026416153625926, 0.000016035725922977702]] }, { "frame": 75.18395957947034, "values": [0.1, 0, -0.03, [0.00019980075393701113, -0.00005634573384141068, 0], [0.00019980075393701113, -0.00005634605055441348, 0]] }, { "frame": 100.29121798069308, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }]},
+        {"name":"Rise","property":"rotation","framePerSecond":60,"dataType":1,"loopBehavior":1,"blendingSpeed":0.01,"keys":[{"frame":0,"values":[2.14,0,0,[0,0,0],[-0.07,0,0]]},{"frame":100,"values":[0,0,0,[0,0,0],[0,0,0]]}]}]
     }, {
         "name": "Grave1", "id": "Grave1", "materialId": "Material.001", "billboardMode": 0, "position": [-1.1963, 0, 0], "rotation": [-1.5708, 0, 0], "scaling": [0.32, 1, 0.64], "isVisible": true, "isEnabled": true, "pickable": false
         , "positions": [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, 1, 0, 1, -1, 0, 1]
