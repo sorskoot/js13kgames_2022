@@ -11,7 +11,12 @@ const preprocess = require("gulp-preprocess");
 //const inlinesource = require('gulp-inline-source');
 const htmlmin = require('gulp-htmlmin');
 const fileInline = require('gulp-file-inline');
-
+const babelify = require('babelify');
+const browserify = require("browserify");
+const connect = require("gulp-connect");
+const source = require("vinyl-source-stream");
+const buffer = require("vinyl-buffer");
+const uglify = require("gulp-uglify");
 
 function isJavaScript(file) {
     // Check if file extension is '.js'
@@ -134,7 +139,48 @@ function f() {
         .pipe(gulp.dest('./dist/'));
 };
 
-exports.default = gulp.series(copyStatic, doWebp, javascript);
+function build(){
+    return browserify({
+        entries: ["./src/index.js"]
+    })
+    .transform(babelify.configure({
+        presets : ["@babel/preset-env"]
+    }))
+    .bundle()
+    .pipe(source("main.js"))
+    .pipe(buffer())
+    .pipe(preprocess())
+    .pipe(gulpif(isJavaScript, terser({
+        ecma: 2020,
+        compress: {
+            unsafe: true,
+            unsafe_Function: true,
+            unsafe_arrows: true,
+            unsafe_comps: true,
+            unsafe_math: true,
+            unsafe_methods: true,
+            unsafe_proto: true,
+            unsafe_regexp: true,
+            unsafe_symbols: true,
+            unsafe_undefined: true,
+            drop_console: true,
+            passes: 10,
+            dead_code: true,
+        }
+    })))
+    
+    //.pipe(sourcemaps.init())
+    .pipe(uglify())
+    //.pipe(sourcemaps.write('./maps'))
+    .pipe(roadroller({
+        contextBits:24,
+        maxMemoryMB:500
+    }))
+    .pipe(gulp.dest("./dist"));
+};
+
+exports.prod = gulp.series(copyStatic, doWebp, build, inlinesource);
 exports.copy = copyStatic;
-exports.prod = gulp.series(copyStatic, doWebp, production, inlinesource);
+exports.default = gulp.series(copyStatic, doWebp, production, inlinesource);
 exports.f = f;
+
