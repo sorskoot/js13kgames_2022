@@ -73,8 +73,6 @@ Random ideas:
         - Gun
         - Grenade        
 
-
-
     Title ideas:
         # - SVG Might be a nice way to go with text and effects
         # - Might need to draw SVG to canvas http://jsfiddle.net/Na6X5/
@@ -84,5 +82,24 @@ Random ideas:
 
         To get the screen to turn red, maybe a very dense red fog might give the
         effect instead of a post filter.
+
+    # Level Ideas
+    Level 1 - At the gate of the graveyard
+        Skeletons only spawn in front of you and there are not many
+        There's a wall left and right of you and a gate behind you
+
+    Level 2 - You are a bit furter into the graveyard
+        Skeletons spawn in front and left of you
+        You stand in the corner between two walls
+    Level 3 - You are in the middle of the graveyard
+        Skeletons come from 3 directions, front left and right  
+        There's a wall behind you
+    Level 4 - You are in the middle of the graveyard
+        Skeletons come from 3 directions, front left and right  
+        No wall, but graves are grouped in for mayor directions
+    Level 5 - You're on your own now
+        No wall, graves everywhere.
+
+        
 
 

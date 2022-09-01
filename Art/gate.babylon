@@ -1,0 +1,13 @@
+{"producer":{"name":"Blender","version":"3.3.0 Beta","exporter_version":"3.3-beta 1","file":"gate.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"gravity":[0,-9.81,0],
+"materials":[{"name":"Material.001","id":"Material.001","customType":"BABYLON.PBRMaterial","emissive":[0,0,0],"reflectivity":[0.5,0.5,0.5],"roughness":0.5,"metallic":0, 
+"albedoTexture":{"name":"sprites.png","hasAlpha":true,"level":1,"coordinatesMode":0,"coordinatesIndex":0},"useAlphaFromAlbedoTexture":true}],
+"meshes":[{"name":"Wall.001","id":"Wall.001","materialId":"Material.001","billboardMode":0,"position":[-4.5399,0,0],"rotation":[-1.5708,0,0],"scaling":[0.32,1,0.64],"isVisible":true,"isEnabled":true,"pickable":false
+,"positions":[1,0,1,-1,0,2,-1,0,1,1,0,0,-1,0,1,-1,0,0,1,0,2,-1,0,3,-1,0,2,1,0,2,1,0,1,-1,0,1,1,0,3]
+,"normals":[0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,1,0]
+,"uvs":[0.875,0.636,0.813,1,0.813,0.636,0.875,0.001,0.813,1,0.813,0,0.812,0,0.75,1,0.75,0,0.875,1,0.875,1.001,0.813,1,0.812,1]
+,"indices":[0,1,2,3,4,5,6,7,8,0,9,1,3,10,11,6,12,7]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":13,"indexStart":0,"indexCount":18}]
+,"instances":[]}
+]
+}

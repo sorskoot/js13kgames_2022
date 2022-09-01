@@ -17,6 +17,8 @@ class Ambience {
 
     bellgain;
     outputGain;
+
+    /** @type AudioContext */
     context;
 
     started = false;
@@ -39,9 +41,10 @@ class Ambience {
         this.initialized = true;
         this.context = new AudioContext();
 
-        await this.context.audioWorklet.addModule('noise.js')
-        const testNode = new AudioWorkletNode(this.context, 'noise-processor');
-
+        //       await this.context.audioWorklet.addModule('noise.js')
+        //const testNode = new AudioWorkletNode(this.context, 'noise-processor');
+        const noiseNode = this.context.createScriptProcessor(1024, 1, 1);
+        noiseNode.addEventListener('audioprocess', evt => evt.outputBuffer.getChannelData(0).forEach((v, i, a) => a[i] = Math.random() * 2 - 1));
         const b = [0.049922035, -0.095993537, 0.050612699, -0.004408786]; // numerator, feedforward
         const a = [1, -2.494956002, 2.017265875, -0.522189400]; // denominator, feedback
         const iirNode = this.context.createIIRFilter(b, a);
@@ -53,7 +56,7 @@ class Ambience {
 
         const filter = this.context.createBiquadFilter();
 
-        testNode.connect(iirNode);
+        noiseNode.connect(iirNode);
         iirNode.connect(filter);
         filter.connect(this.outputGain);
         filter.frequency.value = 50;
