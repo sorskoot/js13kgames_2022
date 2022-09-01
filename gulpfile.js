@@ -48,7 +48,7 @@ function doWebp(cb) {
 }
 
 gulp.task('watch', function () {
-    return gulp.watch(['./src/lib/*.js', './src/classes/**/*.js','./src/scene.js','./src/index.js']),
+    return gulp.watch(['./src/**/*.js']),
         { ignoreInitial: false },
         gulp.series(copyStatic, doWebp, javascript);
 });
