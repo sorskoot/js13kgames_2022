@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "buildwp": "webpack --mode production --config webpack.prod",
+    "buildDev":"webpack --mode development --config webpack.dev",
     "prod": "gulp prod",
     "start": "webpack-dev-server --config webpack.dev"
   },
