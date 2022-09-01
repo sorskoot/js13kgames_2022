@@ -1,6 +1,4 @@
-// Simple Entity Component System
-
-export class Entity {   
+class Entity {   
     /**
      * instantiates a new Entity;
      * @param {number} id the unique id of the entity
@@ -90,4 +88,4 @@ class Secs {
     }
 };
 
-export default new Secs();
+let secs = new Secs();

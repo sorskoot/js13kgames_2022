@@ -1,13 +1,8 @@
-import { CollisionCheck } from "../components/CollisionCheck";
-import { ControllerInput } from "../components/ControllerInput";
-import { MeshEntity } from "../components/MeshEntity";
-import { Entity } from "../secs";
-
 /** @typedef MotionData 
  * @property {number} speed
  * @property {BABYLON.Vector3} direction
 */
-export class InputSystem {
+class InputSystem {
     
     xrControllers = [];    
     lastPosition = {};

@@ -1,9 +1,4 @@
-import sfx from "../../lib/sfx";
-import secs from "../secs";
-import { EnemyEntity } from "./EnemyEntity";
-import { MeshEntity } from "./MeshEntity";
-
-export class CollisionCheck{
+class CollisionCheck{
         
         /**
          * Instantiates a new Collision check component

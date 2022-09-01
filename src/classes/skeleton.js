@@ -1,3 +1,3 @@
-export class Skeleton {
+class Skeleton {
     
 }

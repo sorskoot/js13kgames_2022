@@ -1,9 +1,4 @@
-import { AIController } from "./components/AIController";
-import { EnemyEntity } from "./components/EnemyEntity";
-import { MeshEntity } from "./components/MeshEntity";
-import secs from "./secs";
-
-export class Spawner {
+class Spawner {
 
     /** @type {boolean} */
     isSpawning;

@@ -60,4 +60,4 @@ class Soundfx {
     }
 }
 
-export default new Soundfx();
+var sfx = new Soundfx();

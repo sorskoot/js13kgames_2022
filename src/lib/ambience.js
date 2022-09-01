@@ -147,4 +147,4 @@ class Ambience {
     }
 }
 
-export default new Ambience();
+var ambience = new Ambience();

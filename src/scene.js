@@ -1,4 +1,4 @@
-export const models = {
+const models = {
     // "producer": { "name": "Blender", "version": "3.3.0 Beta", "exporter_version": "3.3-beta 1", "file": "_1.babylon" },
     // "autoClear": true, "clearColor": [0.0509, 0.0509, 0.0509], "gravity": [0, -9.81, 0],
     // "materials": [{
