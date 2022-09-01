@@ -1,5 +1,3 @@
-import { NodeMaterialConnectionPointCustomObject } from "babylonjs";
-import secs from "../secs";
 import { MeshEntity } from "./MeshEntity";
 
 export class AIController {

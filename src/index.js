@@ -1,7 +1,6 @@
 import { models } from './scene';
 import { Spawner } from './classes/spawner';
 import secs from './classes/secs';
-import sfx from './lib/sfx';
 import { InputSystem } from './classes/systems/InputSystem';
 import { MeshEntity } from './classes/components/MeshEntity';
 import { ControllerInput } from './classes/components/ControllerInput';
