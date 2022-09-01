@@ -24,7 +24,7 @@ class CollisionCheck{
                 // }
                 hitInfo[0].pickedMesh.entity.kill();
                 hitInfo[0].pickedMesh.dispose();
-                sfx.play(0);
+                sfx.hit.play();
                //sound.play(0);
                 window.app.score++;
                 //TODO: figure out a way to remove the entity as well

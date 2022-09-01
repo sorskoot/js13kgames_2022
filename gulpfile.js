@@ -83,6 +83,31 @@ function production() {
         .pipe(gulp.dest('./dist/'));
 };
 
+function production2() {
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/scene.js','./src/index.js'])
+        .pipe(preprocess())
+        // .pipe(gulpif(isJavaScript, terser({
+        //     ecma: 2020,
+        //     compress: {
+        //         unsafe: true,
+        //         unsafe_Function: true,
+        //         unsafe_arrows: true,
+        //         unsafe_comps: true,
+        //         unsafe_math: true,
+        //         unsafe_methods: true,
+        //         unsafe_proto: true,
+        //         unsafe_regexp: true,
+        //         unsafe_symbols: true,
+        //         unsafe_undefined: true,
+        //         drop_console: true,
+        //         passes: 10,
+        //         dead_code: true,
+        //     }
+        // })))
+        .pipe(concat('main.js'))
+        .pipe(gulp.dest('./dist/'));
+};
+
 function inlinesource() {
     return gulp.src('./dist/index.html')
         .pipe(fileInline())
@@ -100,6 +125,7 @@ function inlinesource() {
 
 
 exports.prod = gulp.series(copyStatic, doWebp, production, inlinesource);
+exports.prod2 = gulp.series(copyStatic, doWebp, production2);
 exports.copy = copyStatic;
 exports.dev = gulp.series(copyStatic, doWebp, javascript);
 
