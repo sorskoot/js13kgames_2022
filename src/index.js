@@ -353,6 +353,7 @@ class App {
                 case BABYLON.WebXRState.IN_XR:
                     this.inXR = true;
                     this.changeState(1);
+                    sfx.InitAudio();
                     ambience.start();
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
                     xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
