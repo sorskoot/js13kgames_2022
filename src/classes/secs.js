@@ -29,10 +29,10 @@ class Entity {
     /**
      * Removes the specified component.
      */
-    remove (component) {
-        delete this.secs.entitiesToComponents[this.id][component.name];
-        delete this.secs.componentsToEntities[component.name][this.id];
-    }
+    // remove (component) {
+    //     delete this.secs.entitiesToComponents[this.id][component.name];
+    //     delete this.secs.componentsToEntities[component.name][this.id];
+    // }
     /**
      * Kills the entity.
      */
