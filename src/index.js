@@ -204,12 +204,8 @@ class App {
         this.bat.parent = this.controllerParent;
         this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
         var rayHelper = new BABYLON.RayHelper(this.ray);
-
-        var localMeshDirection = new BABYLON.Vector3(0, 1, 0);
-        var localMeshOrigin = new BABYLON.Vector3(0, 0, 0);
-        var length = 1;
-
-        rayHelper.attachToMesh(this.bat, localMeshDirection, localMeshOrigin, length);
+        
+        rayHelper.attachToMesh(this.bat, new BABYLON.Vector3(0, 1, 0), new BABYLON.Vector3(0, 0, 0), .8);
         // rayHelper.show(this.scene);
 
         //Create bat Entity
@@ -266,7 +262,7 @@ class App {
         BABYLON.Animation.AllowMatricesInterpolation = true;
         BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models),
             this.scene, (meshes, particleSystems, skel, animgr) => {
-                console.log(animgr);
+                
                 var skeleton = meshes[0];
                 skeleton.material = this.spriteMaterial;
                 skeleton.translate(BABYLON.Vector3.Up(), .8)
@@ -324,20 +320,7 @@ class App {
                     w.position.x += 7
 
                 }
-
-                meshes[1].setEnabled(false)
-                meshes[2].setEnabled(false);
-                meshes[3].setEnabled(false);
-                meshes[4].setEnabled(false);
-                // mesh.rotation.x = Math.PI * .25;
-                // skeleton.bones[12].setRotation(new BABYLON.Vector3(Math.PI * .25,0,0));
-                //  s.registerBeforeRender(function () {
-
-                //      skeleton.bones[12].rotation.x = 20 ;//.rotate(BABYLON.Axis.X, .01, BABYLON.Space.LOCAL, mesh);
-                // // 	//skeleton.bones[1].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
-                // // 	//skeleton.bones[2].rotate(BABYLON.Axis.Z, .01, BABYLON.Space.WORLD, mesh);
-
-                // });                        
+                         
             });
         // @ifdef DEBUG
         // hide/show the Inspector
