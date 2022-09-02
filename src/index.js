@@ -217,9 +217,9 @@ class App {
 
         this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .5 });
 
-      //  this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
+       this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
          this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
-        this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
+        //this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
         this.controllerParent = new BABYLON.Node("controllerParent");
         const batShape = [
             new BV3(.025, -0.1),
@@ -378,7 +378,7 @@ class App {
         ];
 
         // wall
-        let wall = this.createMesh("wall",
+        this.wall = this.createMesh("wall",
             [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, -1, 0, 3, -1, 0, 2, 1, 0, 2, 1, 0, 1, -1, 0, 1, 1, 0, 3],
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, 1, 3, 10, 11, 6, 12, 7],
             [0.625, 0, 0.563, 1, 0.563, 0, 0.562, 0.001, 0.5, 1, 0.5, 0, 0.687, 0, 0.625, 1, 0.625, 0, 0.625, 1, 0.562, 1.001, 0.5, 1, 0.687, 1],
@@ -401,15 +401,15 @@ class App {
         }
 
 
-        for (let i = 0; i < 10; i++) {
-            var w = wall.createInstance(`wall${i}`);
-            var w2 = wall.createInstance(`wall${i + 10}`);
-            w.rotation = BV3.FromArray([-1.5708, 0, -1.5708]);
-            w2.rotation = BV3.FromArray([-1.5708, 0, 1.5708]);
-            w.position.z = w2.position.z = i * .64 - 3.2 - 2;
-            w.position.x -= 3
-            w2.position.x += 3
-        }
+        // for (let i = 0; i < 10; i++) {
+        //     var w = wall.createInstance(`wall${i}`);
+        //     var w2 = wall.createInstance(`wall${i + 10}`);
+        //     w.rotation = BV3.FromArray([-1.5708, 0, -1.5708]);
+        //     w2.rotation = BV3.FromArray([-1.5708, 0, 1.5708]);
+        //     w.position.z = w2.position.z = i * .64 - 3.2 - 2;
+        //     w.position.x -= 3
+        //     w2.position.x += 3
+        // }
 
         this.createMap();
 
@@ -476,17 +476,33 @@ class App {
     }
 
     createMap(){
-        const Map1 = `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2,!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!61!24!25!26!36!46!45!44!34!35!16!17!05!.5!07!29!39!58!75!64!53!56!66!02!.*!-*!*,!.,!7%!8$!;$!`;
+        const Map1 = `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2,!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!24!25!26!36!46!45!44!34!35!16!17!07!29!58!.*!-*!*,!.,!7%!8$!;$!,1",2",3",4",5",6",7",8",9":1#:2#:3#:4#:5#:6#:7#:8#:9#,0":0#27!28!39!38!48!47!37!09!1;!4=!6:!->$.>$/>$0>$1>$2>$3>$4>$5>$6>$7>$8>$9>$,:",;",<",="::#:;#:<#:=#,>":>#`;
         var level1 = this.loadLevel(Map1);
         console.log(level1);
-        for(let i=0; i<level1.m.length;i++){
+        for(let i=0; i<level1.m.length;i++){            let p;
             switch(level1.m[i][2]){
                 case 1: // path
-                    let p = this.path.createInstance(`path${+ new Date()}`);
-                    p.position = new BV3(level1.m[i][0]*.64 - 13, 0.001, -level1.m[i][1]*.64 + 13);
-                    
+                    p = this.path.createInstance(`path${+ new Date()}`);                 
                 break;
-            }                       
+                case 2:
+                    p = this.wall.createInstance(`wall${+ new Date()}`);                 
+                    p.rotation = BV3.FromArray([-1.5708, 0, -1.5708]);
+                break;
+                case 3:
+                    p = this.wall.createInstance(`wall${+ new Date()}`);                 
+                    p.rotation = BV3.FromArray([-1.5708, 0, 1.5708]);
+                break;
+                case 4:
+                    p = this.wall.createInstance(`wall${+ new Date()}`);                 
+                    p.rotation = BV3.FromArray([-1.5708, 0, Math.PI]);
+                break;
+                case 5:
+                    p = this.wall.createInstance(`wall${+ new Date()}`);                 
+                    p.rotation = BV3.FromArray([-1.5708, 0, 0]);
+                break;
+                default: continue;
+            };                       
+            p.position = new BV3(level1.m[i][0]*.64 - 13, 0.001, -level1.m[i][1]*.64 + 13);
           }
     }
 
