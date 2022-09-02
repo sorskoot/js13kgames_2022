@@ -24,7 +24,7 @@ function isShader(file) {
 
 function javascript(cb) {
     {
-        return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
+        return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
             .pipe(sourcemaps.init())
             // .pipe(gulpif(isJavaScript, terser({
             //     compress: false,
@@ -55,7 +55,7 @@ gulp.task('watch', function () {
 });
 
 function production() {
-    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
@@ -78,51 +78,54 @@ function production() {
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))
         .pipe(roadroller({
-            contextBits:24,
-            maxMemoryMB:500,
-            allowFreeVars:true 
+            contextBits: 24,
+            maxMemoryMB: 500,
+            allowFreeVars: true
         }))
         .pipe(gulp.dest('./dist/'));
 };
 
 function productionc() {
-    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
         .pipe(gulpif(isJavaScript, closure({
             language: 'ECMASCRIPT6',
-            
+
         })))
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))
         .pipe(roadroller({
-            contextBits:24,
-            maxMemoryMB:500,
-            allowFreeVars:true 
+            contextBits: 24,
+            maxMemoryMB: 500,
+            allowFreeVars: true
         }))
         .pipe(gulp.dest('./dist/'));
 };
 
 function production2() {
-    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
-        // .pipe(gulpif(isJavaScript, terser({
-        //     ecma: 2020,
-        //     compress: {
-        //         unsafe: true,
-        //         unsafe_Function: true,
-        //         unsafe_arrows: true,
-        //         unsafe_comps: true,
-        //         unsafe_math: true,
-        //         unsafe_methods: true,
-        //         unsafe_proto: true,
-        //         unsafe_regexp: true,
-        //         unsafe_symbols: true,
-        //         unsafe_undefined: true,
-        //         drop_console: true,
-        //         passes: 10,
-        //         dead_code: true,
-        //     }
-        // })))
+        .pipe(gulpif(isJavaScript, terser({
+            ecma: 2020,
+            compress: {
+                unsafe: true,
+                unsafe_Function: true,
+                unsafe_arrows: true,
+                unsafe_comps: true,
+                unsafe_math: true,
+                unsafe_methods: true,
+                unsafe_proto: true,
+                unsafe_regexp: true,
+                unsafe_symbols: true,
+                unsafe_undefined: true,
+                drop_console: true,
+                passes: 10,
+                dead_code: true,
+                pure_getters: true
+            },
+            
+        }
+        )))
         .pipe(concat('main.js'))
         .pipe(gulp.dest('./dist/'));
 };
@@ -131,13 +134,13 @@ function inlinesource() {
     return gulp.src('./dist/index.html')
         .pipe(fileInline())
         .pipe(htmlmin({
-            collapseWhitespace: true, 
-            minifyCSS: true, 
-            minifyJS: true, 
-            removeComments: true, 
+            collapseWhitespace: true,
+            minifyCSS: true,
+            minifyJS: true,
+            removeComments: true,
             html5: true,
             removeOptionalTags: true,
-            useShortDoctype:true
+            useShortDoctype: true
         }))
         .pipe(gulp.dest('./dist/'));
 };

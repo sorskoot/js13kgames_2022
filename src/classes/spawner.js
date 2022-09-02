@@ -45,7 +45,7 @@ class Spawner {
                 skeleton2.entity =
                     secs.createEntity([
                         new MeshEntity(skeleton2),
-                        new AIController((Math.random() / 50) + .05),
+                        new AIController((Math.random() / 50) + .15),
                         new EnemyEntity()
                     ]);                    
                 secs.system.ShadowSystem.add(skeleton2);
