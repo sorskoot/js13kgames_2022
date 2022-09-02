@@ -50,9 +50,9 @@ function doWebp(cb) {
 }
 
 gulp.task('watch', function () {
-    return gulp.watch(['./src/**/*.js']),
+    return gulp.watch(['./src/**/*.js'],
         { ignoreInitial: false },
-        gulp.series(copyStatic, doWebp, javascript);
+        gulp.series(copyStatic, doWebp, javascript));
 });
 
 function production() {

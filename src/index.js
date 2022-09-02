@@ -46,6 +46,9 @@ class App {
     /** @type number */
     score;
 
+    /** @type CanvasRenderingContext2D */
+    spritectx;
+
     constructor() {
 
         this.canvas = document.querySelector("#c");
@@ -80,6 +83,19 @@ class App {
 
             });
         });
+    }
+   
+    loadLevel(b) {
+        let d = {}; 
+        d.t = b.codePointAt(0) - 32; 
+        d.w = b.codePointAt(1) - 32; 
+        d.h = b.codePointAt(2) - 32; 
+        d.z = +b[3]; 
+        d.m = []; 
+        d.M = []; 
+        for (let i = 4; i < b.length; i += 3)
+            d.m.push([b.codePointAt(i) - 32, b.codePointAt(i + 1) - 32, b.codePointAt(i + 2) - 32]); 
+        return d;
     }
 
     async changeState(newState) {
@@ -153,6 +169,7 @@ class App {
     }
 
     createCanvasTexture() {
+        
         const spritecanvas = document.createElement("Canvas");
         this.spritectx = spritecanvas.getContext("2d");
         this.spriteMaterial.diffuseTexture.getInternalTexture();
@@ -196,14 +213,13 @@ class App {
 
         this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BV3(0, 1.7, -3));;
         this.camera = this.nonVRCamera;
-        //this.camera.attachControl(this.canvas, true);
         this.enemyParent = new BABYLON.Node("enemyParent");
 
         this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .5 });
 
-        this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
-        this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
-        //light1.diffuse = BABYLON.Color3.FromHexString("#888888");
+      //  this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
+         this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
+        this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
         this.controllerParent = new BABYLON.Node("controllerParent");
         const batShape = [
             new BV3(.025, -0.1),
@@ -262,24 +278,49 @@ class App {
             new ControllerInput("left"),
             new MeshEntity(flashlightMesh)
         ]);
+
+
+
+        
         // Create Ground
-        const ground = BABYLON.MeshBuilder.CreateTiledGround("ground", { xmin: -16, zmin: -16, xmax: 16, zmax: 16, subdivisions: { w: 50, h: 50 } });
-
-        ground.receiveShadows = true;
+         const ground = BABYLON.MeshBuilder.CreateTiledGround("ground", { xmin: -16, zmin: -16, xmax: 16, zmax: 16, subdivisions: { w: 1, h: 1 } });
+         ground.receiveShadows = true;
+        
         var mat = new BABYLON.StandardMaterial("ground");
-        var groundTexture = new BABYLON.DynamicTexture("ground texture", { width: 16, height: 16 });
-        const textureContext = groundTexture.getContext();
-
+        var groundTexture = new BABYLON.DynamicTexture("ground texture", { width: 16, height: 16 },this.scene,false,BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        const textureContext = groundTexture.getContext();                
         textureContext.putImageData(this.spritectx.getImageData(32, 0, 16, 16), 0, 0);
-        groundTexture.onLoadObservable.add(() => {
-            groundTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
-        });
         groundTexture.update();
-        console.log("Created groundTexture");
-
+       
+        groundTexture.uScale = groundTexture.vScale = 50;
+        groundTexture.wrapU = groundTexture.wrapV = 1;
         mat.diffuseTexture = groundTexture;
         mat.specularColor = BABYLON.Color3.Black();
+        
         ground.material = mat;
+
+        // Create Path
+        this.path = BABYLON.CreatePlane('path',{size:.64});
+        this.path.rotation.x = Math.PI/2;
+        this.path.receiveShadows = true;
+        
+        var matPath = new BABYLON.StandardMaterial("path");
+        var pathTexture = new BABYLON.DynamicTexture("path texture", { width: 16, height: 16 },this.scene,false,BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        const pathTextureContext = pathTexture.getContext();                
+        var data = this.spritectx.getImageData(32, 0, 16, 16);
+        for(let i = 0; i<data.data.length;i+=4)
+        {
+            data.data[i] = (data.data[i]+0x8B)/2;
+            data.data[i+1] = (data.data[i+1]+0x45)/2;
+            data.data[i+2] = (data.data[i+2]+0x13)/2;
+        };
+        pathTextureContext.putImageData(data, 0, 0);
+        pathTexture.update();
+               
+        matPath.diffuseTexture = pathTexture;
+        matPath.specularColor = BABYLON.Color3.Black();
+        
+        this.path.material = matPath;
 
         // Create Titles
         this.titleNotVRParent = await this.createTitle("DEATHKEEPER", false);
@@ -369,6 +410,10 @@ class App {
             w.position.x -= 3
             w2.position.x += 3
         }
+
+        this.createMap();
+
+
         // @ifdef DEBUG
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
@@ -428,6 +473,21 @@ class App {
             this.inputSystem.xrControllers.push(controller);
         });
         return this.scene;
+    }
+
+    createMap(){
+        const Map1 = `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2,!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!61!24!25!26!36!46!45!44!34!35!16!17!05!.5!07!29!39!58!75!64!53!56!66!02!.*!-*!*,!.,!7%!8$!;$!`;
+        var level1 = this.loadLevel(Map1);
+        console.log(level1);
+        for(let i=0; i<level1.m.length;i++){
+            switch(level1.m[i][2]){
+                case 1: // path
+                    let p = this.path.createInstance(`path${+ new Date()}`);
+                    p.position = new BV3(level1.m[i][0]*.64 - 13, 0.001, -level1.m[i][1]*.64 + 13);
+                    
+                break;
+            }                       
+          }
     }
 
     createTitle(titleText, xr) {
