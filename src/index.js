@@ -16,8 +16,6 @@ class App {
     /** @type BABYLON.SpotLight */
     flashlight;
 
-    enemies = [];
-
     // Systems
     inputSystem = new InputSystem();
     shadowSystem;
@@ -37,7 +35,7 @@ class App {
     /** @type BABYLON.Node */
     scoreScreen
     /** @type BABYLON.Mesh */
-    scorePlane 
+    scorePlane
     /** @type BABYLON.Node */
     enemyParent;
     /** @type BABYLON.PointLight */
@@ -85,8 +83,8 @@ class App {
     async changeState(newState) {
         this.state = newState;
         switch (newState) {
-            case 2:                
-                this.score = 0;                                
+            case 2:
+                this.score = 0;
                 this.scoreScreen.setEnabled(false);
                 this.titleParent.setEnabled(false);
                 this.gameOverParent.setEnabled(false);
@@ -112,7 +110,7 @@ class App {
                     secs.match(EnemyEntity).forEach(e => e.kill());
                     this.enemyParent.getChildren().forEach(e => e.dispose());
                 }, 200);
-                this.gameOverParent.setEnabled(true);                
+                this.gameOverParent.setEnabled(true);
                 this.showScore();
                 this.scoreScreen.setEnabled(true);
                 break;
@@ -122,7 +120,7 @@ class App {
     showScore() {
 
 
-        const scoreTexture = new BABYLON.DynamicTexture("dynamic texture Score", { width: 1200/5, height: 100/5 });        
+        const scoreTexture = new BABYLON.DynamicTexture("dynamic texture Score", { width: 1200 / 5, height: 100 / 5 });
         const pressTriggerMaterial = new BABYLON.StandardMaterial("ScoreMat");
         scoreTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
 
@@ -152,7 +150,21 @@ class App {
         this.scene.clearColor = BABYLON.Color4.FromHexString("#000000");
     }
 
+    createCanvasTexture() {
+        const spritecanvas = document.createElement("Canvas");
+        this.spritectx = spritecanvas.getContext("2d");
+        this.spriteMaterial.diffuseTexture.getInternalTexture();
+        const image = new Image();
+        return new Promise(res => {
+            image.onload = () => {
+                this.spritectx.drawImage(image, 0, 0);
+                console.log("Created spriteMaterial");
+                res();
+            }
+            image.src = SPRITESTEXTURE;
+        })
 
+    }
 
     async createScene() {
         // create the canvas html element and attach it to the webpage
@@ -190,10 +202,8 @@ class App {
 
         this.spriteMaterial.diffuseTexture.hasAlpha = true;
         this.spriteMaterial.specularColor = BABYLON.Color3.Black();
-        var s = this.scene;
-        const ground = BABYLON.MeshBuilder.CreateTiledGround("ground", { xmin: -16, zmin: -16, xmax: 16, zmax: 16, subdivisions: { w: 1, h: 1 } });
 
-        ground.receiveShadows = true;
+        await this.createCanvasTexture();
 
         //Create Baseball bat
         this.bat = BABYLON.MeshBuilder.CreateLathe("bat", {
@@ -204,7 +214,7 @@ class App {
         this.bat.parent = this.controllerParent;
         this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
         var rayHelper = new BABYLON.RayHelper(this.ray);
-        
+
         rayHelper.attachToMesh(this.bat, new BABYLON.Vector3(0, 1, 0), new BABYLON.Vector3(0, 0, 0), .8);
         // rayHelper.show(this.scene);
 
@@ -233,20 +243,29 @@ class App {
             new ControllerInput("left"),
             new MeshEntity(flashlightMesh)
         ]);
+        // Create Ground
+        const ground = BABYLON.MeshBuilder.CreateTiledGround("ground", { xmin: -16, zmin: -16, xmax: 16, zmax: 16, subdivisions: { w: 50, h: 50 } });
 
+        ground.receiveShadows = true;
         var mat = new BABYLON.StandardMaterial("ground");
+        var groundTexture = new BABYLON.DynamicTexture("ground texture", { width: 16, height: 16 });
+        const textureContext = groundTexture.getContext();
+        
+        textureContext.putImageData(this.spritectx.getImageData(32,0,16,16),0,0);
+        //var t = BABYLON.Texture.CreateFromBase64String("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACqUlEQVR42k1SW1PaUBBOZ+rYVsVaUAmEYEICIRdIuBhMgAQDCN64iFKntlanfWhnfPOh/fVfs8fS6cPOnrP7nd09+33csOPC65dg6yUsL86RzryHkkvi/tMYYV2BrShwh1kUGgk0TAFKZgu8vIO260CxE+DU5jpqXhZSkceJW4Ik5lCW97GzuY1J5COKqjDbIqxyHsmNN7i/sNGa6cgIG8iXt8CZrSwGtyo0K42mWWQTFNw1/H7+ivGsguiGx95OAlZVRLMtYYtfg6Cvs3xF48E1TQlOoEDK7EJMJlmx6UxlYOpI05TcFJb9KvS4iXogMoxq7eNAEsEtpwGrRsGua0MxUshV19l91ZW8bPM4cjQMFyHLkb1LbIJbAef9Q+bTyW3mJz2dFe55KpuCLB/bYuL8zR9jj38Lji6rIv8bxahoUUyh6uXR6adwcuTBtnL/8mRc09DYISdvsgd0Psi9ZyCKyeIutMJrlqOuNBV5upv2K3Cr0Qk8HJVYYjpycXgmYBq2cLcIWIyMMPSY8LNZiNFVG1zUrb1QEghoD2sMRIDRsIxhU0EYC41itINVo+XAYwx1Lg1w44HPEhRYfYXOTz9/IKwYCAaxcBw1plJm3cnkXBaXoYn56TG4jqWibVmMX6KItkyLcqIMHm4mGHXb6J7oMJsy9Jj34EKLVSmgqvCYf5bAyQKPu/kVEwnxTFTRtnfTSYQ9FUYljYpZhW+ZaNQ19pWPp0OE7QI7c18eIxi1HFMaiYWCRBkJKFjsoeOKMBpFeGcK/MjE0/cFw/RIdJoAzj1U4DhFJlfaBSWJd+c4C8+XUbMtFgsCHZPHPo76AjL5FEaR8TLBTajh1/O3+FEG17cdPCzHMPwMzm9F9AMb/XjUUusD9Eb8xbqE68kE9Z6Eui/icuHjD2FilZlFjG/sAAAAAElFTkSuQmCC", "ground", this.scene);
 
-        var t = BABYLON.Texture.CreateFromBase64String("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACqUlEQVR42k1SW1PaUBBOZ+rYVsVaUAmEYEICIRdIuBhMgAQDCN64iFKntlanfWhnfPOh/fVfs8fS6cPOnrP7nd09+33csOPC65dg6yUsL86RzryHkkvi/tMYYV2BrShwh1kUGgk0TAFKZgu8vIO260CxE+DU5jpqXhZSkceJW4Ik5lCW97GzuY1J5COKqjDbIqxyHsmNN7i/sNGa6cgIG8iXt8CZrSwGtyo0K42mWWQTFNw1/H7+ivGsguiGx95OAlZVRLMtYYtfg6Cvs3xF48E1TQlOoEDK7EJMJlmx6UxlYOpI05TcFJb9KvS4iXogMoxq7eNAEsEtpwGrRsGua0MxUshV19l91ZW8bPM4cjQMFyHLkb1LbIJbAef9Q+bTyW3mJz2dFe55KpuCLB/bYuL8zR9jj38Lji6rIv8bxahoUUyh6uXR6adwcuTBtnL/8mRc09DYISdvsgd0Psi9ZyCKyeIutMJrlqOuNBV5upv2K3Cr0Qk8HJVYYjpycXgmYBq2cLcIWIyMMPSY8LNZiNFVG1zUrb1QEghoD2sMRIDRsIxhU0EYC41itINVo+XAYwx1Lg1w44HPEhRYfYXOTz9/IKwYCAaxcBw1plJm3cnkXBaXoYn56TG4jqWibVmMX6KItkyLcqIMHm4mGHXb6J7oMJsy9Jj34EKLVSmgqvCYf5bAyQKPu/kVEwnxTFTRtnfTSYQ9FUYljYpZhW+ZaNQ19pWPp0OE7QI7c18eIxi1HFMaiYWCRBkJKFjsoeOKMBpFeGcK/MjE0/cFw/RIdJoAzj1U4DhFJlfaBSWJd+c4C8+XUbMtFgsCHZPHPo76AjL5FEaR8TLBTajh1/O3+FEG17cdPCzHMPwMzm9F9AMb/XjUUusD9Eb8xbqE68kE9Z6Eui/icuHjD2FilZlFjG/sAAAAAElFTkSuQmCC", "ground", this.scene);
-        t.onLoadObservable.add(() => {
-            t.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
-        });
-
-        t.uScale = 50;
-        t.vScale = 50;
-        mat.diffuseTexture = t;
+        groundTexture.onLoadObservable.add(() => {
+            groundTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
+         });
+        groundTexture.update();
+        console.log("Created groundTexture");
+    //    groundTexture.uScale = 50;
+    //    groundTexture.vScale = 50;
+        mat.diffuseTexture = groundTexture;
         mat.specularColor = BABYLON.Color3.Black();
         ground.material = mat;
 
+        // Create Titles
         this.titleNotVRParent = await this.createTitle("DEATHKEEPER", false);
         this.titleParent = await this.createTitle("DEATHKEEPER", true);
         this.gameOverParent = await this.createTitle(" GAME OVER", true);
@@ -260,68 +279,128 @@ class App {
         await this.changeState(1);
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
-        BABYLON.SceneLoader.ImportMesh("", "", 'data:' + JSON.stringify(models),
-            this.scene, (meshes, particleSystems, skel, animgr) => {
-                
-                var skeleton = meshes[0];
-                skeleton.material = this.spriteMaterial;
-                skeleton.translate(BABYLON.Vector3.Up(), .8)
-                skeleton.receiveShadows = true;
-                this.enemies.push(skeleton);
 
-                this.spawner = new Spawner(s, skeleton, new BABYLON.Vector3(0, 0, 10), 7000);
-                //  this.spawner.start();
+        let skeleton = new BABYLON.Mesh("skeleton");
+        let skeletonPositions = [-0.08, 0.3224, -0.0418, -0.24, 0.64, -0.0161, -0.24, 0.3224, -0.0417, -0.4391, 1.2006, -0.2456, -0.2362, 1.1178, -0.0355, -0.2329, 1.2352, -0.0601, 0, 1.2771, -0.0432, -0.24, 1.7897, -0.1267, -0.24, 1.2771, -0.0432, -0.2381, 0.9577, -0.0202, 0, 1.2771, -0.0432, -0.2398, 1.277, -0.0438, 0, 0.6402, 0.0026, -0.2381, 0.9577, -0.0202, -0.2398, 0.64, -0.0008, -0.5732, 1.0382, -0.4617, -0.4391, 1.2006, -0.2456
+            , -0.5741, 1.1563, -0.483, -0.08, 0.005, 0.0014, -0.24, 0.3224, -0.0417, -0.24, 0.005, 0.0014, 0.24, 0.6401, -0.0124, 0.08, 0.3223, -0.0413, 0.24, 0.3223, -0.0412, 0.2419, 1.2387, -0.0426, 0.3084, 1.1173, -0.3124, 0.3086, 1.2373, -0.313, 0.24, 1.7897, -0.1264, 0, 1.2771, -0.0432, 0.24, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0, 1.2771, -0.0432, 0, 0.9571, -0.0415, 0.2392, 0.9573, -0.0306
+            , 0, 0.6402, 0.0026, 0.2399, 0.6397, -0.0043, 0.3086, 1.2373, -0.313, 0.3635, 1.1159, -0.5868, 0.3634, 1.2359, -0.5875, 0.24, 0.3223, -0.0412, 0.08, 0.0043, -0.0092, 0.24, 0.0043, -0.0057, -0.08, 0.3224, -0.0418, -0.08, 0.64, -0.0149, -0.24, 0.64, -0.0161, -0.4391, 1.2006, -0.2456, -0.4389, 1.0828, -0.2229, -0.2362, 1.1178, -0.0355, 0, 1.2771, -0.0432, 0, 1.789, -0.1348, -0.24, 1.7897, -0.1267
+            , -0.2381, 0.9577, -0.0202, 0, 0.9571, -0.0415, 0, 1.2771, -0.0432, 0, 0.6402, 0.0026, 0, 0.9571, -0.0415, -0.2381, 0.9577, -0.0202, -0.5732, 1.0382, -0.4617, -0.4389, 1.0828, -0.2229, -0.4391, 1.2006, -0.2456, -0.08, 0.3224, -0.0418, -0.24, 0.3224, -0.0417, 0.24, 0.6401, -0.0124, 0.08, 0.64, -0.0087, 0.08, 0.3223, -0.0413, 0.2419, 1.2387, -0.0426, 0.2398, 1.1187, -0.0418, 0.3084, 1.1173, -0.3124
+            , 0.24, 1.7897, -0.1264, 0, 1.789, -0.1348, 0, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0.24, 1.2771, -0.0432, 0, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0, 0.9571, -0.0415, 0, 0.6402, 0.0026, 0.3086, 1.2373, -0.313, 0.3084, 1.1173, -0.3124, 0.3635, 1.1159, -0.5868, 0.24, 0.3223, -0.0412, 0.08, 0.3223, -0.0413, 0.08, 0.0043, -0.0092];
+        let skeletonUvs = [0.023, 0.47, 0.007, 0.941, 0.007, 0.47, 0.07, 0.468, 0.082, 0.932, 0.07, 0.932, 0.062, 0.001, 0.039, 0.875, 0.039, 0.001, 0.102, 0.499, 0.125, 1, 0.102, 0.998, 0.125, 0, 0.102, 0.499, 0.102, 0, 0.082, 0.004, 0.07, 0.468, 0.07, 0.004, 0.023, -0.001, 0.007, 0.47, 0.007, -0.001, 0.007, 0.941, 0.023, 0.47, 0.007, 0.47, 0.07, 0.932
+            , 0.082, 0.468, 0.07, 0.468, 0.039, 0.875, 0.062, 0.001, 0.039, 0.001, 0.102, 0.499, 0.125, 1, 0.125, 0.5, 0.102, 0.499, 0.125, 0, 0.102, 0, 0.07, 0.468, 0.082, 0.004, 0.07, 0.004, 0.007, 0.47, 0.023, -0.001, 0.007, -0.001, 0.023, 0.47, 0.023, 0.941, 0.007, 0.941, 0.07, 0.468, 0.082, 0.468, 0.082, 0.932, 0.062, 0.001, 0.062, 0.875
+            , 0.039, 0.875, 0.102, 0.499, 0.125, 0.5, 0.125, 1, 0.125, 0, 0.125, 0.5, 0.102, 0.499, 0.082, 0.004, 0.082, 0.468, 0.07, 0.468, 0.023, 0.47, 0.007, 0.47, 0.007, 0.941, 0.023, 0.941, 0.023, 0.47, 0.07, 0.932, 0.082, 0.932, 0.082, 0.468, 0.039, 0.875, 0.062, 0.875, 0.062, 0.001, 0.102, 0.499, 0.102, 0.998, 0.125, 1, 0.102, 0.499
+            , 0.125, 0.5, 0.125, 0, 0.07, 0.468, 0.082, 0.468, 0.082, 0.004, 0.007, 0.47, 0.023, 0.47, 0.023, -0.001];
+        let skeletonIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50
+            , 51, 52, 53, 54, 55, 56, 57, 58, 59, 18, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82];
+        let skeletonNormals = [];
+        BABYLON.VertexData.ComputeNormals(skeletonPositions, skeletonIndices, skeletonNormals);
+        let skeletonVertexData = new BABYLON.VertexData();
+        skeletonVertexData.positions = skeletonPositions;
+        skeletonVertexData.indices = skeletonIndices;
+        skeletonVertexData.uvs = skeletonUvs;
+        skeletonVertexData.normals = skeletonNormals;
+        skeletonVertexData.applyToMesh(skeleton);
 
-                this.spawner2 = new Spawner(s, skeleton, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
-                // this.spawner2.start();
+        skeleton.material = this.spriteMaterial;
+        skeleton.translate(BABYLON.Vector3.Up(), .8)
+        skeleton.receiveShadows = true;
+        let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 2.3419999992847806, "values": [0.003843388574529361, -0.19012657335305522, 0, [0.003172824639617277, 0.008150789527368132, 0], [0.003172824639617277, 0.008150789527368132, 0]] }, { "frame": 25, "values": [0.1, 0.0015222520821878138, 0.03, [0, -0.00013129021272804048, 0], [0, -0.0001312906607115637, 0]] }, { "frame": 50, "values": [0, 0.19423644856981923, 0, [-0.0008184867371567691, -0.0021026416153625926, 0.00001603579409734409], [-0.0008184867371567691, -0.0021026416153625926, 0.000016035725922977702]] }, { "frame": 75.18395957947034, "values": [0.1, 0, -0.03, [0.00019980075393701113, -0.00005634573384141068, 0], [0.00019980075393701113, -0.00005634605055441348, 0]] }, { "frame": 100.29121798069308, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
+        let riseAnimation = BABYLON.Animation.Parse({ "name": "Rise", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [2.14, 0, 0, [0, 0, 0], [-0.07, 0, 0]] }, { "frame": 100, "values": [0, 0, 0, [0, 0, 0], [0, 0, 0]] }] });
+        skeleton.animations.push(walkAnimation, riseAnimation);
 
-                this.spawner3 = new Spawner(s, skeleton, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
-                //  this.spawner3.start();
+        // Add Spawners
+        this.spawner = new Spawner(this.scene, skeleton, new BABYLON.Vector3(0, 0, 10), 7000);
+        this.spawner2 = new Spawner(this.scene, skeleton, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
+        this.spawner3 = new Spawner(this.scene, skeleton, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
 
-                meshes[1].material = this.spriteMaterial;
-                meshes[1].receiveShadows = true;
-                meshes[2].material = this.spriteMaterial;
-                meshes[2].receiveShadows = true;
-                meshes[3].material = this.spriteMaterial;
-                meshes[3].receiveShadows = true;
-                meshes[4].material = this.spriteMaterial;
-                meshes[4].receiveShadows = true;
+        // Create Tombstones
+        let tombstone = [new BABYLON.Mesh("tombstone1"), new BABYLON.Mesh("tombstone2"), new BABYLON.Mesh("tombstone3")];
 
-                //  mesh.animations.push(xSlide);
-                //    b.addShadowCaster(mesh);
-                s.beginAnimation(skeleton, 0, 100, true);                
+        let tombstonePositions = [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, 1, 0, 1, -1, 0, 1];
+        let tombstoneIndices = [0, 1, 2, 3, 4, 5, 0, 6, 1, 3, 7, 8];
+        let tumbstoneNormals = []
+        BABYLON.VertexData.ComputeNormals(tombstonePositions, tombstoneIndices, tumbstoneNormals);
 
-                for (let i = 0; i < 100; i++) {
-                    var ts = meshes[Math.floor(Math.random() * 3) + 1].createInstance(`tombstone${i}`);
-                    ts.position.x = Math.random() * 32 - 16;
-                    ts.position.z = Math.random() * 32;
-                    ts.rotation.z += Math.random() * .5 - .25;
-                    ts.rotation.x += Math.random() * .5 - .25;
-                    ts.rotation.y += Math.random() * .5 - .25;
-                    
-                    this.shadowSystem.add(ts);
-                    secs.createEntity([
-                        new MeshEntity(ts)
-                    ]);
-                }
+        let tombstone1Uvs = [0.312, 0, 0.25, 1, 0.25, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.312, 1, 0.25, 1.001, 0.188, 1];
+        let tombstone2Uvs = [0.375, 0, 0.313, 1, 0.313, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.375, 1, 0.25, 1.001, 0.188, 1];
+        let tombstone3Uvs = [0.437, 0, 0.375, 1, 0.375, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.437, 1, 0.25, 1.001, 0.188, 1];
+
+        let tombstone1VertexData = new BABYLON.VertexData();
+        tombstone1VertexData.positions = tombstonePositions;
+        tombstone1VertexData.indices = tombstoneIndices;
+        tombstone1VertexData.uvs = tombstone1Uvs;
+        tombstone1VertexData.normals = tumbstoneNormals;
+        tombstone1VertexData.applyToMesh(tombstone[0]);
+
+        let tombstone2VertexData = new BABYLON.VertexData();
+        tombstone2VertexData.positions = tombstonePositions;
+        tombstone2VertexData.indices = tombstoneIndices;
+        tombstone2VertexData.uvs = tombstone2Uvs;
+        tombstone2VertexData.normals = tumbstoneNormals;
+        tombstone2VertexData.applyToMesh(tombstone[1]);
+
+        let tombstone3VertexData = new BABYLON.VertexData();
+        tombstone3VertexData.positions = tombstonePositions;
+        tombstone3VertexData.indices = tombstoneIndices;
+        tombstone3VertexData.uvs = tombstone3Uvs;
+        tombstone3VertexData.normals = tumbstoneNormals;
+        tombstone3VertexData.applyToMesh(tombstone[2]);
+
+        tombstone[0].material = this.spriteMaterial;
+        tombstone[0].receiveShadows = true;
+        const tombscale = BABYLON.Vector3.FromArray([0.32, 1, 0.64]);
+        tombstone[0].scaling = tombscale;
+        tombstone[1].material = this.spriteMaterial;
+        tombstone[1].receiveShadows = true;
+        tombstone[1].scaling = BABYLON.Vector3.FromArray([0.32, 1, 0.64]);
+        tombstone[2].material = this.spriteMaterial;
+        tombstone[2].receiveShadows = true;
+        tombstone[2].scaling = BABYLON.Vector3.FromArray([0.32, 1, 0.64]);
+
+        // wall
+        let wall = new BABYLON.Mesh("wall");
+
+        let wallPositions = [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, -1, 0, 3, -1, 0, 2, 1, 0, 2, 1, 0, 1, -1, 0, 1, 1, 0, 3];
+        let wallIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, 1, 3, 10, 11, 6, 12, 7];
+        let wallNormals = []
+        BABYLON.VertexData.ComputeNormals(wallPositions, wallIndices, wallNormals);
+
+        let wallUvs = [0.625, 0, 0.563, 1, 0.563, 0, 0.562, 0.001, 0.5, 1, 0.5, 0, 0.687, 0, 0.625, 1, 0.625, 0, 0.625, 1, 0.562, 1.001, 0.5, 1, 0.687, 1];
+        let wallData = new BABYLON.VertexData();
+        wallData.positions = wallPositions;
+        wallData.indices = wallIndices;
+        wallData.uvs = wallUvs;
+        wallData.normals = wallNormals;
+        wallData.applyToMesh(wall);
+        wall.scaling = BABYLON.Vector3.FromArray([0.32, 1, 0.64]);
+        wall.material = this.spriteMaterial;
+        wall.receiveShadows = true;
+
+        for (let i = 0; i < 100; i++) {
+            var ts = tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
+            ts.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, 0]);
+            ts.position.x = Math.random() * 32 - 16;
+            ts.position.z = Math.random() * 32;
+            ts.rotation.z += Math.random() * .5 - .25;
+            ts.rotation.x += Math.random() * .5 - .25;
+            ts.rotation.y += Math.random() * .5 - .25;
+
+            this.shadowSystem.add(ts);
+            secs.createEntity([
+                new MeshEntity(ts)
+            ]);
+        }
 
 
-                for (let i = 0; i < 10; i++) {
-                    var w = meshes[4].createInstance(`wall${i}`);
-                    w.rotate(new BABYLON.Vector3(0, 0, 1), -Math.PI / 2);
-                    w.position.z = i * .64 - 3.2 - 2;
-
-                }
-
-                for (let i = 0; i < 10; i++) {
-                    var w = meshes[4].createInstance(`wall${i + 10}`);
-                    w.rotate(new BABYLON.Vector3(0, 0, 1), Math.PI / 2);
-                    w.position.z = i * .64 - 3.2 - 2;
-                    w.position.x += 7
-
-                }
-                         
-            });
+        for (let i = 0; i < 10; i++) {
+            var w = wall.createInstance(`wall${i}`);
+            var w2 = wall.createInstance(`wall${i + 10}`);
+            w.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, -1.5708]);
+            w2.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, 1.5708]);
+            w.position.z = w2.position.z = i * .64 - 3.2 - 2;
+            w.position.x -= 3
+            w2.position.x += 3
+        }
         // @ifdef DEBUG
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
@@ -410,51 +489,46 @@ class App {
         const ctx = canvas.getContext("2d");
 
         /** @type HTMLCanvasElement */
-        const spritecanvas = document.createElement("Canvas");
 
-        const spritectx = spritecanvas.getContext("2d");
-
-        this.spriteMaterial.diffuseTexture.getInternalTexture();
-        const image = new Image();
         return new Promise((res) => {
-            image.onload = () => {
-                spritectx.drawImage(image, 0, 0);
-
-                ctx.font = "150px 'Montserrat', Arial, sans-serif";
+            // image.onload = () => {
 
 
-                ctx.strokeStyle = '#222';
-                ctx.lineWidth = 12;
-                ctx.strokeText(titleText, 20, 128);
+            ctx.font = "150px 'Montserrat', Arial, sans-serif";
 
-                ctx.fillStyle = "#FFF";
-                ctx.fillText(titleText, 25, 123);
-                ctx.shadowColor = '#888';
-                ctx.shadowBlur = 6;
-                ctx.shadowOffsetX = -2;
-                ctx.shadowOffsetY = 3;
-                ctx.lineWidth = 4;
-                ctx.strokeStyle = '#FFF';
-                ctx.strokeText(titleText, 25, 123);
 
-                for (let j = 0; j < 300; j += 8) {
-                    for (let i = 0; i < 1200; i += 8) {
-                        const d = ctx.getImageData(i, j, 1, 1);
-                        const r = Math.floor(d.data[0] / 16);
-                        if (r != 0) {
-                            const s = spritectx.getImageData(Math.floor(Math.random() * 16) + 48, 17 - r, 1, 1);
-                            textureContext.fillStyle = `rgb(${s.data[0]},${s.data[1]},${s.data[2]})`
-                        } else {
-                            textureContext.fillStyle = `rgba(0,0,0,0)`
-                        }
-                        textureContext.fillRect(i, j, 8, 8)
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 12;
+            ctx.strokeText(titleText, 20, 128);
+
+            ctx.fillStyle = "#FFF";
+            ctx.fillText(titleText, 25, 123);
+            ctx.shadowColor = '#888';
+            ctx.shadowBlur = 6;
+            ctx.shadowOffsetX = -2;
+            ctx.shadowOffsetY = 3;
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#FFF';
+            ctx.strokeText(titleText, 25, 123);
+
+            for (let j = 0; j < 300; j += 8) {
+                for (let i = 0; i < 1200; i += 8) {
+                    const d = ctx.getImageData(i, j, 1, 1);
+                    const r = Math.floor(d.data[0] / 16);
+                    if (r != 0) {
+                        const s = this.spritectx.getImageData(Math.floor(Math.random() * 16) + 48, 17 - r, 1, 1);
+                        textureContext.fillStyle = `rgb(${s.data[0]},${s.data[1]},${s.data[2]})`
+                    } else {
+                        textureContext.fillStyle = `rgba(0,0,0,0)`
                     }
+                    textureContext.fillRect(i, j, 8, 8)
                 }
-                pressTriggerTexture.update();
-                titlescreen.setEnabled(false);
-                res(titlescreen);
-            };
-            image.src = SPRITESTEXTURE;
+            }
+            pressTriggerTexture.update();
+            titlescreen.setEnabled(false);
+            res(titlescreen);
+            //};
+
         });
     }
 }

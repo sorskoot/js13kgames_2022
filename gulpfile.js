@@ -11,6 +11,7 @@ const preprocess = require("gulp-preprocess");
 //const inlinesource = require('gulp-inline-source');
 const htmlmin = require('gulp-htmlmin');
 const fileInline = require('gulp-file-inline');
+const closure = require('gulp-closure-compiler');
 
 function isJavaScript(file) {
     // Check if file extension is '.js'
@@ -23,13 +24,13 @@ function isShader(file) {
 
 function javascript(cb) {
     {
-        return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/scene.js','./src/index.js'])
+        return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
             .pipe(sourcemaps.init())
-            .pipe(gulpif(isJavaScript, terser({
-                compress: false,
-                keep_fnames: true,
-                mangle: false
-            })))
+            // .pipe(gulpif(isJavaScript, terser({
+            //     compress: false,
+            //     keep_fnames: true,
+            //     mangle: false
+            // })))
             .pipe(concat('main.js'))
             .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest('./dist/'));
@@ -54,7 +55,7 @@ gulp.task('watch', function () {
 });
 
 function production() {
-    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/scene.js','./src/index.js'])
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
         .pipe(preprocess())
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
@@ -78,13 +79,31 @@ function production() {
         .pipe(concat('main.js'))
         .pipe(roadroller({
             contextBits:24,
-            maxMemoryMB:500
+            maxMemoryMB:500,
+            allowFreeVars:true 
+        }))
+        .pipe(gulp.dest('./dist/'));
+};
+
+function productionc() {
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
+        .pipe(preprocess())
+        .pipe(gulpif(isJavaScript, closure({
+            language: 'ECMASCRIPT6',
+            
+        })))
+        .pipe(gulpif(isShader, glslify()))
+        .pipe(concat('main.js'))
+        .pipe(roadroller({
+            contextBits:24,
+            maxMemoryMB:500,
+            allowFreeVars:true 
         }))
         .pipe(gulp.dest('./dist/'));
 };
 
 function production2() {
-    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/scene.js','./src/index.js'])
+    return gulp.src(['./src/lib/*.js', './src/classes/**/*.js','./src/index.js'])
         .pipe(preprocess())
         // .pipe(gulpif(isJavaScript, terser({
         //     ecma: 2020,
@@ -125,6 +144,7 @@ function inlinesource() {
 
 
 exports.prod = gulp.series(copyStatic, doWebp, production, inlinesource);
+exports.prodc = gulp.series(copyStatic, doWebp, productionc, inlinesource);
 exports.prod2 = gulp.series(copyStatic, doWebp, production2);
 exports.copy = copyStatic;
 exports.dev = gulp.series(copyStatic, doWebp, javascript);
