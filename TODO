@@ -1,9 +1,9 @@
-# Current Size: 12158 of 13312 bytes, ( 91.3%, 1154 left)
+# Current Size: 12174 of 13312 bytes, ( 91.3%, 1138 left)
 
 Preparation:
     ✔ Build pipeline
     ✔ SFX @done(22-08-13 18:47)   
-        - Audio lib is too old, it needs to be replaced. It might be worth testing if just a base64 encode .wav isn't as good since that what is generated anyway, but we might be able to skip the entire library because audio is in Babylon.
+        ✔ Audio lib is too old, it needs to be replaced. It might be worth testing if just a base64 encode .wav isn't as good since that what is generated anyway, but we might be able to skip the entire library because audio is in Babylon. @done(22-09-03 00:56)
     ✘ Pixel Shader @cancelled(22-08-19 17:31) Not needed (probably)    
         
 Game idea:
@@ -60,6 +60,7 @@ Could have:
         https://sb.bitsnbites.eu/?data=U0JveA4C7dg_S8NAGMfx3yVNqVqo6GDHDnbVwVWwi4OCL0BwE7Gl4lJKpRTS0FIHWxAHsYsvQgffhLOuLqLvwaHmT4utJYMgBfH7CfdcnuOOPLlkuo81KaOso8GN_JaW5lbykswgZazVjhLrZtsxPsuKYtCXyienlep01C9ZjhlfjBmPq6daO6u73nT0Wu3ORW86_rSelAAAAAAAAAB8Z5WasmrdJen28m405kg5KZsy1uRV-iMvdcx3BQAAAAAAAGbv-aCgnUMpndGWn9oKDhtz85V8opCUzBip_7WsH9732T8AAAAAAAAAQ0_Fgh6LKrwmjsobfv6WNPZDRrn3xG5w2DicFfU9tgsAAAAAAABADPuqK_PStKVN7QX5vWOsxvlC7treT0ZTjGWHTfLCvDW2vB3GxliMuDMpvjNZSWv0aHeyEndWm-nFjNf5zwAAAAAAAPAPfAI
     ☐ instructions on how to play
     ✔ Generated ambient background noise @done(22-08-29 22:18)
+    ✔ haptic feedback on hit @done(22-09-03 00:56)
 
 
 Would like:
