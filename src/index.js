@@ -399,18 +399,7 @@ class App {
                 new MeshEntity(ts)
             ]);
         }
-
-
-        // for (let i = 0; i < 10; i++) {
-        //     var w = wall.createInstance(`wall${i}`);
-        //     var w2 = wall.createInstance(`wall${i + 10}`);
-        //     w.rotation = BV3.FromArray([-1.5708, 0, -1.5708]);
-        //     w2.rotation = BV3.FromArray([-1.5708, 0, 1.5708]);
-        //     w.position.z = w2.position.z = i * .64 - 3.2 - 2;
-        //     w.position.x -= 3
-        //     w2.position.x += 3
-        // }
-
+      
         this.createMap();
 
 

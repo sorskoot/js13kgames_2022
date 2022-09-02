@@ -30,7 +30,12 @@ class InputSystem {
             mesh.rotate(BABYLON.Vector3.Right(), Math.PI / 2);
             var colCheck = entity.get(CollisionCheck);
             if (colCheck) {
-                colCheck.check(this.data[inputEntity.handedness]);
+                if(colCheck.check(this.data[inputEntity.handedness])){
+                    let act = controller.inputSource.gamepad.hapticActuators[0];                    
+                    if(act){
+                        act.pulse(1,100);
+                    }                    
+                }
             }
             if (controller.inputSource.gamepad.buttons[0].value == 1 && !this.triggerPressed) {
                 this.triggerPressed = true;
