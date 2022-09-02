@@ -1,3 +1,5 @@
+var BV3 = BABYLON.Vector3;
+
 //const STATES = { TITLE: 1, GAME: 2, LOSE: 3, INIT: 0 };
 const SPRITESTEXTURE = "data:image/webp;base64,UklGRugTAABXRUJQVlA4TNwTAAAv/8ADEA04jCTZSpi5BdQ1/4T5hhDR/wlgpu1AZtOflvM/5z/5rcAenPn0MQ5tWZYuX2BKcrg0KsfsHbYCeBePHNIEBQ8pPQDtUKADr0STSDTqvs+hTxRa9dHAYSTJqtLfHQ+A/KNzd/gWAhzZtk1b49k+0Ytu9PrfFjPE9//7+7ncRpKkSHk857+BrzNIx93/CQAFZmb8021cguDKsijcQKsjtMZT4ZkvIZ6h/VIl7jlsAgZTYAaAi5xScBBIdAkbPKrRPVoEQddfzMsB74tpa8mOK+iSAbgurtCFEclKKFB5tR7XHIaNkUeVjMfEXZZe2BH8nBv+6vuuSIj9LW98fTWiUYxXjl5HdthsQ6MJAGG5acdopQxtskP6XDTQpksREQdwcaXoUiXxSDIL5St/35mv2GkkcbeTcWTM9Fx3Q+MvDnF0qYJo3f/DvKCgbRsm5g97B0NETECnmaZZZkQlpApyVlRoIKSOPUFRL632LGlCqPKodEVxodLqm7KdW3S0/18kKfX/V7X3VPe6V6/j7u6WkfoNHK5ABkfQTnmI3J3I191q3K1cV2qq/tO9B/himR2BpyIu4M4R3OGPu1yARHZk26qtjDn33kfewz0xIiJOhz93jq21ZNnamzbQJ9lxUg8z01NXMEukJ1zGLIqZU3LQkoCgyP/RGLhtpCidhRs4pjdQFgDQjCS9sFLudKWMtsa2p7n27uC23rNt29bNtm21NZ5CV3dVqrqCipPrfMJbfQJve/LPWP+w5z1T0ra3jeT8AEiWpC5Vq2bGOeccTuCV75O9jhfwmey1vfMq554OVdVdUSIJgJa17Wlr5/v/X5Lt4Ep2NpfhkmkAnUKH1CF1Dr1lhkMbFgZOYiuRLP2KECAAS+5+HhzMUrfyxcO7ttV9ZrioC/zBfo+1WKGH4VZKNK39+/cCrPzkSYEitYZ/OFE2Lw/nT2zkSlCLk5smMFBFWQAvUIu6GJpcnsQRqBxHs3XWMq15Vs7OCECHtW4Nb4oCJJlgbkjGY1M4KaMRHKgHqDSIqKWiuabQq3CNwCbuF1eC4tkANt35b3ZFw+DmT7PZrjbRmJ4JBmQZFMNNcE90FUrGLAxvSgIuMIlU9xgkLq/PYZtGxKNd87FtGtIDggNeN0gEst2QsSQ9e9HeQy3LbDlw5RfmgACPw49GSKVIEU8KDgBpfSufu2QADtusiWaalzn9SO6ZQLWlaONsMzCGU4pqQ10JgzkLl/glJxcZfLFJBVM0FGOmzBArCRTBEAYzACKDnINMiSQnl8EFKDSIzjxNG0Z9wHwCDp/P/ZyBWHxTfDiOLABDyQSoAR+gx9BHeyfjVv2OMLlAqwIqalBBCkoEDDmTvBsNtSjEMmP6NJmB+bsajc5aXfcdNYwCHrNgrJgOr0Eis+iCCZSOfq1CKKkKwSSReKJnJPHJwwct5BsRRkJZxOE6/lAfneqXaopx+/rYC4/Y7X7OBKEDY+eSqjIUMg6oKjgAcI76VgDHgvPKoGa87z9/21pMk2sXvvxxP9u37f6JlJfZUNXvtsVLLn/upY+2C5/5aPu3LV2Tj7VmchQgYnJpBlAUYziAQ/VkEgSMX8avSgQRuo5/WwTBOiGbyLdzaAMfBzhAWbgbsUdhLjgjCx+xoqhorMfFEmiwa2LFTLYYHHgXGcm9DAy5YuHDbpVhGB/BB+ZrdrEAyEKDjSjiRnEP9uogOR+xLFwW8dC31cEWa3GCUMs0LoKwOIGnbyFwwChoIn0fTDnFtdw2qWsym/95RnhvQSw+zf1Qyqt2+AWGU0xitcd7xHM9YywBL+ImbfOmSOP8TSIdi0IWreOIGLB92NDMfZebTY+cKMFO/+eXhfSM6E9vkBlNB2q7op50TFPy7Wj55z7fjHq+7H8pAiijaMYNoaFKGHoZgg0O1aPTrHw4MBR1QhwBGODPVj9v4ZGsvjtyqlXS4ieKIec5NtE4JtUGeyTlMj+xss9TBlCInGcrGuYYFqqRgCgJFyEWMjhg98nR+CbOAtoYpiag7HZSnX2UW5M87mGrIwVBAU0zPFZ3fXYrLCbgDsC9J6YmCgMaAR4FaqmvBh1kIjNA1LNQaPG0nSAEQxMJf0jYnvrBi+iTlNqiNZLMi1/IInoftK7JM/2CUEp9n+tONr6NOG2fbR+OBaffBJeuG2d8/+yQtTW1pJm3u3WbbibgLp6Pg/wfip+NDjiM1m1WP3vU6C4shFaY2CJfyCc6PHKkXF4kQIJ6DRIqLCE68gHgWQU1w8Iuu3yTrGueHGrP/Pam2JhS8ZrA5WEXi9e82SoyJkrGzTzRcvXKqux9Wp5OmBy9C4RhAEgAEDQ63GwzyniF3TQPMGfGlghyMXqNjQLo3EOBIuCkagt4R5AgZwqYBKkQo8s1e1xwV2GMr7/JIIqIKlBBANqKoqL4E6b0aKJFf6Ek1UTk8e7M++37Lx7c8+DeIzdkf6ChA/puusQjaF9M0Bro8bvodz04OA7O8K5pGsqSIVHv4kWc8f2zfVic+DB4x5fKf6uX/th28iaXLAYAAEfs3WAmaPXyImzRLeSYhKrscCIqaMZhFACL2aOZhSMkeQlN0VSgV4VpfwNBI1tAfVacVk4MTDOEei2EamsGhWRmA5FH2qXj88qhqyJHwpRl40AKE/+5rKijLCAYFpuyCeFUwLh0CLzL1B9QRoU6vU2QZlo96Db0210BAOHkeYLw2TGlHWfAvGTsathJmhZTk9lMUrPHTrZ335lpQK8QztSXcCT2F0ygc98Dq7LJBc6AXEJq6vN4JPb9H+Tt7Iofj9hHqOqSKlKY14Zy2wVQezO4INxMZNS14p3eJJ/kZsIZdmRb4rvHgn1YbLN3ZgL/rdt0rUuMZhNbrR3hUXzks+mRZoJ+/rldO1qqlzTc5xmbEqAYjZIC1gAMCMGHw4pILQSoVKAMaPvBgIR5LEGpMGDybpgLggIwMVBXY2aS87BjoabjE+IRjfYmAWcgNYk9CXNmjY3gnMnG28wPZrsNdAwUDLyjrCYiYXtzo2ZkdwWbCEpW98TUtFJrqzTV8PGeW4wkmJjsWIITI6RISMWmJFd3e87bHJ2Ot1FCw5NYFEIN2JXnU51gvENYiBltQuxiCAydVU9dfEv9tzOLJu83gzfybDJvyvHirHYavsVdq7nx4EhHTy2gtQwZPEV8j8aUsb+PONI97nSenR8HJz4MvoiHNBOo1aC34/Eh1bQzCji2PVu9vGhdjmbZVdf6XKiTkQahCa/cyz7mBwuMGFAmA5mgCGYw0T4WdG/IAas2PI5sVQsAgFZWnYQKkqxCDhkZ2DEcUr5zZM8ZWDjYpefMp2K6d+qFSrLNbWIqaSRUWIqFQeB29C2B1lSDVb5SddfKy4agzIOaifaKeyAl2iGZdQzYLikG+34/olEjMVJWJG0ej+p0rp5lmUCXjGolF2sw0ICnR+G1aApZdf8uujPIJcqXyEddO0tx9H5JusViGaWL415BHzcHXVyhKqJLwzupsQ6W6RYdsy5W56gHALAu4lDIDVIQAEiEA4jxN3Tdl1ayj/ABw2VQ4dZlnomuVteddNc6p85kdr/EqoUwY55MgDtWgM9NuWLbei/gWfyEr96Vog/piQ3pc0DCUjaNJIPoSanG6hNCRwZvm63TlSzA8EhKHXJRGCiwiXKiJpR5G6nDb9wxcOUoCQWL5vrScpxjT+8gAwJFUxL9JJlWeQmms5CfmdGovAWCMHy2aicGPNMm6KD8aRCl4pUWSfgAFq0IW4qLHbVAA0j0AGqH8c9kt+uy6XnJVGXwPOkkah/q3EJXuJvljEIFkcCgnbpRjugokjlBdKdhvk2LRaaLX/MDFQpFWgE574ufFGStx1gPsjpLtZsbUJvmtMvd5eab8w/DM6Q7wjF9lGbpDt8ARExRFu9cMcvHtmnl3VX71NbmNFOlHXn+4MfLcXqMYJ7dwhAP7eauNjY7sDO0RxGs+dKeBQlANbC2rIx3okPiQwWwuQ/yPnJA8RIiihSODXIqOV17BNDIWd6zYNkTI5XpPO5XfsxYWU0gMT7RHLN8SQiGBlhPh1yGrrEWRpMa0U1ChANB91xlUDqP9B6KS1AJqCQGGCdlOcYIbh3DQhtgBNM1A1FtnsU9xg24mYUpgNEykvTQBohg8yEJhclkWKhisVrYvbtbd9Q96Ns2y1NanOXDwFNKGUc016Sgl8SRIFAmGQ79sMJf+p4P28i3dqw/2hL8TZVKWZFQAU/bZpiJztli3eaPP51NOgYfzlgSdUreeSIvjyqHUjnMtG6u1cNKiOeWJMxdvHQIOGAyoIg7DcVIq3LuvcIOvynkPS4DXx23TZjsK8g5FF6aYLLRgGkFPCXGBjpD96yqI5DkUFjb2NCDUbmRxsRjSwogwmkv3z4iTKcTXCsr1ukqPmIEPQcN0dAsvZXg3aaJAQRHNdTOqp4Kj1s3TFnKkhqV2Ay8TMwp9kNXOxSSnaCakBAIsD7DGUIzMuDm+eTxawcaJ9A8KtcGBmYQG1XoLuS6oZnWCNIBVQ54z0gEuABImCFwANivua2ydN4Ob3g1e8bOXXbZR/T5Nr8xyrtvzI9dPRGd8AVEDv1g7qUJ/tc2uayZ55ov4bMlCFwSbyT+jfB0+j1MX9bVSQ44+L0lTeey9gYHtXNlQOCWCxhsL+z69yp73NrSPn5xRfKbDl5ripKFlBkjTHhpNW0mZYPVKOMySSD8IOY5Pbjd6yxhVmNaW4DHFakzU17pxjGrS1RIqA5kZePBaUn3DoiIBGDixTLEbAMygpIhbY7Ho0X/oD8zMCIqyqoNxdn5WvXf77GXMGHdS460hywvyYRypuJOK+coFRtGYaG2erBY/GAnio6QHBmoP2wEtEYzVDCGwKmFkrDJtoJR7DZpdsofyCgc3M2a8dcqoDOgPVEnE4ZpRx0LFqBkmfOauWGYg40NNwJzLbApi+wKiOejDGE2gfkIR6J4GsuPsO84yR6HC75v1v2F2pOd+1O78PGkwyBlj7GQ85dP316uYSYlM7iRkNxYO7a4+lZgiT67Yt5CguoPCpXy7vGkIU/AOtKy79tZVz8a6JDbLtl9bYYTpO/IU0EsGM+860MwFblFI9ShaKc6BTvWlHUVJD4eEoHt4R71Ux3e5RZB8eMWIBI08pszkEtQNT2a9RQXcChBKduBaFGJF4gQpvF6oLaFAJA1stMZjYfdcA+Baid5E0GpyHlB/G9YabtH7CrMKkqk85B9AINYmeCKIADVgbKUi9DiocmkBSNbckBNqiDcQnWSQFJhAMo4iB4ABfEOb0aBSucyyMYcngzXHbDYL6HD26gyneG53yHqiRkOALl9tJeqpfVaGHTUbTwoQfAJDoJuEISmCuGGLnSUqpTJrNH9O7xQEpgHWGC2pwIHaQRzHvn5kMVBOr9bk2l8Wmktkchu2qu37yYn4OIwbdhS4rIbPZwfPahbgUSd+zN7SFxgF7j2CjtUoPPO1UM9wbdJyfmxcXscjE9yHM5JFWQ15Kea8CHw13p84mAkqq3RCq6CIW2KKuv1TBU/mYDx1oy26IFw3hJ3FX7qKuzDsYesG8AIjhUBNDGCKJSgGjkl7C4waUfAwcp7/9ltLFd1ojYYExKoKFrZesSL0YBwGh6hWFxrIK0jgjLRRv7MAQDfwgFogUEhp2QJHYqx2/KOMzi2wlQk5w7Wr8CfEQL/kaYb8QAnFIP717VDcuTxd09Tc0gKj57KEqLXd1jQs27CEA5r2X2aCuyfUuAmmkZEJZKlnyRSyqxUtTo0o1wQwJsx0CDIplR06SjQs8qBh1QBKGSkQVPARkABdyhbQbUY/8R34dLm4pLme++crCeaB/q5MpvdxWc4aWDOBKCpYSxrmi4f88qSvXIviKf+oAyoFIdj+FGYEaeYuz6B5bIgTzS2tKIdc9bF274Ogujm2WNXoyln++DDP1gt6bEDJRrmtwzXSbrfKXcp2WLyRz7eyQBeCmJT1a3ALY3ea005XmkBDnVjJ+RVTVK/IKWxDROVwZBSnXIyES9RUQ32iju6U2aMJIAKbvJR9WP63BM4z7BZmMESF9XDCFCp6k4FFkGwYnFcpfd3wjLlUjaqxlkC6JgwGo3/udUXi8g0xU1sXiCmQ5t35Sj/EhA57LA64Mdg5yz12VJV9OSUEvXQK/8fdjavN6WLPXt+MhEzRQ3NUimvHSPf5tkYFh++VmvioFRKS49HYzFoVFmiWlGhUwYZwuxYOFejXBjhLJSEEbuZnRdmV1qXKbkehWNIAMDtngMJMNnfyxPaApKBaOQTOZV+/tp8hBtXdZdsOLSXyrMHny7TpvK6upe0AVKAI+WRDTSHJfp8/K+XsmRAmhC+7JnDCoH90NbOdX53jFQEZy0+cwZ3+n+iR2cNYJ+8MKyOaUcfzAfxLYnvRU/lJ4dvnU+9/2Ncx8LhflsBfntb3JoRxuCsHixXCiZjycs+DXp21KMQrD3kurkLJNFFPvQRdqmM8VTG0eC008ET9GjIWaHGWVnjEBcFgD4IEwha0lt/LOCcjT4yt2K3fo01guCEbPSBAFWILcpqo6qsoqLVTyZBJQcSCEvxwoQwULWww2ENH+soiAQMAsreCqpV9qAyYQCHUjFbuoMrPQQe3rx3d/9/DHPuZqkmhIH8s37e1fDNE6pm2Vwg9X+VkCsIv1VTpAwoVb6RhoReF5QZbxUhC6AZQI7zDik0ZcUgyZ3f3TEdx9ACjAE4iun1PBMQE7ZvEYWYeWBXkrLY/ljvSHHikbzlMrsPEh/xBtULsX6+HC1q/IZzL8Dg4AmhFADSsf5xAw==";
 //data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADMElEQVR42m2S+2+TVRzG37/BmKgTZ0CiKBI2ZkScxNt+MTHuB0CDJhjHGOEyd82cYUzoJpe2tKXs0vWyrmvpbV27ttKVtttLXdvNlsvYhpPgZYAkRI0/aPz543veJSQz/vDkeb/Pec5znnPySndX7rK8VETw4sJNHizJ/DI/w/xMnIX8JW6Xpvnt3gp/PXzAsK3vkU9A7JOE6L/oVBevZ70ql+QIt+YmmQoNsZxPMBnx88/v9ykkIizlMqpHIBoJICUjTpavfcv95SJyfISfb2SUOcvCVZl8apzUuId0PIR8KUh2cpwb+TSFdEThyyzMZZDkqJs1CNtVnk74+fuPe/z56wqxoJs787MkA3ZSIecavxSz68hFXWvEGaWJ4ELCy/VMkH6TjjtLJeSYmzHLGW7nJykm/asB/20wbtUoxiHlHQLcKiTIxXwMmA147BeYClhYTLq44tETtWj+P0Dg4co10mEnuWSIUvYyPyzOExwd5uyxNuZiDlz6DkI27WpAeMTIdMhB3GEkcXGQn76/SjGXJjXhozgV5WYhTamQY7E4y4/fJSnFrMg+I6buw4Qsp5BG9F3YTrXhNnWRCdrw28xkUxNE/RbG7Hp8lrNoe3vxOh0kw8PIEQf6ria03a24Bk8jmXs1OM06DL2dDBp6OPFFKyc724iHvLj79UrtFmZnrmA2aHFZ+1Q97B1lzO1iwjeKNGQ8R2DEhk0J8Sg/hxADTjsOs4nu1maMJ7ux9p/n80P7CQc9+N1OtF9riHiHVwPsAwZ1gxiEKELE7Ozvw3behNsyoJ4sWED+ZkxtIOB3WJGsfRceBeh6emhqaKDj6BG0J77CdOa0uiZgOXdcubOJYy2H0fccR/NlOzrFI9Xv38fO7eVqQEtjI9Xvvkzjgd20NB2ktfkgGzetU8M2b3uGI0fr2FDxFAca9vFp3Se0dzQjiY9tFVt4ccMTNB+qp7auhh016yh79nHalSZC3/7qRiorn1fnLVvLVe3jXbuofOdppJo3K6h54zleeO0xXnrlSXZUrWdPbS1Vb6+nqrqcD3ZX8+Fbm+hsr2fr62Xs2buTzz56j83VZby/t5x/AUL/xybrS2n4AAAAAElFTkSuQmCC";
@@ -178,7 +180,7 @@ class App {
         vertexData.applyToMesh(mesh);
         mesh.material = this.spriteMaterial;
         mesh.receiveShadows = true;
-        mesh.scaling = BABYLON.Vector3.FromArray(scale);
+        mesh.scaling = BV3.FromArray(scale);
         mesh.setEnabled(false);
         return mesh;
     }
@@ -192,24 +194,24 @@ class App {
         this.scene.fogColor = BABYLON.Color3.FromHexString("#000000");
         this.scene.fogDensity = .2;
 
-        this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 1.7, -3));;
+        this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BV3(0, 1.7, -3));;
         this.camera = this.nonVRCamera;
         //this.camera.attachControl(this.canvas, true);
         this.enemyParent = new BABYLON.Node("enemyParent");
 
         this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .5 });
 
-        this.light = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.scene);
+        this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
         this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
         //light1.diffuse = BABYLON.Color3.FromHexString("#888888");
         this.controllerParent = new BABYLON.Node("controllerParent");
         const batShape = [
-            new BABYLON.Vector3(.025, -0.1),
-            new BABYLON.Vector3(.025, -0.09, 0),
-            new BABYLON.Vector3(.013, -0.08, 0),
-            new BABYLON.Vector3(.03, 0.54, 0),
-            new BABYLON.Vector3(.031, 0.73, 0),
-            new BABYLON.Vector3(.01, 0.74, 0),
+            new BV3(.025, -0.1),
+            new BV3(.025, -0.09, 0),
+            new BV3(.013, -0.08, 0),
+            new BV3(.03, 0.54, 0),
+            new BV3(.031, 0.73, 0),
+            new BV3(.01, 0.74, 0),
         ];
 
         this.spriteMaterial = new BABYLON.StandardMaterial("spriteMaterial", this.scene);
@@ -229,10 +231,10 @@ class App {
         });
         this.bat.material = this.spriteMaterial;
         this.bat.parent = this.controllerParent;
-        this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
+        this.ray = new BABYLON.Ray(BV3.Zero(), new BV3(0, 1, 0));
         var rayHelper = new BABYLON.RayHelper(this.ray);
 
-        rayHelper.attachToMesh(this.bat, new BABYLON.Vector3(0, 1, 0), new BABYLON.Vector3(0, 0, 0), .8);
+        rayHelper.attachToMesh(this.bat, new BV3(0, 1, 0), new BV3(0, 0, 0), .8);
         // rayHelper.show(this.scene);
 
         //Create bat Entity
@@ -243,8 +245,8 @@ class App {
         ]);
 
         this.flashlight = new BABYLON.SpotLight("light",
-            new BABYLON.Vector3(0, 0, 0),
-            new BABYLON.Vector3(0, 1, 0), Math.PI / 3, .5, this.scene);
+            new BV3(0, 0, 0),
+            new BV3(0, 1, 0), Math.PI / 3, .5, this.scene);
         this.flashlight.diffuse = new BABYLON.Color3(1, 1, 1);
         this.flashlight.specular = new BABYLON.Color3(1, 1, 1);
         this.flashlight.range = 50;
@@ -288,7 +290,7 @@ class App {
         this.scorePlane = BABYLON.MeshBuilder.CreatePlane("scoreScreen", { width: 3, height: .25 });
         this.scorePlane.parent = this.scoreScreen;
         this.shadowSystem.add(this.scorePlane);
-        this.scorePlane.position = new BABYLON.Vector3(0, 1.25, 1.5);
+        this.scorePlane.position = new BV3(0, 1.25, 1.5);
 
         await this.changeState(1);
 
@@ -308,16 +310,16 @@ class App {
             , 51, 52, 53, 54, 55, 56, 57, 58, 59, 18, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82];
 
         let skeleton = this.createMesh('skeleton', skeletonPositions, skeletonIndices, skeletonUvs);
-        skeleton.translate(BABYLON.Vector3.Up(), .8)
+        skeleton.translate(BV3.Up(), .8)
 
         let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 2.3419999992847806, "values": [0.003843388574529361, -0.19012657335305522, 0, [0.003172824639617277, 0.008150789527368132, 0], [0.003172824639617277, 0.008150789527368132, 0]] }, { "frame": 25, "values": [0.1, 0.0015222520821878138, 0.03, [0, -0.00013129021272804048, 0], [0, -0.0001312906607115637, 0]] }, { "frame": 50, "values": [0, 0.19423644856981923, 0, [-0.0008184867371567691, -0.0021026416153625926, 0.00001603579409734409], [-0.0008184867371567691, -0.0021026416153625926, 0.000016035725922977702]] }, { "frame": 75.18395957947034, "values": [0.1, 0, -0.03, [0.00019980075393701113, -0.00005634573384141068, 0], [0.00019980075393701113, -0.00005634605055441348, 0]] }, { "frame": 100.29121798069308, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
         let riseAnimation = BABYLON.Animation.Parse({ "name": "Rise", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [2.14, 0, 0, [0, 0, 0], [-0.07, 0, 0]] }, { "frame": 100, "values": [0, 0, 0, [0, 0, 0], [0, 0, 0]] }] });
         skeleton.animations.push(walkAnimation, riseAnimation);
 
         // Add Spawners
-        this.spawner = new Spawner(this.scene, skeleton, new BABYLON.Vector3(0, 0, 10), 7000);
-        this.spawner2 = new Spawner(this.scene, skeleton, new BABYLON.Vector3(6, 0, 12), 5000, 13500);
-        this.spawner3 = new Spawner(this.scene, skeleton, new BABYLON.Vector3(-6, 0, 13), 4000, 9250);
+        this.spawner = new Spawner(this.scene, skeleton, new BV3(0, 0, 10), 7000);
+        this.spawner2 = new Spawner(this.scene, skeleton, new BV3(6, 0, 12), 5000, 13500);
+        this.spawner3 = new Spawner(this.scene, skeleton, new BV3(-6, 0, 13), 4000, 9250);
 
         // Create Tombstones
 
@@ -344,7 +346,7 @@ class App {
 
         for (let i = 0; i < 100; i++) {
             var ts = tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
-            ts.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, 0]);
+            ts.rotation = BV3.FromArray([-1.5708, 0, 0]);
             ts.position.x = Math.random() * 32 - 16;
             ts.position.z = Math.random() * 32;
             ts.rotation.z += Math.random() * .5 - .25;
@@ -361,8 +363,8 @@ class App {
         for (let i = 0; i < 10; i++) {
             var w = wall.createInstance(`wall${i}`);
             var w2 = wall.createInstance(`wall${i + 10}`);
-            w.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, -1.5708]);
-            w2.rotation = BABYLON.Vector3.FromArray([-1.5708, 0, 1.5708]);
+            w.rotation = BV3.FromArray([-1.5708, 0, -1.5708]);
+            w2.rotation = BV3.FromArray([-1.5708, 0, 1.5708]);
             w.position.z = w2.position.z = i * .64 - 3.2 - 2;
             w.position.x -= 3
             w2.position.x += 3
@@ -401,7 +403,7 @@ class App {
                     sfx.InitAudio();
                     ambience.start();
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
-                    xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
+                    xrHelper.baseExperience.camera.position = new BV3(0, 1.7, 0);
                     const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
                     const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);
                     this.camCollider.parent = this.camera;
@@ -433,7 +435,7 @@ class App {
 
         const pressTrigger = BABYLON.MeshBuilder.CreatePlane("PressTrigger" + titleText, { width: 3, height: .75 });
         pressTrigger.parent = titlescreen;
-        pressTrigger.position = new BABYLON.Vector3(0, 1.75, 2);
+        pressTrigger.position = new BV3(0, 1.75, 2);
         this.shadowSystem.add(pressTrigger);
         const pressTriggerTexture = new BABYLON.DynamicTexture("dynamic texture" + titleText, { width: 1200, height: 300 });
         const textureContext = pressTriggerTexture.getContext();

@@ -12,6 +12,7 @@ const preprocess = require("gulp-preprocess");
 const htmlmin = require('gulp-htmlmin');
 const fileInline = require('gulp-file-inline');
 const closure = require('gulp-closure-compiler');
+const uglify = require('gulp-uglify');
 
 function isJavaScript(file) {
     // Check if file extension is '.js'
@@ -57,6 +58,7 @@ gulp.task('watch', function () {
 function production() {
     return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
+        .pipe(concat('main.js'))
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
             compress: {
@@ -73,10 +75,10 @@ function production() {
                 drop_console: true,
                 passes: 10,
                 dead_code: true,
-            }
+            },
+            
         })))
-        .pipe(gulpif(isShader, glslify()))
-        .pipe(concat('main.js'))
+
         .pipe(roadroller({
             contextBits: 24,
             maxMemoryMB: 500,
@@ -94,6 +96,7 @@ function productionc() {
         })))
         .pipe(gulpif(isShader, glslify()))
         .pipe(concat('main.js'))
+
         .pipe(roadroller({
             contextBits: 24,
             maxMemoryMB: 500,
@@ -105,6 +108,7 @@ function productionc() {
 function production2() {
     return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
+        .pipe(concat('main.js'))
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
             compress: {
@@ -121,12 +125,14 @@ function production2() {
                 drop_console: true,
                 passes: 10,
                 dead_code: true,
-                pure_getters: true
+                //properties:true,
             },
-            
-        }
-        )))
-        .pipe(concat('main.js'))
+            // mangle:{
+            //     properties:{
+            //         keep_quoted:true
+            //     }
+            // }
+        })))
         .pipe(gulp.dest('./dist/'));
 };
 

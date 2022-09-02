@@ -1,5 +1,3 @@
-const randomWhite = () => Math.random() * 2 - 1;
-
 class Ambience {
     outputGain;
 
