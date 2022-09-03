@@ -371,7 +371,7 @@ class App {
         let tombstone2Uvs = [0.375, 0, 0.313, 1, 0.313, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.375, 1, 0.25, 1.001, 0.188, 1];
         let tombstone3Uvs = [0.437, 0, 0.375, 1, 0.375, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.437, 1, 0.25, 1.001, 0.188, 1];
 
-        let tombstone = [
+        this.tombstone = [
             this.createMesh('tombstone1', tombstonePositions, tombstoneIndices, tombstone1Uvs, [0.32, 1, 0.64]),
             this.createMesh('tombstone2', tombstonePositions, tombstoneIndices, tombstone2Uvs, [0.32, 1, 0.64]),
             this.createMesh('tombstone3', tombstonePositions, tombstoneIndices, tombstone3Uvs, [0.32, 1, 0.64])
@@ -383,23 +383,7 @@ class App {
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, 1, 3, 10, 11, 6, 12, 7],
             [0.625, 0, 0.563, 1, 0.563, 0, 0.562, 0.001, 0.5, 1, 0.5, 0, 0.687, 0, 0.625, 1, 0.625, 0, 0.625, 1, 0.562, 1.001, 0.5, 1, 0.687, 1],
             [0.32, 1, 0.64]);
-
-
-        for (let i = 0; i < 100; i++) {
-            var ts = tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
-            ts.rotation = BV3.FromArray([-1.5708, 0, 0]);
-            ts.position.x = Math.random() * 32 - 16;
-            ts.position.z = Math.random() * 32;
-            ts.rotation.z += Math.random() * .5 - .25;
-            ts.rotation.x += Math.random() * .5 - .25;
-            ts.rotation.y += Math.random() * .5 - .25;
-
-            this.shadowSystem.add(ts);
-            secs.createEntity([
-                new MeshEntity(ts)
-            ]);
-        }
-      
+     
         this.createMap();
 
 
@@ -416,6 +400,8 @@ class App {
             }
         });
         // @endif        
+
+
         const xrHelper = await this.scene.createDefaultXRExperienceAsync({
             disableNearInteraction: true,
             disablePointerSelection: true,
@@ -424,9 +410,6 @@ class App {
                 doNotLoadControllerMeshes: true
             }
         });
-
-
-        // var postProcess = new BABYLON.PostProcess("Down sample", "./postfx", ["screenSize", "highlightThreshold"], null, 0.25, camera);
 
         xrHelper.baseExperience.onStateChangedObservable.add(state => {
 
@@ -465,7 +448,7 @@ class App {
     }
 
     createMap(){
-        const Map1 = `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2,!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!24!25!26!36!46!45!44!34!35!16!17!07!29!58!.*!-*!*,!.,!7%!8$!;$!,1",2",3",4",5",6",7",8",9":1#:2#:3#:4#:5#:6#:7#:8#:9#,0":0#27!28!39!38!48!47!37!09!1;!4=!6:!->$.>$/>$0>$1>$2>$3>$4>$5>$6>$7>$8>$9>$,:",;",<",="::#:;#:<#:=#,>":>#`;
+        const Map1 = `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2,!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!24!25!26!36!46!45!44!34!35!16!17!07!29!58!.*!-*!*,!.,!7%!,1",2",3",4",5",6",7",8",9":1#:2#:3#:4#:5#:6#:7#:8#:9#,0":0#27!28!39!38!48!47!37!09!1;!4=!6:!->$.>$/>$0>$1>$2>$3>$4>$5>$6>$7>$8>$9>$,:",;",<",="::#:;#:<#:=#,>":>#0(&/(&.(&-(&,(&+(&0&&/&&.&&-&&,&&+&&0$&/$&.$&-$&,$&+$&6$&7$&8$&9$&:$&;$&8&&9&&:&&;&&6(&7(&8(&9(&:(&8*&6,&8-&/.&**&'%&-!&9!&`;
         var level1 = this.loadLevel(Map1);
         console.log(level1);
         for(let i=0; i<level1.m.length;i++){            let p;
@@ -489,6 +472,16 @@ class App {
                     p = this.wall.createInstance(`wall${+ new Date()}`);                 
                     p.rotation = BV3.FromArray([-1.5708, 0, 0]);
                 break;
+                case 6:
+                    p = this.tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
+                    p.rotation = BV3.FromArray([-1.5708, 0, 0]);            
+                    p.rotation.z += Math.random() * .5 - .25;
+                    p.rotation.x += Math.random() * .5 - .25;
+                    p.rotation.y += Math.random() * .5 - .25;
+
+                    this.shadowSystem.add(p);
+                        break;
+
                 default: continue;
             };                       
             p.position = new BV3(level1.m[i][0]*.64 - 13, 0.001, -level1.m[i][1]*.64 + 13);
