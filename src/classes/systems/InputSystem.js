@@ -31,10 +31,15 @@ class InputSystem {
             var colCheck = entity.get(CollisionCheck);
             if (colCheck) {
                 if(colCheck.check(this.data[inputEntity.handedness])){
-                    let act = controller.inputSource.gamepad.hapticActuators[0];                    
+                    try{
+                    let act = controller.inputSource.gamepad.hapticActuators[0];
+                    
                     if(act){
                         act.pulse(1,100);
                     }                    
+                    }catch(e){
+                        // just ignore
+                    }
                 }
             }
             if (controller.inputSource.gamepad.buttons[0].value == 1 && !this.triggerPressed) {

@@ -1,4 +1,4 @@
-# Current Size: 12174 of 13312 bytes, ( 91.3%, 1138 left)
+# Current Size: 12174 of 13312 bytes, ( 92.1%, 1040 left)
 
 Preparation:
     ✔ Build pipeline
@@ -25,6 +25,10 @@ Must have:
     ✔ Hitting Skeletons @done(22-08-23 23:55)
     ✔ Die if hit by skelly @done(22-08-26 12:08)
     ✔ Keep count of how many are killed @done(22-08-30 22:42)
+    Level Control:
+        ☐ Spawn in different ways (multple at the same time, faster over time)
+        ☐ When hit, remove all skeletons.
+        ☐ When starting, start with a clean map 1
 
 Should have:
     ✔ Clear Entities when no longer used. @done(22-08-26 13:44)

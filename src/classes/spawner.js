@@ -26,32 +26,34 @@ class Spawner {
         this.isSpawning = true;
         this._timeout = setTimeout(() => {
             this._t = setInterval(() => {
-                var skeleton2 = this.basemesh.createInstance(`skeleton${+ new Date()}`);
-                skeleton2.parent = window.app.enemyParent;
-             //   this.scene.beginAnimation(skeleton2, 0, 100, true, .97 + Math.random() * .6);
-                var riseAnim = skeleton2.getAnimationByName("Rise");
-                var walkAnim = skeleton2.getAnimationByName("Walk");
-                this.scene.beginDirectAnimation(skeleton2, [riseAnim], 0, 100, false);
-               setTimeout(()=>{
-                this.scene.beginDirectAnimation(skeleton2, [walkAnim], 0, 100, true, .97 + Math.random() * .6)
-               },500);
+                /** @type Grave[] */
+                let graveEntities = secs.match(Grave).map(e => e.get(Grave));
+                let graves = graveEntities.filter(g => g.occupied);
+                let grave = graves[Math.floor(Math.random() * graves.length)];
+                if (grave) {
+                    grave.occupied = false;
+                    var skeleton2 = this.basemesh.createInstance(`skeleton${+ new Date()}`);
+                    skeleton2.parent = window.app.enemyParent;                    
+                    let riseAnim = skeleton2.getAnimationByName("Rise");
+                    let walkAnim = skeleton2.getAnimationByName("Walk");
+                    this.scene.beginDirectAnimation(skeleton2, [riseAnim], 0, 100, false);
+                    setTimeout(() => {
+                        this.scene.beginDirectAnimation(skeleton2, [walkAnim], 0, 100, true, .97 + Math.random() * .6)
+                    }, 500);
 
-                skeleton2.position.copyFrom(this.position);
-                skeleton2.position.x += Math.random()*3  - 1.5;
-                skeleton2.position.z += Math.random()*3  - 1.5;
-                skeleton2.lookAt(new BABYLON.Vector3(0, 0, 0))
-                skeleton2.setEnabled(true);
-                skeleton2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
-                skeleton2.entity =
-                    secs.createEntity([
-                        new MeshEntity(skeleton2),
-                        new AIController((Math.random() / 50) + .15),
-                        new EnemyEntity()
-                    ]);                    
-                secs.system.ShadowSystem.add(skeleton2);
-                //b.addShadowCaster(skeleton2);
-                // this.enemies.push(skeleton2);
-
+                    skeleton2.position.copyFrom(grave.grave.position);                    
+                    skeleton2.position.z -= 1.7;
+                    skeleton2.lookAt(new BABYLON.Vector3(0, 0, 0))
+                    skeleton2.setEnabled(true);
+                    skeleton2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+                    skeleton2.entity =
+                        secs.createEntity([
+                            new MeshEntity(skeleton2),
+                            new AIController((Math.random() / 50) + .15),
+                            new EnemyEntity()
+                        ]);
+                    secs.system.ShadowSystem.add(skeleton2);
+                }
             }, this.interval);
         }, this.prestartDelay);
     }
