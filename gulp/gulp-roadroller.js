@@ -21,8 +21,7 @@ module.exports = (options = {
         
         const packer = new Packer.Packer(inputs, {
             contextBits: options.contextBits || 3,
-            maxMemoryMB: options.maxMemoryMB || 150,
-            
+            maxMemoryMB: options.maxMemoryMB || 150            
         });
         await packer.optimize();
         const { firstLine, secondLine } = packer.makeDecoder();

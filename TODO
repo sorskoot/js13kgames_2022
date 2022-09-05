@@ -1,4 +1,4 @@
-# Current Size: 12174 of 13312 bytes, ( 92.1%, 1040 left)
+# Current Size: 12543 of 13312 bytes, ( 94.2%, 769 left)
 
 Preparation:
     ✔ Build pipeline
@@ -50,6 +50,7 @@ Should have:
         material.needDepthPrePass         
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
     ☐ Add Webmonetization link
+    ☐ Show a message when changing levels describing what to do.
     ✔ Animate the rising from the ground of the skeletons @done(22-08-31 22:45)
 
 Could have:
@@ -58,7 +59,7 @@ Could have:
     ☐ Controller rumble on hit
     ☐ A nightsky texture, with a big moon
     ☐ Paths between the graves        
-    ☐ Dark trees in the background
+    ✔ Dark trees in the background @done(22-09-06 00:40)
         https://codepen.io/franksLaboratory/pen/ZEbGoPB
     ☐ Music
         https://sb.bitsnbites.eu/?data=U0JveA4C7dg_S8NAGMfx3yVNqVqo6GDHDnbVwVWwi4OCL0BwE7Gl4lJKpRTS0FIHWxAHsYsvQgffhLOuLqLvwaHmT4utJYMgBfH7CfdcnuOOPLlkuo81KaOso8GN_JaW5lbykswgZazVjhLrZtsxPsuKYtCXyienlep01C9ZjhlfjBmPq6daO6u73nT0Wu3ORW86_rSelAAAAAAAAAB8Z5WasmrdJen28m405kg5KZsy1uRV-iMvdcx3BQAAAAAAAGbv-aCgnUMpndGWn9oKDhtz85V8opCUzBip_7WsH9732T8AAAAAAAAAQ0_Fgh6LKrwmjsobfv6WNPZDRrn3xG5w2DicFfU9tgsAAAAAAABADPuqK_PStKVN7QX5vWOsxvlC7treT0ZTjGWHTfLCvDW2vB3GxliMuDMpvjNZSWv0aHeyEndWm-nFjNf5zwAAAAAAAPAPfAI

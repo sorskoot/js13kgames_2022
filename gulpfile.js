@@ -13,6 +13,7 @@ const htmlmin = require('gulp-htmlmin');
 const fileInline = require('gulp-file-inline');
 const closure = require('gulp-closure-compiler');
 const uglify = require('gulp-uglify');
+const sorskootify = require('./gulp/gulp-sorskootify');
 
 function isJavaScript(file) {
     // Check if file extension is '.js'
@@ -33,6 +34,7 @@ function javascript(cb) {
             //     mangle: false
             // })))
             .pipe(concat('main.js'))
+            .pipe(sorskootify())
             .pipe(sourcemaps.write('./'))
             .pipe(gulp.dest('./dist/'));
     }
@@ -59,6 +61,7 @@ function production() {
     return gulp.src(['./src/lib/*.js', './src/classes/**/*.js', './src/index.js'])
         .pipe(preprocess())
         .pipe(concat('main.js'))
+        .pipe(sorskootify())
         .pipe(gulpif(isJavaScript, terser({
             ecma: 2020,
             compress: {
@@ -78,7 +81,6 @@ function production() {
             },
             
         })))
-
         .pipe(roadroller({
             contextBits: 24,
             maxMemoryMB: 500,

@@ -29,6 +29,13 @@ class Spawner {
                 /** @type Grave[] */
                 let graveEntities = secs.match(Grave).map(e => e.get(Grave));
                 let graves = graveEntities.filter(g => g.occupied);
+
+                if(graves.length == 0) {
+                      this.stop();
+                      window.app.nextLevel();
+                      return  
+                }
+
                 let grave = graves[Math.floor(Math.random() * graves.length)];
                 if (grave) {
                     grave.occupied = false;
