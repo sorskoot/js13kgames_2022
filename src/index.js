@@ -201,15 +201,16 @@ class App {
         this.scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
         this.scene.fogColor = BABYLON.Color3.FromHexString("#000000");
         this.scene.fogDensity = .2;
+        this.createBackground();
 
         this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BV3(0, 1.7, -3));;
         this.camera = this.nonVRCamera;
         this.enemyParent = new BABYLON.Node("enemyParent");
 
-        this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .4 });
+        this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .4 });        
 
-       this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
-         this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
+        this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
+        this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
         //this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
         this.controllerParent = new BABYLON.Node("controllerParent");
         const batShape = [
@@ -223,8 +224,7 @@ class App {
 
         this.spriteMaterial = new BABYLON.StandardMaterial("spriteMaterial", this.scene);
         const texture = BABYLON.Texture.CreateFromBase64String(SPRITESTEXTURE, "SpritesTexture", this.scene, false, true, 4);
-        this.spriteMaterial.diffuseTexture = texture;
-        //this.spriteMaterial.diffuseTexture = new BABYLON.Texture("sprites.png", this.scene, false, true, 4);
+        this.spriteMaterial.diffuseTexture = texture;        
 
         this.spriteMaterial.diffuseTexture.hasAlpha = true;
         this.spriteMaterial.specularColor = BABYLON.Color3.Black();
@@ -293,6 +293,7 @@ class App {
         // Create Path
         this.path = BABYLON.CreatePlane('path',{size:.64});
         this.path.rotation.x = Math.PI/2;
+        this.path.position.y=-10;
         this.path.receiveShadows = true;
         
         var matPath = new BABYLON.StandardMaterial("path");
@@ -410,11 +411,11 @@ class App {
                     sfx.InitAudio();
                     ambience.start();
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
+                    this.camCollider.parent = this.camera;
                     xrHelper.baseExperience.camera.position = new BV3(0, 1.7, 0);
                     const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
-                    const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);
-                    this.camCollider.parent = this.camera;
-                    this.light.diffuse = BABYLON.Color3.FromHexString("#080040");
+                    const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);                    
+                    this.light.diffuse = BABYLON.Color3.FromHexString("#100080");
                     this.controllerParent.setEnabled(true);
                     break;
                 case BABYLON.WebXRState.NOT_IN_XR:
@@ -423,7 +424,8 @@ class App {
                     ambience.pause();
                     this.controllerParent.setEnabled(false);
                     this.camera = this.nonVRCamera;
-                    this.light.diffuse = BABYLON.Color3.FromHexString("#a0a0FF");
+                    //this.light.diffuse = BABYLON.Color3.FromHexString("#a0a0FF");
+                    this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
                     break;
                 case BABYLON.WebXRState.EXITING_XR:
                 case BABYLON.WebXRState.ENTERING_XR:
@@ -435,6 +437,28 @@ class App {
             this.inputSystem.xrControllers.push(controller);
         });
         return this.scene;
+    }
+
+    createBackground(){
+        var dome = new BABYLON.PhotoDome(
+            "testdome","",{}, this.scene);
+            dome._mesh.applyFog = false;
+        //   let layer = new BABYLON.PhotoDome("layer1","", {halfDomeMode:true,
+        //         size: 500
+        //     }, this.scene);        
+            let backTexture = new BABYLON.DynamicTexture("background",{ width: 500, height: 500 })
+            const treeContext = backTexture.getContext();  
+                      
+            backTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
+            let gradient= treeContext.createLinearGradient(0, 0, 0, 500);
+            gradient.addColorStop(1, '#100020');        
+            gradient.addColorStop(.55, '#100020');        
+            gradient.addColorStop(.5, 'black');        
+            gradient.addColorStop(0, 'black');
+            treeContext.fillStyle = gradient;
+            treeContext.fillRect(0, 0, 500, 500)
+            backTexture.update();
+            dome.photoTexture = backTexture;
     }
 
     createMap(){  
@@ -478,7 +502,7 @@ class App {
 
                 default: continue;
             };                       
-            p.position = new BV3(level1.m[i][0]*.64 - 13, 0.001, -level1.m[i][1]*.64 + 13);
+            p.position = new BV3(level1.m[i][0]*.64 - 12.2, 0.001, -level1.m[i][1]*.64 + 13);
             p.parent = this.map;
         }
     }
@@ -490,6 +514,7 @@ curve2 = 5;
 drawTree(ctx, startX, startY, len, angle, branchWidth) {
     ctx.beginPath();
     ctx.save();    
+    ctx.strokeStyle = "#FFFFFF";
     ctx.lineWidth = branchWidth;
     ctx.translate(startX, startY);
     ctx.rotate(angle * Math.PI/180);
@@ -512,28 +537,28 @@ drawTree(ctx, startX, startY, len, angle, branchWidth) {
 generateRandomTree() {
     
     const tree = BABYLON.MeshBuilder.CreatePlane("Tree", { width: 6, height: 6 });    
-    tree.position = new BV3(0, 2, 25);
-
+    tree.position = new BV3(0, -10, 0);
+    
     const treeTexture = new BABYLON.DynamicTexture("tree texture" , { width: 64, height: 64 });
     treeTexture.hasAlpha = true;    
-    const treeContext = treeTexture.getContext();
-    
+    const treeContext = treeTexture.getContext();    
     const treeMaterial = new BABYLON.StandardMaterial("Tree Mat");
     treeTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
     this.drawTree(treeContext, 32, 64, 24, 0, 6);
     
-    treeMaterial.diffuseTexture = treeTexture;    
+    treeMaterial.diffuseTexture = treeTexture;      
     treeMaterial.diffuseTexture.hasAlpha = true;
-    treeMaterial.useAlphaFromDiffuseTexture = true;
-    treeMaterial.specularColor = BABYLON.Color3.Black();
+
     treeTexture.update();
     tree.material = treeMaterial;
     
-    for(let i=0; i<30; i++){
-        let t= tree.createInstance(`tree${i}`);
-        t.position = new BV3(Math.random() * 3 + i*2 - 30, 2, 18 + Math.random()*7);
-        t.scaling = new BV3(1, 1+Math.random(), 1);
+    for(let i=0; i<(Math.PI*2); i+=.1){
+        let t= tree.createInstance(`tree`);
+        t.rotation = BV3.FromArray([0, i+1.57, 0]);
+        t.position = new BV3(Math.random() * 3 + (Math.cos(i) * 25), 2, Math.random() * 3 - (Math.sin(i) * 25));        
+        t.scaling = new BV3(.75+Math.random(), 1+Math.random()*2, 1);
     }    
+    
 }
 
 
