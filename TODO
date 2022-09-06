@@ -1,4 +1,4 @@
-# Current Size: 12668 of 13312 bytes, ( 95.2%, 644 left)
+# Current Size: 13159 of 13312 bytes, ( 98.8%, 153 left)
 
 Preparation:
     ✔ Build pipeline
@@ -26,9 +26,9 @@ Must have:
     ✔ Die if hit by skelly @done(22-08-26 12:08)
     ✔ Keep count of how many are killed @done(22-08-30 22:42)
     Level Control:
-        ☐ Spawn in different ways (multple at the same time, faster over time)
-        ☐ When hit, remove all skeletons.
-        ☐ When starting, start with a clean map 1
+        ✔ Spawn in different ways (multple at the same time, faster over time) @done(22-09-06 21:52)
+        ✔ When hit, remove all skeletons. @done(22-09-06 21:52)
+        ✔ When starting, start with a clean map 1 @done(22-09-06 21:52)
 
 Should have:
     ✔ Clear Entities when no longer used. @done(22-08-26 13:44)
@@ -56,9 +56,9 @@ Should have:
 Could have:
     Paricles should have a better color in the darkness. not glowing by itself.
     ☐ Nice sound effects
-    ☐ Controller rumble on hit
+    ✔ Controller rumble on hit @done(22-09-06 21:52)
     ☐ A nightsky texture, with a big moon
-    ☐ Paths between the graves        
+    ✔ Paths between the graves @done(22-09-06 21:52)
     ✔ Dark trees in the background @done(22-09-06 00:40)
         https://codepen.io/franksLaboratory/pen/ZEbGoPB
     ☐ Music
