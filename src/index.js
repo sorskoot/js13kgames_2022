@@ -363,7 +363,7 @@ class App {
 
         // Create Tombstones
 
-        let tombstonePositions = [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, 1, 0, 1, -1, 0, 1];
+        let tombstonePositions = [0.32,0.64,0,-0.32,1.28,0,-0.32,0.64,0,0.32,0,0,-0.32,0.64,0,-0.32,0,0,0.32,1.28,0,0.32,0.64,0,-0.32,0.64,0];
         let tombstoneIndices = [0, 1, 2, 3, 4, 5, 0, 6, 1, 3, 7, 8];
 
         let tombstone1Uvs = [0.312, 0, 0.25, 1, 0.25, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.312, 1, 0.25, 1.001, 0.188, 1];
@@ -371,17 +371,17 @@ class App {
         let tombstone3Uvs = [0.437, 0, 0.375, 1, 0.375, 0, 0.25, 0.001, 0.188, 1, 0.188, 0, 0.437, 1, 0.25, 1.001, 0.188, 1];
 
         this.tombstone = [
-            this.createMesh('tombstone1', tombstonePositions, tombstoneIndices, tombstone1Uvs, [0.32, 1, 0.64]),
-            this.createMesh('tombstone2', tombstonePositions, tombstoneIndices, tombstone2Uvs, [0.32, 1, 0.64]),
-            this.createMesh('tombstone3', tombstonePositions, tombstoneIndices, tombstone3Uvs, [0.32, 1, 0.64])
+            this.createMesh('tombstone1', tombstonePositions, tombstoneIndices, tombstone1Uvs),
+            this.createMesh('tombstone2', tombstonePositions, tombstoneIndices, tombstone2Uvs),
+            this.createMesh('tombstone3', tombstonePositions, tombstoneIndices, tombstone3Uvs)
         ];
 
         // wall
         this.wall = this.createMesh("wall",
-            [1, 0, 1, -1, 0, 2, -1, 0, 1, 1, 0, 0, -1, 0, 1, -1, 0, 0, 1, 0, 2, -1, 0, 3, -1, 0, 2, 1, 0, 2, 1, 0, 1, -1, 0, 1, 1, 0, 3],
+            [0.32,0.64,0,-0.32,1.28,0,-0.32,0.64,0,0.32,0,0,-0.32,0.64,0,-0.32,0,0,0.32,1.28,0,-0.32,1.92,0,-0.32,1.28,0,0.32,1.28,0,0.32,0.64,0,-0.32,0.64,0,0.32,1.92,0],
             [0, 1, 2, 3, 4, 5, 6, 7, 8, 0, 9, 1, 3, 10, 11, 6, 12, 7],
             [0.625, 0, 0.563, 1, 0.563, 0, 0.562, 0.001, 0.5, 1, 0.5, 0, 0.687, 0, 0.625, 1, 0.625, 0, 0.625, 1, 0.562, 1.001, 0.5, 1, 0.687, 1],
-            [0.32, 1, 0.64]);
+            );
      
         this.createMap();
         this.generateRandomTree();
@@ -474,6 +474,10 @@ class App {
         var level = this.loadLevel(maps[this.currenLevel]);
         for(let i=0; i<level.m.length;i++){            
             let p;
+            
+            const x = level.m[i][0] * .64 - 12.2;
+            const z = -level.m[i][1] * .64 + 13;
+
             switch(level.m[i][2]){
                 case 1: // path
                     p = this.path.createInstance(`path${+ new Date()}`);                 
@@ -495,11 +499,14 @@ class App {
                     p.rotation = BV3.FromArray([-1.5708, 0, 0]);
                 break;
                 case 6:
-                    p = this.tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
-                    p.rotation = BV3.FromArray([-1.5708, 0, 0]);            
-                    p.rotation.z += Math.random() * .5 - .25;
-                    p.rotation.x += Math.random() * .5 - .25;
-                    p.rotation.y += Math.random() * .5 - .25;
+                    p = this.tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);                  
+                    
+                    p.position = new BV3(x, 0, z);
+                    p.lookAt(new BV3(0, 0, 0));
+                    p.rotation.y += Math.random() * .5 - .25 - Math.PI;
+                    p.rotation.z += Math.random() * .5 - .25 ;
+                    p.rotation.x += Math.random() * .5 - .25 ;
+                    
                     p.entity = 
                         secs.createEntity([
                             new MeshEntity(p),
@@ -511,7 +518,8 @@ class App {
 
                 default: continue;
             };                       
-            p.position = new BV3(level.m[i][0]*.64 - 12.2, 0.001, -level.m[i][1]*.64 + 13);
+            
+            p.position = new BV3(x, 0.001, z);
             p.parent = this.map;
         }
     }

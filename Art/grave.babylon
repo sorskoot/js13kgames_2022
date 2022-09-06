@@ -1,0 +1,13 @@
+{"producer":{"name":"Blender","version":"3.3.0 Beta","exporter_version":"3.3-beta 1","file":"grave.babylon"},
+"autoClear":true,"clearColor":[0.0509,0.0509,0.0509],"gravity":[0,-9.81,0],
+"materials":[{"name":"Material.001","id":"Material.001","customType":"BABYLON.PBRMaterial","emissive":[0,0,0],"reflectivity":[0.5,0.5,0.5],"roughness":0.5,"metallic":0, 
+"albedoTexture":{"name":"sprites.png","hasAlpha":true,"level":1,"coordinatesMode":0,"coordinatesIndex":0},"useAlphaFromAlbedoTexture":true}],
+"meshes":[{"name":"Grave2","id":"Grave2","materialId":"Material.001","billboardMode":0,"position":[0,0,0],"rotation":[0,0,0],"scaling":[1,1,1],"isVisible":true,"isEnabled":true,"pickable":false
+,"positions":[0.32,0.64,0,-0.32,1.28,0,-0.32,0.64,0,0.32,0,0,-0.32,0.64,0,-0.32,0,0,0.32,1.28,0,0.32,0.64,0,-0.32,0.64,0]
+,"normals":[0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1,0,0,-1]
+,"uvs":[0.375,0,0.313,1,0.313,0,0.25,0.001,0.188,1,0.188,0,0.375,1,0.25,1.001,0.188,1]
+,"indices":[0,1,2,3,4,5,0,6,1,3,7,8]
+,"subMeshes":[{"materialIndex":0,"verticesStart":0,"verticesCount":9,"indexStart":0,"indexCount":12}]
+,"instances":[]}
+]
+}

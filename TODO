@@ -1,4 +1,4 @@
-# Current Size: 13159 of 13312 bytes, ( 98.8%, 153 left)
+# Current Size: 13177 of 13312 bytes, ( 99%, 135 left)
 
 Preparation:
     ✔ Build pipeline
@@ -12,6 +12,7 @@ Game idea:
 Bugs:
     ☐ When exiting VR all title are shown at the same time
     ☐ When exiting VR the skeletons are still shown
+    ✔ Graves should face the player @done(22-09-06 22:42)
 
 Must have:
     GameStates:
