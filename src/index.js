@@ -531,7 +531,6 @@ curve2 = 5;
 drawTree(ctx, startX, startY, len, angle, branchWidth) {
     ctx.beginPath();
     ctx.save();    
-    ctx.strokeStyle = "#FFFFFF";
     ctx.lineWidth = branchWidth;
     ctx.translate(startX, startY);
     ctx.rotate(angle * Math.PI/180);

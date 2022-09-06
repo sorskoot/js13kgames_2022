@@ -1,4 +1,4 @@
-# Current Size: 13143 of 13312 bytes, ( 98.7%, 169 left)
+# Current Size: 13102 of 13312 bytes, ( 98.4%, 210 left)
 
 Preparation:
     ✔ Build pipeline
@@ -113,4 +113,5 @@ Random ideas:
         
 Notes:
     - on linux -> advzip -a -4 -i=5000 dist.zip index.html 
+
 
