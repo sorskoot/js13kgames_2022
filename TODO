@@ -1,4 +1,4 @@
-# Current Size: 13074 of 13312 bytes, ( 98.2%, 238 left)
+# Current Size: 13296 of 13312 bytes, ( 99.9%, 16 left)
 
 Preparation:
     ✔ Build pipeline
@@ -28,7 +28,7 @@ Must have:
     ✔ Hitting Skeletons @done(22-08-23 23:55)
     ✔ Die if hit by skelly @done(22-08-26 12:08)
     ✔ Keep count of how many are killed @done(22-08-30 22:42)
-    ☐ Go to next level after all skeletons are killed
+    ✔ Go to next level after all skeletons are killed @done(22-09-07 22:37)
     Level Control:
         ✔ Spawn in different ways (multple at the same time, faster over time) @done(22-09-06 21:52)
         ✔ When hit, remove all skeletons. @done(22-09-06 21:52)
@@ -54,7 +54,7 @@ Should have:
         material.needDepthPrePass         
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
     ☐ Add Webmonetization link
-    ☐ Show a message when changing levels describing what to do.
+    ✔ Show a message when changing levels describing what to do. @done(22-09-07 23:36)
     ✔ Animate the rising from the ground of the skeletons @done(22-08-31 22:45)
 
 Could have:
