@@ -54,7 +54,8 @@ class App {
     spritectx;
     
     currenLevel = 0;
-
+    postProcessTonemapL;
+    postProcessTonemapR;    
     constructor() {
 
         this.canvas = document.querySelector("#c");
@@ -166,16 +167,14 @@ class App {
 
     triggerPressed = false;    
 
-    createCanvasTexture() {
-        
+    createCanvasTexture() {        
         const spritecanvas = document.createElement("Canvas");
         this.spritectx = spritecanvas.getContext("2d");
-        this.spriteMaterial.diffuseTexture.getInternalTexture();
+       // this.spriteMaterial.diffuseTexture.getInternalTexture();
         const image = new Image();
         return new Promise(res => {
             image.onload = () => {
                 this.spritectx.drawImage(image, 0, 0);
-                console.log("Created spriteMaterial");
                 res();
             }
             image.src = SPRITESTEXTURE;
@@ -213,14 +212,12 @@ class App {
         this.scene.fogDensity = .2;
         this.createBackground();
 
-        this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BV3(0, 1.7, -3));;
-        this.camera = this.nonVRCamera;
+        this.nonVRCamera = new BABYLON.FreeCamera("camera1", new BV3(0, 1.7, -3));;                
         this.enemyParent = new BABYLON.Node("enemyParent");
-
         this.camCollider = BABYLON.CreateSphere("camCollider", { diameter: .2 });        
-
         this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.scene);
-        this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
+
+        //this.light.diffuse = BABYLON.Color3.FromHexString("#8080FF");
         //this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
         this.controllerParent = new BABYLON.Node("controllerParent");
         const batShape = [
@@ -332,7 +329,8 @@ class App {
         this.shadowSystem.add(this.scorePlane);
         this.scorePlane.position = new BV3(0, 1.25, 1.5);
 
-        await this.changeState(1);
+        this.notInXR();
+        //await this.changeState(1);
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
 
@@ -352,7 +350,7 @@ class App {
         let skeleton = this.createMesh('skeleton', skeletonPositions, skeletonIndices, skeletonUvs);
         skeleton.translate(BV3.Up(), .8)
 
-        let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 0, "values": [0.003843388574529361, -0.19012657335305522, 0, [0.003172824639617277, 0.008150789527368132, 0], [0.003172824639617277, 0.008150789527368132, 0]] }, { "frame": 25, "values": [0.1, 0.0015222520821878138, 0.03, [0, -0.00013129021272804048, 0], [0, -0.0001312906607115637, 0]] }, { "frame": 50, "values": [0, 0.19423644856981923, 0, [-0.0008184867371567691, -0.0021026416153625926, 0.00001603579409734409], [-0.0008184867371567691, -0.0021026416153625926, 0.000016035725922977702]] }, { "frame": 75, "values": [0.1, 0, -0.03, [0.00019980075393701113, -0.00005634573384141068, 0], [0.00019980075393701113, -0.00005634605055441348, 0]] }, { "frame": 100, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
+        let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 25, "values": [0.1, 0, 0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 50, "values": [0, 0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 75, "values": [0.1, 0, -0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 100, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
         let riseAnimation = BABYLON.Animation.Parse({ "name": "Rise", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [2.14, 0, 0, [0, 0, 0], [-0.07, 0, 0]] }, { "frame": 100, "values": [0, 0, 0, [0, 0, 0], [0, 0, 0]] }] });
         skeleton.animations.push(walkAnimation, riseAnimation);
 
@@ -420,19 +418,14 @@ class App {
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
                     this.camCollider.parent = this.camera;
                     xrHelper.baseExperience.camera.position = new BV3(0, 1.7, 0);
-                    const postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, this.camera);
-                    const postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 1.2, xrHelper.baseExperience.camera.rightCamera);                    
+                    this.postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, this.camera);
+                    this.postProcessTonemapR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.rightCamera);                    
+                    this.fadeState=1;
                     this.light.diffuse = BABYLON.Color3.FromHexString("#100080");
                     this.controllerParent.setEnabled(true);
                     break;
                 case BABYLON.WebXRState.NOT_IN_XR:
-                    this.inXR = false;
-                    this.changeState(1);
-                    ambience.pause();
-                    this.controllerParent.setEnabled(false);
-                    this.camera = this.nonVRCamera;
-                    //this.light.diffuse = BABYLON.Color3.FromHexString("#a0a0FF");
-                    this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
+                    this.notInXR();
                     break;
                 case BABYLON.WebXRState.EXITING_XR:
                 case BABYLON.WebXRState.ENTERING_XR:
@@ -443,16 +436,36 @@ class App {
         xrHelper.input.onControllerAddedObservable.add(controller => {
             this.inputSystem.xrControllers.push(controller);
         });
+
+        this.scene.onBeforeRenderObservable.add(() => {
+            this.postProcessTonemapL.exposureAdjustment += 0.01 * this.fadeState;
+            if(this.postProcessTonemapR)this.postProcessTonemapR.exposureAdjustment += 0.01*this.fadeState;
+            if (this.postProcessTonemapL.exposureAdjustment >= 1.2 || this.postProcessTonemapL.exposureAdjustment < 0) {
+                this.fadeState = 0;
+            }
+        });
+
         return this.scene;
+    }
+
+    notInXR() {
+        this.inXR = false;
+        this.changeState(1);
+        ambience.pause();
+        this.controllerParent.setEnabled(false);
+        this.camera = this.nonVRCamera;
+        this.postProcessTonemapL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, this.camera);        
+        this.fadeState = 1;
+        
+        this.light.diffuse = BABYLON.Color3.FromHexString("#a0a0FF");
+        //this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
     }
 
     createBackground(){
         var dome = new BABYLON.PhotoDome(
-            "testdome","",{}, this.scene);
+            "dome","",{}, this.scene);
             dome._mesh.applyFog = false;
-        //   let layer = new BABYLON.PhotoDome("layer1","", {halfDomeMode:true,
-        //         size: 500
-        //     }, this.scene);        
+  
             let backTexture = new BABYLON.DynamicTexture("background",{ width: 500, height: 500 })
             const treeContext = backTexture.getContext();  
                       

@@ -3,12 +3,10 @@ class Soundfx {
     InitAudio() {
         if(this.init)return;
         this.init = true;
-        this.hitSound = new BABYLON.Sound("hit", "");   
         let hitBuffer = BABYLON.Engine.audioEngine.audioContext.createBuffer(1, 96e3, 48e3);
         const hitBufferData = hitBuffer.getChannelData(0);
         for (let i = 96e3; i--;)hitBufferData[i] = this.hit(i); 
-        this.hitSound._audioBuffer = hitBuffer;
-        this.hitSound._isReadyToPlay = true;
+        this.hitSound = new BABYLON.Sound("hit", hitBuffer);   
     }
 
     // Sound
