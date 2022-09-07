@@ -21,21 +21,21 @@ class Spawner {
     }
 
     start() {
-        this.difficulty = 1;
         this.isSpawning = true;
         this._timeout = setTimeout(() => {
-            this._t = setTimeout(()=>this.spawn(), this.interval);
+            this._t = setTimeout(()=>this.spawn(true), this.interval);
         }, this.prestartDelay);
     }
 
-    spawn(){
+    spawn(first = false){
             /** @type Grave[] */
             let graveEntities = secs.match(Grave).map(e => e.get(Grave));
             let graves = graveEntities.filter(g => g.occupied);
-
+            if(first){
+                window.app.totalSkeletons = graves.length;
+            }
             if(graves.length == 0) {
                   this.stop();
-                  window.app.nextLevel();
                   return
             }
 
@@ -49,7 +49,7 @@ class Spawner {
                 this.scene.beginDirectAnimation(skeleton2, [riseAnim], 0, 100, false);
                 setTimeout(() => {
                     this.scene.beginDirectAnimation(skeleton2, [walkAnim], 0, 100, true, .97 + Math.random() * .6)
-                }, 500);
+                }, 1000);
 
                 skeleton2.position.copyFrom(grave.grave.position);                    
                 skeleton2.position.z -= 1.7;
@@ -65,7 +65,7 @@ class Spawner {
                 secs.system.ShadowSystem.add(skeleton2);
             }
             if(this.isSpawning){
-                var t = -Math.log(Math.random()) * graves.length * 40;
+                var t = (graves.length * 50) + (-Math.log(Math.random()) * graves.length * 40);
                 console.log(t);
                 setTimeout(()=>this.spawn(), t);
             }

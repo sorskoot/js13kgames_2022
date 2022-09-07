@@ -60,7 +60,11 @@ class CollisionCheck{
                 // Position where the particles are emitted from
                 
                 particleSystem.start();
+                
+                window.app.nextLevel();
                 return true;    
+
+                
             }  
         }
 }

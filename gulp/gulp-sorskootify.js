@@ -18,6 +18,9 @@ module.exports = (options = {}) => {
 
         content = content.replace(/BABYLON\.Color3/gm, 'BC3');
         content = `var BC3 = BABYLON.Color3;${content}`;
+        
+        content = content.replace(/Math\.random/gm, 'MR');
+        content = `var MR = Math.random;${content}`
 
         content = content.replace(/Skeleton/gm, 'Sk');
         content = content.replace(/skeleton/gm, 'sk');

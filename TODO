@@ -1,4 +1,4 @@
-# Current Size: 13032 of 13312 bytes, ( 97.8%, 280 left)
+# Current Size: 13074 of 13312 bytes, ( 98.2%, 238 left)
 
 Preparation:
     ✔ Build pipeline
@@ -10,8 +10,10 @@ Game idea:
     # Skeletons rise from their graves, you have to hit/shoot them back
 
 Bugs:
-    ☐ When exiting VR all title are shown at the same time
-    ☐ When exiting VR the skeletons are still shown
+    ☐ @high When exiting VR after game over all title are shown at the same time
+    ☐ @critical Collider when getting hit by skeleton seems off. Sometime you get hit by the skeleton when the skeleton is far away.
+    ✔ Walls are gone @done(22-09-07 22:29)
+    ✔ When exiting VR the skeletons are still shown @done(22-09-07 21:35)
     ✔ Graves should face the player @done(22-09-06 22:42)
 
 Must have:
@@ -26,6 +28,7 @@ Must have:
     ✔ Hitting Skeletons @done(22-08-23 23:55)
     ✔ Die if hit by skelly @done(22-08-26 12:08)
     ✔ Keep count of how many are killed @done(22-08-30 22:42)
+    ☐ Go to next level after all skeletons are killed
     Level Control:
         ✔ Spawn in different ways (multple at the same time, faster over time) @done(22-09-06 21:52)
         ✔ When hit, remove all skeletons. @done(22-09-06 21:52)
@@ -35,7 +38,7 @@ Should have:
     ✔ Clear Entities when no longer used. @done(22-08-26 13:44)
     ☐ Indicate being hit with postprocessing effect turning screen red for a flash
         https://doc.babylonjs.com/divingDeeper/postProcesses/usePostProcesses#custom-postprocesses
-    ☐ Increasing difficulty in waves of skeletons. 
+    ✔ Increasing difficulty in waves of skeletons. @done(22-09-07 21:56)
         Maybe different places in the graveyard. It would be really nice to have some
         way of focussing the attention of the player in a direction. Maybe by drawing a 
         wall or foliage or something.
