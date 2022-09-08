@@ -43,7 +43,7 @@ class Spawner {
             if (grave) {
                 grave.occupied = false;
                 var skeleton2 = this.basemesh.createInstance(`skeleton${+ new Date()}`);
-                skeleton2.parent = window.app.enemyParent;                    
+                skeleton2.parent = window.app.enemyP;                    
                 let riseAnim = skeleton2.getAnimationByName("Rise");
                 let walkAnim = skeleton2.getAnimationByName("Walk");
                 this.scene.beginDirectAnimation(skeleton2, [riseAnim], 0, 100, false);

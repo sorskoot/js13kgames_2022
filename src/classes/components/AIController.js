@@ -13,7 +13,7 @@ class AIController {
         mesh.translate(new BABYLON.Vector3(direction.x,0,direction.z), -this.speed / deltaTime, BABYLON.Space.LOCAL);
         mesh.position.y=0;
 
-        if(mesh.intersectsMesh(window.app.camCollider)){
+        if(mesh.intersectsMesh(window.app.camCol)){
             window.app.changeState(3);            
         }
     }
