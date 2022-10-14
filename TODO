@@ -9,7 +9,7 @@ Backlog:
         ☐ rename the crappy names back to normal
         ✔ import/export @done(22-10-14 21:21)
         ☐ images removed from base64        
-    ☐ setup custom domain for automatic deployment (deathkeeper.sorskoot.com)
+    ✔ setup custom domain for automatic deployment (deathkeeper.sorskoot.com) @done(22-10-14 21:41)
     ☐ improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
     ☐ Add back in the removed background audio.    
     ☐ Improve title screen and gameover screen.
