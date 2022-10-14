@@ -4,9 +4,8 @@
   "description": "entry for js13kgames 2022",
   "main": "index.js",
   "scripts": {
-    "buildwp": "webpack --mode production --config webpack.prod",
-    "buildDev": "webpack --mode development --config webpack.dev",
-    "prod": "gulp prod",
+    "buildProd": "webpack --mode production --config webpack.prod",
+    "buildDev": "webpack --mode development --config webpack.dev",    
     "start": "webpack-dev-server --config webpack.dev"
   },
   "repository": {
@@ -36,6 +35,7 @@
     "webpack-cli": "^4.10.0",
     "webpack-merge": "^5.8.0",
     "webpack-dev-server": "^4.11.1"
+    
   }, 
   "dependencies": {
     "babylonjs": "^5.28.0"

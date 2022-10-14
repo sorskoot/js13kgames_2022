@@ -7,9 +7,9 @@ Backlog:
     Clean up code and get back to WebPack build pipeline:
         ✔ Webpack @done(22-10-14 20:53)
         ☐ rename the crappy names back to normal
-        ☐ import/export
+        ✔ import/export @done(22-10-14 21:21)
         ☐ images removed from base64        
-
+    ☐ setup custom domain for automatic deployment (deathkeeper.sorskoot.com)
     ☐ improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
     ☐ Add back in the removed background audio.    
     ☐ Improve title screen and gameover screen.
