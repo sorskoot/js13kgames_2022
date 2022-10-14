@@ -1,4 +1,10 @@
-class Spawner {
+import { AIController } from "./components/AIController";
+import { EnemyEntity } from "./components/EnemyEntity";
+import { Grave } from "./components/Grave";
+import { MeshEntity } from "./components/MeshEntity";
+import { secs } from "./secs";
+
+export class Spawner {
 
     /** @type {boolean} */
     isSpawning;
@@ -7,7 +13,7 @@ class Spawner {
     interval;
 
     /**
-     * Instantiates a new Spawner
+     e* Instantiates a new Spawner
      * @param {BABYLON.Scene} scene
      * @param {BABYLON.AbstractMesh} basemesh The mesh to spawn
      * @param {number} interval

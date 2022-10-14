@@ -1,1 +1,1 @@
-class EnemyEntity{}
+export class EnemyEntity{}

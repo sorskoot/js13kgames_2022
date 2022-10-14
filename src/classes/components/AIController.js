@@ -1,4 +1,6 @@
-class AIController {
+import { MeshEntity } from "./MeshEntity";
+
+export class AIController {
     constructor(speed){
         this.speed = speed;
     }

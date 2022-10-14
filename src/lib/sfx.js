@@ -19,4 +19,4 @@ class Soundfx {
     }
 }
 
-var sfx = new Soundfx();
+export const sfx = new Soundfx();

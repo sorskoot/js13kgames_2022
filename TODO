@@ -1,3 +1,45 @@
+TODO
+
+Big decisions to take:
+    - Use the audio design of the contest or add real background audio? or both? 
+
+Backlog:
+    Clean up code and get back to WebPack build pipeline:
+        ✔ Webpack @done(22-10-14 20:53)
+        ☐ rename the crappy names back to normal
+        ☐ import/export
+        ☐ images removed from base64        
+
+    ☐ improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
+    ☐ Add back in the removed background audio.    
+    ☐ Improve title screen and gameover screen.
+    ☐ improve hitbox of the player
+    ☐ improve hitbox of the skeletons    
+    ☐ improve levels with more obstacles
+    ☐ add more levels
+    ☐ better handle non vr devices        
+    ☐ Indicate being hit with postprocessing effect turning screen red for a flash
+    ☐ Die after a couple of hits
+    ☐ More different skeletons    
+    ☐ Better animations
+    ☐ Better sounds
+    ☐ spatial audio
+    ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
+    ☐ Add Webmonetization link
+    ☐ Better model of flashlight
+    ☐ A nightsky texture, with a big moon
+    ☐ Instructions (Spoken?)
+    ☐ Thick fog on the ground.
+    ☐ Zesty ads
+    ☐ PWA for itch.io and Side Quest.
+
+
+
+
+---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ----
+----  Everything below has been done for js13k, keep it for reference ----
+---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ---- vvvv ----
+
 # Current Size: 13277 of 13312 bytes, ( 99.9%, 35 left)
  
 Preparation:

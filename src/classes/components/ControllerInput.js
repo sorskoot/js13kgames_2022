@@ -1,4 +1,4 @@
-class ControllerInput {
+export class ControllerInput {
     constructor(handedness) {
         this.handedness = handedness;
     }

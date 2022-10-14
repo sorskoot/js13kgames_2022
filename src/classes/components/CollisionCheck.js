@@ -1,4 +1,9 @@
-class CollisionCheck{
+import { sfx } from "../../lib/sfx";
+import { secs } from "../secs";
+import { EnemyEntity } from "./EnemyEntity";
+import { MeshEntity } from "./MeshEntity";
+
+export class CollisionCheck{
         
         /**
          * Instantiates a new Collision check component
@@ -22,6 +27,7 @@ class CollisionCheck{
                 //     var enemyEntity = secs.entitiesToComponents.findIndex(e=>e.MeshEntity === enemy);                
                 //     secs.entities[enemyEntity].kill();    
                 // }
+                // @ts-ignore
                 hitInfo[0].pickedMesh.entity.kill();
                 hitInfo[0].pickedMesh.dispose();
                 sfx.hitSound.play();

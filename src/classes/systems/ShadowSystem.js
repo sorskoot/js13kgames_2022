@@ -1,4 +1,4 @@
-class ShadowSystem{    
+export class ShadowSystem{    
     
     constructor(light){
         this._shadowGenerator  = new BABYLON.ShadowGenerator(1024, light);
