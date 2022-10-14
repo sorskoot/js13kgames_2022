@@ -52,4 +52,4 @@ class Ambience {
     };
 }
 
-var ambience = new Ambience();
+export const ambience = new Ambience();

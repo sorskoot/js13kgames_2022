@@ -1,4 +1,4 @@
-class MeshEntity {
+export class MeshEntity {
     /**
      * Entity to control a mesh
      * @param {BABYLON.AbstractMesh} mesh

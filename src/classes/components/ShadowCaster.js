@@ -1,4 +1,4 @@
-class ShadowCaster {    
+export class ShadowCaster {    
     constructor(mesh){
         
     }

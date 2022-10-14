@@ -1,8 +1,13 @@
+import { CollisionCheck } from "../components/CollisionCheck";
+import { ControllerInput } from "../components/ControllerInput";
+import { MeshEntity } from "../components/MeshEntity";
+import { Entity } from "../Entity";
+
 /** @typedef MotionData 
  * @property {number} speed
  * @property {BABYLON.Vector3} direction
 */
-class InputSystem {
+export class InputSystem {
     
     xrControllers = [];    
     lastPosition = {};
@@ -35,6 +40,7 @@ class InputSystem {
                     let act = controller.inputSource.gamepad.hapticActuators[0];
                     
                     if(act){
+                        // @ts-ignore
                         act.pulse(1,100);
                     }                    
                     }catch(e){

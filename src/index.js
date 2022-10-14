@@ -1,4 +1,17 @@
-var BV3 = BABYLON.Vector3;
+import { AIController } from "./classes/components/AIController";
+import { CollisionCheck } from "./classes/components/CollisionCheck";
+import { ControllerInput } from "./classes/components/ControllerInput";
+import { EnemyEntity } from "./classes/components/EnemyEntity";
+import { Grave } from "./classes/components/Grave";
+import { MeshEntity } from "./classes/components/MeshEntity";
+import { secs } from "./classes/secs";
+import { Spawner } from "./classes/spawner";
+import { InputSystem } from "./classes/systems/InputSystem";
+import { ShadowSystem } from "./classes/systems/ShadowSystem";
+import { ambience } from "./lib/ambience";
+import { sfx } from "./lib/sfx";
+
+
 const maps = [
     `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2-!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !1+!24!25!26!36!46!45!44!34!35!16!17!07!29!58!.*!-*!7%!,1",2",3",4",5",6",7",8",9":1#:2#:3#:4#:5#:6#:7#:8#:9#,0":0#27!28!39!38!48!47!37!09!1;!4=!6:!->$.>$/>$0>$1>$2>$3>$4>$5>$6>$7>$8>$9>$,:",;",<",="::#:;#:<#:=#,>":>#.(&+(&0&&.&&+&&0$&.$&,$&7$&;$&8&&9&&;&&6(&7(&9(&:(&8*&6,&8-&/.&**&'%&-!&9!&;+&6&&2,!1,!0,!/,!.,!-,!,,!5'!6'!7'!8'!9'!:'!;'!<'!='!>'!?'!+,!*,!),!(,!9$&/(&5"&`,
     `0II03 !3!!3"!3#!3$!3%!3&!3'!3(!3)!3*!3+!3,!3-!3.!3/!30!31!32!33!2 !2!!2"!2#!2$!2%!2&!2'!2(!2)!2*!2.!2/!20!21!22!23!43!42!41!40!4/!4.!4-!4,!4+!4*!4)!4'!4&!4"!4!!4 !24!25!26!36!46!45!44!34!35!:1#:2#:3#:4#:5#:6#:7#:8#:9#:0#48!47!37!->$.>$/>$0>$1>$2>$3>$4>$5>$6>$7>$8>$9>$::#:;#:<#:=#:>#2,!5'!,>$+>$27!17!07!/7!.7!-7!,7!+7!*7!)7!(7!&7!%7!$7!#7!"7!!7!%9!&9!'9!(9!)9!*9!+9!,9!-9!.9!/9!09!19!29!39!38!28!18!08!/8!.8!-8!,8!+8!*8!)8!(8!'8!&8!%8!#8!"8!!8!!9!"9!$8!2;!78!05!%5!&:!(6!(5!(4!)4!)3!)2!)1!)0!(0!(/!$:!$;!$<!#<!#=!#>!$>!$?!$@!%@!%A!5.!6.!7.!7-!8-!9-!9,!:,!1,!0,!0+!/+!/*!.*!'3&'0&'-&%2&%.&"0&"3&!;&!?&&;&(<&(=&'?&#B&!=&2-&.+&/'&1%&/%&0"&.&&<)&<&&9$&8'&7)&7%&;*&8+&-(&$,&`,
@@ -81,13 +94,13 @@ class App {
     
     /** Tonemap Post Process Left (XR) 
      * @type BABYLON.TonemapPostProcess */
-    tmL;
+    tonemapPostProcessLeft;
     /** Tonemap Post Process Right (XR) 
      * @type BABYLON.TonemapPostProcess */
-    tmR;
+    tonemapPostProcessRight;
     /** Tone Map Post Process Camera (not-xr)
      * @type BABYLON.TonemapPostProcess */
-    tmC;
+    toneMapPostProcessCamera;
     
     currentFade = 0;
 
@@ -127,17 +140,17 @@ class App {
         });
     }
 
-    loadLevel(b) {
-        let d = {};
-        d.t = b.codePointAt(0) - 32;
-        d.w = b.codePointAt(1) - 32;
-        d.h = b.codePointAt(2) - 32;
-        d.z = +b[3];
-        d.m = [];
-        d.M = [];
-        for (let i = 4; i < b.length; i += 3)
-            d.m.push([b.codePointAt(i) - 32, b.codePointAt(i + 1) - 32, b.codePointAt(i + 2) - 32]);
-        return d;
+    loadLevel(levelDataString) {
+        let data = {};
+        data.t = levelDataString.codePointAt(0) - 32;
+        data.w = levelDataString.codePointAt(1) - 32;
+        data.h = levelDataString.codePointAt(2) - 32;
+        data.z = +levelDataString[3];
+        data.m = [];
+        data.M = [];
+        for (let i = 4; i < levelDataString.length; i += 3)
+            data.m.push([levelDataString.codePointAt(i) - 32, levelDataString.codePointAt(i + 1) - 32, levelDataString.codePointAt(i + 2) - 32]);
+        return data;
     }
 
     async changeState(newState) {
@@ -167,26 +180,26 @@ class App {
         }
 
     }
-    clear(t=200) {
+    clear(timeout=200) {
         setTimeout(() => {
             secs.match(Grave).forEach(e => e.kill());
             secs.match(EnemyEntity).forEach(e => e.kill());
             this.enemyP.getChildren().forEach(e => e.dispose());
-        }, t);
+        }, timeout);
     }
 
     createText(mesh, name, font,text,color) {
-        const dt = new BABYLON.DynamicTexture(`dt${name}`, { width: 1200 / 5, height: 200 / 5 });
+        const dynamicTexture = new BABYLON.DynamicTexture(`dt${name}`, { width: 1200 / 5, height: 200 / 5 });
         const smat = new BABYLON.StandardMaterial(`mat${name}`);
-        dt.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
-        smat.diffuseTexture = dt;
-        smat.emissiveTexture = dt;
+        dynamicTexture.updateSamplingMode(BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        smat.diffuseTexture = dynamicTexture;
+        smat.emissiveTexture = dynamicTexture;
         smat.specularColor = BABYLON.Color3.Black();        
         mesh.material = smat;      
         let t = text.split("\n");  
-        dt.drawText(t[0], null, 18, font, color, "rgba(0,0,0,0)", true, true);
-        if(t[1])dt.drawText(t[1], null, 38, font, color, "rgba(0,0,0,0)", true, true);
-        dt.hasAlpha = true;
+        dynamicTexture.drawText(t[0], null, 18, font, color, "rgba(0,0,0,0)", true, true);
+        if(t[1])dynamicTexture.drawText(t[1], null, 38, font, color, "rgba(0,0,0,0)", true, true);
+        dynamicTexture.hasAlpha = true;
         
     }
 
@@ -225,7 +238,7 @@ class App {
         vertexData.applyToMesh(mesh);
         mesh.material = this.spriteMat;
         mesh.receiveShadows = true;
-        mesh.scaling = BV3.FromArray(scale);
+        mesh.scaling = BABYLON.Vector3.FromArray(scale);
         mesh.setEnabled(false);
         return mesh;
     }
@@ -266,24 +279,24 @@ class App {
         this.createBackground();
 
         /** Camera for when not in VR */
-        this.nonVRCam = new BABYLON.FreeCamera("cam1", new BV3(0, 1.7, 0));;
+        this.nonVRCam = new BABYLON.FreeCamera("cam1", new BABYLON.Vector3(0, 1.7, 0));;
         
         /** Node for grouping enemies */
         this.enemyP = new BABYLON.Node("enemyP");
         
         /** Collider for when skeletons hit player */
         this.camCol = BABYLON.CreateSphere("camCol", { diameter: .2 });
-        this.light = new BABYLON.PointLight("light1", new BV3(0, 4, -3), this.sce);
+        this.light = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.sce);
         
         this.controllerP = new BABYLON.Node("controllerParent");
 
         const batShape = [
-            new BV3(.025, -0.1),
-            new BV3(.025, -0.09, 0),
-            new BV3(.013, -0.08, 0),
-            new BV3(.03, 0.54, 0),
-            new BV3(.031, 0.73, 0),
-            new BV3(.01, 0.74, 0),
+            new BABYLON.Vector3(.025, -0.1),
+            new BABYLON.Vector3(.025, -0.09, 0),
+            new BABYLON.Vector3(.013, -0.08, 0),
+            new BABYLON.Vector3(.03, 0.54, 0),
+            new BABYLON.Vector3(.031, 0.73, 0),
+            new BABYLON.Vector3(.01, 0.74, 0),
         ];
 
         /** Material containing sprite textures */
@@ -303,10 +316,10 @@ class App {
         });
         this.bat.material = this.spriteMat;
         this.bat.parent = this.controllerP;
-        this.ray = new BABYLON.Ray(BV3.Zero(), new BV3(0, 1, 0));
+        this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
         var rayHelper = new BABYLON.RayHelper(this.ray);
 
-        rayHelper.attachToMesh(this.bat, new BV3(0, 1, 0), new BV3(0, 0, 0), .8);
+        rayHelper.attachToMesh(this.bat, new BABYLON.Vector3(0, 1, 0), new BABYLON.Vector3(0, 0, 0), .8);
         // rayHelper.show(this.scene);
 
         //Create bat Entity
@@ -317,8 +330,8 @@ class App {
         ]);
 
         this.fl = new BABYLON.SpotLight("light",
-            new BV3(0, 0, 0),
-            new BV3(0, 1, 0), Math.PI / 3, .5, this.sce);
+            new BABYLON.Vector3(0, 0, 0),
+            new BABYLON.Vector3(0, 1, 0), Math.PI / 3, .5, this.sce);
         this.fl.diffuse = new BABYLON.Color3(1, 1, 1);
         this.fl.specular = new BABYLON.Color3(1, 1, 1);
         this.fl.range = 50;
@@ -386,12 +399,12 @@ class App {
         
         this.leveldesc = BABYLON.MeshBuilder.CreatePlane("leveldesc", { width: 3, height: .5 });
         
-        this.leveldesc.position=new BV3(0,1.7,3);        
+        this.leveldesc.position=new BABYLON.Vector3(0,1.7,3);        
         
         this.leveldesc.setEnabled(false);
 
         this.shadowS.add(this.scorePlane);
-        this.scorePlane.position = new BV3(0, 1.25, 1.5);
+        this.scorePlane.position = new BABYLON.Vector3(0, 1.25, 1.5);
 
         this.notInXR();        
 
@@ -410,7 +423,7 @@ class App {
             , 51, 52, 53, 54, 55, 56, 57, 58, 59, 18, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82];
 
         let skeleton = this.createMesh('skeleton', skeletonPositions, skeletonIndices, skeletonUvs);
-        skeleton.translate(BV3.Up(), .8)
+        skeleton.translate(BABYLON.Vector3.Up(), .8)
 
         let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 25, "values": [0.1, 0, 0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 50, "values": [0, 0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 75, "values": [0.1, 0, -0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 100, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
         let riseAnimation = BABYLON.Animation.Parse({ "name": "Rise", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [2.14, 0, 0, [0, 0, 0], [-0.07, 0, 0]] }, { "frame": 100, "values": [0, 0, 0, [0, 0, 0], [0, 0, 0]] }] });
@@ -476,9 +489,9 @@ class App {
                     ambience.start();
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
                     this.camCol.parent = this.camera;
-                    xrHelper.baseExperience.camera.position = new BV3(0, 1.7, 0);
-                    if (!this.tmL) {
-                        this.tmL = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.leftCamera);
+                    xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
+                    if (!this.tonemapPostProcessLeft) {
+                        this.tonemapPostProcessLeft = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.leftCamera);
                         this.tmR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.rightCamera);
                     }
                     this.currentFade = 0;
@@ -502,9 +515,9 @@ class App {
 
         this.sce.onBeforeRenderObservable.add(() => {
             this.currentFade += 0.01 * this.fadeState;
-            if (this.tmL) this.tmL.exposureAdjustment = this.currentFade;
-            if (this.tmC) this.tmC.exposureAdjustment = this.currentFade;
-            if (this.tmR) this.tmR.exposureAdjustment = this.currentFade;
+            if (this.tonemapPostProcessLeft) this.tonemapPostProcessLeft.exposureAdjustment = this.currentFade;
+            if (this.toneMapPostProcessCamera) this.toneMapPostProcessCamera.exposureAdjustment = this.currentFade;
+            if (this.tonemapPostProcessRight) this.tonemapPostProcessRight.exposureAdjustment = this.currentFade;
             if (this.currentFade >= 1.2 || this.currentFade < 0) {
                 this.fadeState = 0;
             }
@@ -519,8 +532,8 @@ class App {
         ambience.pause();
         this.controllerP.setEnabled(false);
         this.camera = this.nonVRCam;
-        if (!this.tmC) {
-            this.tmC = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, this.camera);
+        if (!this.toneMapPostProcessCamera) {
+            this.toneMapPostProcessCamera = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, this.camera);
         }
         this.currentFade = 1;
         this.fadeState = 0;
@@ -564,25 +577,25 @@ class App {
                     break;
                 case 2:
                     p = this.wall.createInstance(`wall${+ new Date()}`);
-                    p.rotation = BV3.FromArray([0,  -1.5708,0]);
+                    p.rotation = BABYLON.Vector3.FromArray([0,  -1.5708,0]);
                     break;
                 case 3:
                     p = this.wall.createInstance(`wall${+ new Date()}`);
-                    p.rotation = BV3.FromArray([0,  1.5708,0]);
+                    p.rotation = BABYLON.Vector3.FromArray([0,  1.5708,0]);
                     break;
                 case 4:
                     p = this.wall.createInstance(`wall${+ new Date()}`);
-                    p.rotation = BV3.FromArray([0,  Math.PI,0]);
+                    p.rotation = BABYLON.Vector3.FromArray([0,  Math.PI,0]);
                     break;
                 case 5:
                     p = this.wall.createInstance(`wall${+ new Date()}`);
-                    p.rotation = BV3.FromArray([0, 0, 0]);
+                    p.rotation = BABYLON.Vector3.FromArray([0, 0, 0]);
                     break;
                 case 6:
                     p = this.tombstone[Math.floor(Math.random() * 3)].createInstance(`tombstone${i}`);
 
-                    p.position = new BV3(x, 0, z);
-                    p.lookAt(new BV3(0, 0, 0));
+                    p.position = new BABYLON.Vector3(x, 0, z);
+                    p.lookAt(new BABYLON.Vector3(0, 0, 0));
                     p.rotation.y += Math.random() * .5 - .25 - Math.PI;
                     p.rotation.z += Math.random() * .5 - .25;
                     p.rotation.x += Math.random() * .5 - .25;
@@ -599,7 +612,7 @@ class App {
                 default: continue;
             };
 
-            p.position = new BV3(x, 0.001, z);
+            p.position = new BABYLON.Vector3(x, 0.001, z);
             p.parent = this.map;
         }
     }
@@ -633,7 +646,7 @@ class App {
     generateRandomTree() {
 
         const tree = BABYLON.MeshBuilder.CreatePlane("Tree", { width: 6, height: 6 });
-        tree.position = new BV3(0, -10, 0);
+        tree.position = new BABYLON.Vector3(0, -10, 0);
 
         const treeTexture = new BABYLON.DynamicTexture("tree texture", { width: 64, height: 64 });
         treeTexture.hasAlpha = true;
@@ -650,9 +663,9 @@ class App {
 
         for (let i = 0; i < (Math.PI * 2); i += .1) {
             let t = tree.createInstance(`tree`);
-            t.rotation = BV3.FromArray([0, i + 1.57, 0]);
-            t.position = new BV3(Math.random() * 3 + (Math.cos(i) * 25), 2, Math.random() * 3 - (Math.sin(i) * 25));
-            t.scaling = new BV3(.75 + Math.random(), 1 + Math.random() * 2, 1);
+            t.rotation = BABYLON.Vector3.FromArray([0, i + 1.57, 0]);
+            t.position = new BABYLON.Vector3(Math.random() * 3 + (Math.cos(i) * 25), 2, Math.random() * 3 - (Math.sin(i) * 25));
+            t.scaling = new BABYLON.Vector3(.75 + Math.random(), 1 + Math.random() * 2, 1);
         }
 
     }
@@ -663,7 +676,7 @@ class App {
 
         const pressTrigger = BABYLON.MeshBuilder.CreatePlane("PressTrigger" + titleText, { width: 3, height: .75 });
         pressTrigger.parent = titlescreen;
-        pressTrigger.position = new BV3(0, 1.75, 2);
+        pressTrigger.position = new BABYLON.Vector3(0, 1.75, 2);
         this.shadowS.add(pressTrigger);
         const pressTriggerTexture = new BABYLON.DynamicTexture("dynamic texture" + titleText, { width: 1200, height: 300 });
         const textureContext = pressTriggerTexture.getContext();

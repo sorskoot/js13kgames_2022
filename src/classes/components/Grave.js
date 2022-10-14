@@ -1,4 +1,4 @@
-class Grave { 
+export class Grave { 
     occupied = true;
 
     /** @param {BABYLON.AbstractMesh} grave */
