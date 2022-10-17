@@ -30,25 +30,25 @@ const SPRITESTEXTURE = "data:image/webp;base64,UklGRugTAABXRUJQVlA4TNwTAAAv/8ADE
 class App {
 
     /** @type BABYLON.Scene */
-    sce;
+    scene;
     /** @type BABYLON.WebXRInputSource[] */
     controllers = [];
 
     /** Flashlight 
      * @type BABYLON.SpotLight */
-    fl;
+    flashlight;
 
     /**
      * System for handing controller input
      * @type InputSystem
      */
-    inputS = new InputSystem();
+    inputSystem = new InputSystem();
 
     /**
      * System for handling shadows
      * @type ShadowSystem
      */
-    shadowS;
+    shadowSystem;
 
     /** @type number */
     state;
@@ -57,19 +57,19 @@ class App {
     
     /** Title Parent
      * @type BABYLON.Node */
-    titleP;
+    titleParent;
 
     /** Game Over Parent 
      * @type BABYLON.Node */
-    gameOverP;
+    gameOverParent;
     
     /** Title Not-In-VR Parent
      * @type BABYLON.Node */
-    titleNotVRP;
+    titleNotVRParent;
 
     /** Controller Parent 
      * @type BABYLON.Node */
-    controllerP;
+    controllerParent;
 
     /** @type BABYLON.Node */
     scoreScreen;
@@ -79,7 +79,7 @@ class App {
     /** 
      * Enemy Parent
      * @type BABYLON.Node */
-    enemyP;
+    enemyParent;
 
     /** @type BABYLON.PointLight */
     light;
@@ -116,15 +116,15 @@ class App {
         this.createScene().then(() => {
             if (!this.sysReg) {
                 secs.registerSystems([
-                    this.inputS,
-                    this.shadowS
+                    this.inputSystem,
+                    this.shadowSystem
                 ]);
                 this.sysReg = true;
             }
 
             this.eng.runRenderLoop(() => {
                 let dt = this.eng.getDeltaTime();
-                secs.match(ControllerInput).map(e => this.inputS.controllers(e, dt));
+                secs.match(ControllerInput).map(e => this.inputSystem.controllers(e, dt));
                 switch (this.state) {
                     case 2:
                         secs.match(AIController).map(e => e.get(AIController).update(dt, e));
@@ -134,7 +134,7 @@ class App {
                     case 3:
                         break;
                 }
-                this.sce.render();
+                this.scene.render();
 
             });
         });
@@ -164,8 +164,8 @@ class App {
                 break;
             case 1:
                 this.scoreScreen.setEnabled(false);
-                this.titleP.setEnabled(this.inXR);
-                this.titleNotVRP.setEnabled(!this.inXR);
+                this.titleParent.setEnabled(this.inXR);
+                this.titleNotVRParent.setEnabled(!this.inXR);
                 this.spawner?.stop();
                 this.clear();
                 break;
@@ -173,7 +173,7 @@ class App {
                 // remove all skeletons.
                 this.spawner.stop();
                 this.clear();
-                this.gameOverP.setEnabled(true);
+                this.gameOverParent.setEnabled(true);
                 this.createText(this.scorePlane,'score',"bold 18px monospace",`${this.score} SKELETONS KILLED!`,"#c0a48c");
                 this.scoreScreen.setEnabled(true);
                 break;
@@ -184,7 +184,7 @@ class App {
         setTimeout(() => {
             secs.match(Grave).forEach(e => e.kill());
             secs.match(EnemyEntity).forEach(e => e.kill());
-            this.enemyP.getChildren().forEach(e => e.dispose());
+            this.enemyParent.getChildren().forEach(e => e.dispose());
         }, timeout);
     }
 
@@ -250,9 +250,9 @@ class App {
             setTimeout(() => {    
                 this.currenLevel = (this.currenLevel + 1) % 3; // loop 3 levels
                 this.scoreScreen.setEnabled(false);
-                this.titleP.setEnabled(false);
-                this.gameOverP.setEnabled(false);
-                this.titleNotVRP.setEnabled(false);
+                this.titleParent.setEnabled(false);
+                this.gameOverParent.setEnabled(false);
+                this.titleNotVRParent.setEnabled(false);
                 this.createText(this.leveldesc,'ld','12px monospace',
                 ldText[this.currenLevel],"#7c8898")
                 setTimeout(()=>{
@@ -271,24 +271,24 @@ class App {
     async createScene() {
         // create the canvas html element and attach it to the webpage
 
-        this.sce = new BABYLON.Scene(this.eng);
-        this.sce.clearColor = BABYLON.Color4.FromHexString("#040010");
-        this.sce.fogMode = BABYLON.Scene.FOGMODE_EXP;
-        this.sce.fogColor = BABYLON.Color3.FromHexString("#000000");
-        this.sce.fogDensity = .2;
+        this.scene = new BABYLON.Scene(this.eng);
+        this.scene.clearColor = BABYLON.Color4.FromHexString("#040010");
+        this.scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+        this.scene.fogColor = BABYLON.Color3.FromHexString("#000000");
+        this.scene.fogDensity = .2;
         this.createBackground();
 
         /** Camera for when not in VR */
         this.nonVRCam = new BABYLON.FreeCamera("cam1", new BABYLON.Vector3(0, 1.7, 0));;
         
         /** Node for grouping enemies */
-        this.enemyP = new BABYLON.Node("enemyP");
+        this.enemyParent = new BABYLON.Node("enemyP");
         
         /** Collider for when skeletons hit player */
         this.camCol = BABYLON.CreateSphere("camCol", { diameter: .2 });
-        this.light = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.sce);
+        this.light = new BABYLON.PointLight("light1", new BABYLON.Vector3(0, 4, -3), this.scene);
         
-        this.controllerP = new BABYLON.Node("controllerParent");
+        this.controllerParent = new BABYLON.Node("controllerParent");
 
         const batShape = [
             new BABYLON.Vector3(.025, -0.1),
@@ -300,8 +300,8 @@ class App {
         ];
 
         /** Material containing sprite textures */
-        this.spriteMat = new BABYLON.StandardMaterial("spriteMat", this.sce);
-        const texture = BABYLON.Texture.CreateFromBase64String(SPRITESTEXTURE, "SpritesTexture", this.sce, false, true, 4);
+        this.spriteMat = new BABYLON.StandardMaterial("spriteMat", this.scene);
+        const texture = BABYLON.Texture.CreateFromBase64String(SPRITESTEXTURE, "SpritesTexture", this.scene, false, true, 4);
         this.spriteMat.diffuseTexture = texture;
 
         this.spriteMat.diffuseTexture.hasAlpha = true;
@@ -315,7 +315,7 @@ class App {
             frontUVs: new BABYLON.Vector4(0.4375, 0, 0.5, 0.375)
         });
         this.bat.material = this.spriteMat;
-        this.bat.parent = this.controllerP;
+        this.bat.parent = this.controllerParent;
         this.ray = new BABYLON.Ray(BABYLON.Vector3.Zero(), new BABYLON.Vector3(0, 1, 0));
         var rayHelper = new BABYLON.RayHelper(this.ray);
 
@@ -329,19 +329,19 @@ class App {
             new CollisionCheck(this.ray)
         ]);
 
-        this.fl = new BABYLON.SpotLight("light",
+        this.flashlight = new BABYLON.SpotLight("light",
             new BABYLON.Vector3(0, 0, 0),
-            new BABYLON.Vector3(0, 1, 0), Math.PI / 3, .5, this.sce);
-        this.fl.diffuse = new BABYLON.Color3(1, 1, 1);
-        this.fl.specular = new BABYLON.Color3(1, 1, 1);
-        this.fl.range = 50;
-        this.fl.shadowEnabled = true;
+            new BABYLON.Vector3(0, 1, 0), Math.PI / 3, .5, this.scene);
+        this.flashlight.diffuse = new BABYLON.Color3(1, 1, 1);
+        this.flashlight.specular = new BABYLON.Color3(1, 1, 1);
+        this.flashlight.range = 50;
+        this.flashlight.shadowEnabled = true;
 
-        this.shadowS = new ShadowSystem(this.fl);
+        this.shadowSystem = new ShadowSystem(this.flashlight);
 
         var flM = BABYLON.CreateCylinder("fl", { height: .15, diameterTop: .03, diameterBottom: .02 })
-        this.fl.parent = flM;
-        flM.parent = this.controllerP;
+        this.flashlight.parent = flM;
+        flM.parent = this.controllerParent;
 
         secs.createEntity([
             new ControllerInput("left"),
@@ -353,7 +353,7 @@ class App {
         gr.receiveShadows = true;
 
         var mat = new BABYLON.StandardMaterial("grM");
-        var grT = new BABYLON.DynamicTexture("grt", { width: 16, height: 16 }, this.sce, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        var grT = new BABYLON.DynamicTexture("grt", { width: 16, height: 16 }, this.scene, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
         const grTC = grT.getContext();
         grTC.putImageData(this.spritectx.getImageData(32, 0, 16, 16), 0, 0);
         grT.update();
@@ -372,7 +372,7 @@ class App {
         this.path.receiveShadows = true;
 
         var pathM = new BABYLON.StandardMaterial("path");
-        var pathT = new BABYLON.DynamicTexture("path texture", { width: 16, height: 16 }, this.sce, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
+        var pathT = new BABYLON.DynamicTexture("path texture", { width: 16, height: 16 }, this.scene, false, BABYLON.Texture.NEAREST_SAMPLINGMODE);
         const pathTC = pathT.getContext();
         var data = this.spritectx.getImageData(32, 0, 16, 16);
         for (let i = 0; i < data.data.length; i += 4) {
@@ -389,11 +389,11 @@ class App {
         this.path.material = pathM;
 
         // Create Titles
-        this.titleNotVRP = await this.createTitle("DEATHKEEPER", false);
-        this.titleP = await this.createTitle("DEATHKEEPER", true);
-        this.gameOverP = await this.createTitle(" GAME OVER", true);
+        this.titleNotVRParent = await this.createTitle("DEATHKEEPER", false);
+        this.titleParent = await this.createTitle("DEATHKEEPER", true);
+        this.gameOverParent = await this.createTitle(" GAME OVER", true);
 
-        this.scoreScreen = new BABYLON.Node("scoreScreen", this.sce);
+        this.scoreScreen = new BABYLON.Node("scoreScreen", this.scene);
         this.scorePlane = BABYLON.MeshBuilder.CreatePlane("scoreScreen", { width: 3, height: .5 });
         this.scorePlane.parent = this.scoreScreen;
         
@@ -403,7 +403,7 @@ class App {
         
         this.leveldesc.setEnabled(false);
 
-        this.shadowS.add(this.scorePlane);
+        this.shadowSystem.add(this.scorePlane);
         this.scorePlane.position = new BABYLON.Vector3(0, 1.25, 1.5);
 
         this.notInXR();        
@@ -430,7 +430,7 @@ class App {
         skeleton.animations.push(walkAnimation, riseAnimation);
 
         // Add Spawners
-        this.spawner = new Spawner(this.sce, skeleton, 5000);      
+        this.spawner = new Spawner(this.scene, skeleton, 5000);      
 
         // Create Tombstones
         let tsPos = [0.32, 0.64, 0, -0.32, 1.28, 0, -0.32, 0.64, 0, 0.32, 0, 0, -0.32, 0.64, 0, -0.32, 0, 0, 0.32, 1.28, 0, 0.32, 0.64, 0, -0.32, 0.64, 0];
@@ -461,17 +461,17 @@ class App {
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
-                if (this.sce.debugLayer.isVisible()) {
-                    this.sce.debugLayer.hide();
+                if (this.scene.debugLayer.isVisible()) {
+                    this.scene.debugLayer.hide();
                 } else {
-                    this.sce.debugLayer.show();
+                    this.scene.debugLayer.show();
                 }
             }
         });
         // @endif        
 
 
-        const xrHelper = await this.sce.createDefaultXRExperienceAsync({
+        const xrHelper = await this.scene.createDefaultXRExperienceAsync({
             disableNearInteraction: true,
             disablePointerSelection: true,
             disableTeleportation: true,
@@ -497,7 +497,7 @@ class App {
                     this.currentFade = 0;
                     this.fadeState = 1;
                     this.light.diffuse = BABYLON.Color3.FromHexString("#100080");
-                    this.controllerP.setEnabled(true);
+                    this.controllerParent.setEnabled(true);
                     break;
                 case BABYLON.WebXRState.NOT_IN_XR:
                     this.notInXR();
@@ -510,10 +510,10 @@ class App {
         });
 
         xrHelper.input.onControllerAddedObservable.add(controller => {
-            this.inputS.xrControllers.push(controller);
+            this.inputSystem.xrControllers.push(controller);
         });
 
-        this.sce.onBeforeRenderObservable.add(() => {
+        this.scene.onBeforeRenderObservable.add(() => {
             this.currentFade += 0.01 * this.fadeState;
             if (this.tonemapPostProcessLeft) this.tonemapPostProcessLeft.exposureAdjustment = this.currentFade;
             if (this.toneMapPostProcessCamera) this.toneMapPostProcessCamera.exposureAdjustment = this.currentFade;
@@ -523,14 +523,14 @@ class App {
             }
         });
 
-        return this.sce;
+        return this.scene;
     }
 
     notInXR() {
         this.inXR = false;
         this.changeState(1);
         ambience.pause();
-        this.controllerP.setEnabled(false);
+        this.controllerParent.setEnabled(false);
         this.camera = this.nonVRCam;
         if (!this.toneMapPostProcessCamera) {
             this.toneMapPostProcessCamera = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, this.camera);
@@ -543,7 +543,7 @@ class App {
 
     createBackground() {
         var dome = new BABYLON.PhotoDome(
-            "dome", "", {}, this.sce);
+            "dome", "", {}, this.scene);
         dome._mesh.applyFog = false;
 
         let backTexture = new BABYLON.DynamicTexture("background", { width: 500, height: 500 })
@@ -606,7 +606,7 @@ class App {
                             new Grave(p),
                         ]);
 
-                    this.shadowS.add(p);
+                    this.shadowSystem.add(p);
                     break;
 
                 default: continue;
@@ -672,12 +672,12 @@ class App {
 
 
     createTitle(titleText, xr) {
-        var titlescreen = new BABYLON.Node("titleParent" + titleText, this.sce);
+        var titlescreen = new BABYLON.Node("titleParent" + titleText, this.scene);
 
         const pressTrigger = BABYLON.MeshBuilder.CreatePlane("PressTrigger" + titleText, { width: 3, height: .75 });
         pressTrigger.parent = titlescreen;
         pressTrigger.position = new BABYLON.Vector3(0, 1.75, 2);
-        this.shadowS.add(pressTrigger);
+        this.shadowSystem.add(pressTrigger);
         const pressTriggerTexture = new BABYLON.DynamicTexture("dynamic texture" + titleText, { width: 1200, height: 300 });
         const textureContext = pressTriggerTexture.getContext();
         const pressTriggerMaterial = new BABYLON.StandardMaterial("Mat" + titleText);
