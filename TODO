@@ -6,13 +6,13 @@ Big decisions to take:
 Backlog:
     Clean up code and get back to WebPack build pipeline:
         ✔ Webpack @done(22-10-14 20:53)
-        ☐ rename the crappy names back to normal
+        ✔ rename the crappy names back to normal @done(22-10-17 20:40)
         ✔ import/export @done(22-10-14 21:21)
-        ☐ images removed from base64        
+        ☐ @high images removed from base64        
     ✔ setup custom domain for automatic deployment (deathkeeper.sorskoot.com) @done(22-10-14 21:41)
-    ☐ improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
-    ☐ Add back in the removed background audio.    
-    ☐ Improve title screen and gameover screen.
+    ☐ @low improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
+    ✔ Add back in the removed background audio. @done(22-10-17 20:41)
+    ☐ @high  Improve title screen and gameover screen.
     ☐ improve hitbox of the player
     ☐ improve hitbox of the skeletons    
     ☐ improve levels with more obstacles
@@ -25,6 +25,7 @@ Backlog:
     ☐ Better sounds
     ☐ spatial audio
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
+        ~ maybe let the player choose their weapon
     ☐ Add Webmonetization link
     ☐ Better model of flashlight
     ☐ A nightsky texture, with a big moon

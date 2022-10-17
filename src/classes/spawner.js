@@ -71,8 +71,7 @@ export class Spawner {
                 secs.system.ShadowSystem.add(skeleton2);
             }
             if(this.isSpawning){
-                var t = (graves.length * 50) + (-Math.log(Math.random()) * graves.length * 40);
-                console.log(t);
+                var t = (graves.length * 50) + (-Math.log(Math.random()) * graves.length * 40);              
                 setTimeout(()=>this.spawn(), t);
             }
     
