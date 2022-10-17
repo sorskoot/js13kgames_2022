@@ -6,7 +6,8 @@
   "scripts": {
     "buildProd": "webpack --mode production --config webpack.prod",
     "buildDev": "webpack --mode development --config webpack.dev",    
-    "start": "webpack-dev-server --config webpack.dev"
+    "start": "webpack-dev-server --config webpack.dev",
+    "portForward":"C:/Tools/Android/platform-tools/adb.exe reverse tcp:1337 tcp:1337"
   },
   "repository": {
     "type": "git",

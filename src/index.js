@@ -492,7 +492,7 @@ class App {
                     xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
                     if (!this.tonemapPostProcessLeft) {
                         this.tonemapPostProcessLeft = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.leftCamera);
-                        this.tmR = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.rightCamera);
+                        this.tonemapPostProcessRight = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.rightCamera);
                     }
                     this.currentFade = 0;
                     this.fadeState = 1;
