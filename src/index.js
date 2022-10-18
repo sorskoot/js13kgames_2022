@@ -252,6 +252,11 @@ class App {
                 this.titleNotVRParent.setEnabled(false);
                 this.createText(this.leveldesc,'ld','12px monospace',
                 ldText[this.currenLevel],"#7c8898")
+                switch(this.currenLevel){
+                    case 0: sfx.level1.play();break;
+                    case 1: sfx.level2.play();break;
+                    case 2: sfx.level3.play();break;
+                }
                 setTimeout(()=>{
                     this.leveldesc.setEnabled(false);
                 },6000);          
