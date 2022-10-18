@@ -303,7 +303,8 @@ class App {
 
         /** Material containing sprite textures */
         this.spriteMat = new BABYLON.StandardMaterial("spriteMat", this.scene);
-        const texture = new BABYLON.Texture("sprites.png", this.scene); 
+        const texture = new BABYLON.Texture("sprites.png", this.scene, true,true, BABYLON.Texture.NEAREST_SAMPLINGMODE); 
+        
         this.spriteMat.diffuseTexture = texture;
 
         this.spriteMat.diffuseTexture.hasAlpha = true;
