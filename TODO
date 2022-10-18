@@ -8,7 +8,8 @@ Backlog:
         ✔ Webpack @done(22-10-14 20:53)
         ✔ rename the crappy names back to normal @done(22-10-17 20:40)
         ✔ import/export @done(22-10-14 21:21)
-        ☐ @high images removed from base64        
+        ✔ @high images removed from base64 @done(22-10-18 20:01)
+        ☐ Scene and models from code to separate files.   
     ✔ setup custom domain for automatic deployment (deathkeeper.sorskoot.com) @done(22-10-14 21:41)
     ☐ @low improve ECS, maybe replace with real framework (ECSY? (https://blog.mozvr.com/introducing-ecsy/))
     ✔ Add back in the removed background audio. @done(22-10-17 20:41)
@@ -33,6 +34,7 @@ Backlog:
     ☐ Thick fog on the ground.
     ☐ Zesty ads
     ☐ PWA for itch.io and Side Quest.
+    ☐ Add CA highscore list
 
 
 
