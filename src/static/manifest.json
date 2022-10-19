@@ -1,0 +1,41 @@
+{
+"name": "Deathkeeper",
+"id":"/index.html?ispwa=1",
+"short_name": "Deathkeeper",
+"start_url": "./index.html?ispwa=1",
+"display": "standalone",
+"description": "Fight with the skeletons in the graveyard",
+"lang": "en-us",
+"dir": "ltr",
+"theme_color": "#220043",
+"background_color": "#220043",
+"orientation":"landscape",
+"icons": [
+    {
+        "src": "icon512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+    },
+    {
+        "src": "icon192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+    }
+],
+"screenshots": [
+    {
+        "src": "screen1.png",
+        "sizes": "1920x1080",
+        "type": "image/png",
+        "description": "A screenshot of the title screen"
+    },
+    {
+        "src": "screen2.png",
+        "sizes": "1920x1080",
+        "type": "image/png",
+        "description": "A screenshot of the game play"
+    }
+]
+}

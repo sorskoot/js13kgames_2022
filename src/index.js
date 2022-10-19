@@ -1,3 +1,4 @@
+import * as BABYLON from 'babylonjs';
 import { AIController } from "./classes/components/AIController";
 import { CollisionCheck } from "./classes/components/CollisionCheck";
 import { ControllerInput } from "./classes/components/ControllerInput";

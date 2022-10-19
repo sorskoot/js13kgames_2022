@@ -1,27 +1,41 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Deathkeeper</title>
-        <script src="https://js13kgames.com/webxr-src/2022/babylon.js"></script>        
-        <style>
-            html, body {
-                overflow: hidden;
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-            }
+<html lang="en-us">
 
-            #c {
-                width: 100%;
-                height: 100%;
-                touch-action: none;
-            }
-        </style>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Deathkeeper</title>    
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #c {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <script> if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service worker registered!', reg))
+                .catch(err => console.log('Unable to register service worker!', err));
+        }
+    </script>
+</head>
+
 <body>
     <canvas id="c"></canvas>
-        <script src="main.js"></script>
-    </body>
+    <script src="main.js"></script>
+</body>
+
 </html>
