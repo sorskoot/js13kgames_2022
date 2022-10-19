@@ -1,6 +1,18 @@
 var CACHE = 'Deathkeeper-Offline';
 
-const files = [];
+const files = [
+  '/',
+  '/index.html',
+  '/main.js',
+  '/sprites.png',
+  '/Level1.wav',
+  '/Level2.wav',
+  '/Level3.wav'
+];
+
+self.addEventListener('install', event => {
+  precache().then(() => self.skipWaiting());
+});
 
 self.addEventListener('fetch', evt => {      
   if ( evt.request.url.match(/^.*(\?nocache)$/ )) {
@@ -43,7 +55,7 @@ function update(request){
   if (request.method !== 'GET') return;
   // return if scheme is not http or https
   if (request.url.indexOf('http') !== 0) return;
-  
+
   return new Promise((fulfill, reject)=>
       caches.open(CACHE).then(
           (cache)=> fetch(request.clone()).then(
