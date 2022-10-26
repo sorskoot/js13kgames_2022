@@ -261,7 +261,7 @@ class App {
                 }
                 setTimeout(()=>{
                     this.leveldesc.setEnabled(false);
-                },6000);          
+                },8000);          
                 
                 this.createMap();
                 this.spawner.start();
