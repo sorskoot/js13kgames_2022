@@ -30,7 +30,7 @@ export class CollisionCheck{
                 // @ts-ignore
                 hitInfo[0].pickedMesh.entity.kill();
                 hitInfo[0].pickedMesh.dispose();
-                sfx.hitSound.play();
+                sfx.hit();
                //sound.play(0);
                 window.app.score++;
                 //TODO: figure out a way to remove the entity as well
