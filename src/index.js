@@ -1,4 +1,5 @@
 import * as BABYLON from 'babylonjs';
+import 'babylonjs-loaders';
 import { AIController } from "./classes/components/AIController";
 import { CollisionCheck } from "./classes/components/CollisionCheck";
 import { ControllerInput } from "./classes/components/ControllerInput";
@@ -310,8 +311,20 @@ class App {
 
         this.spriteMat.diffuseTexture.hasAlpha = true;
         this.spriteMat.specularColor = BABYLON.Color3.Black();
+        this.spriteMat.backFaceCulling = false;
+        this.spriteMat.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
 
         await this.createCanvasTexture();
+
+        this.spriteMatFlipped = new BABYLON.StandardMaterial("spriteMatFlipped", this.scene);
+        const textureFlipped = new BABYLON.Texture("sprites.png", this.scene, true,false, BABYLON.Texture.NEAREST_SAMPLINGMODE); 
+        
+        this.spriteMatFlipped.diffuseTexture = textureFlipped;
+
+        this.spriteMatFlipped.diffuseTexture.hasAlpha = true;
+        this.spriteMatFlipped.specularColor = BABYLON.Color3.Black();
+        this.spriteMatFlipped.backFaceCulling = false;
+        this.spriteMatFlipped.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
 
         //Create Baseball bat
         this.bat = BABYLON.MeshBuilder.CreateLathe("bat", {
@@ -413,29 +426,13 @@ class App {
         this.notInXR();        
 
         BABYLON.Animation.AllowMatricesInterpolation = true;
-        
-        let skeletonPositions = [-0.08, 0.3224, -0.0418, -0.24, 0.64, -0.0161, -0.24, 0.3224, -0.0417, -0.4391, 1.2006, -0.2456, -0.2362, 1.1178, -0.0355, -0.2329, 1.2352, -0.0601, 0, 1.2771, -0.0432, -0.24, 1.7897, -0.1267, -0.24, 1.2771, -0.0432, -0.2381, 0.9577, -0.0202, 0, 1.2771, -0.0432, -0.2398, 1.277, -0.0438, 0, 0.6402, 0.0026, -0.2381, 0.9577, -0.0202, -0.2398, 0.64, -0.0008, -0.5732, 1.0382, -0.4617, -0.4391, 1.2006, -0.2456
-            , -0.5741, 1.1563, -0.483, -0.08, 0.005, 0.0014, -0.24, 0.3224, -0.0417, -0.24, 0.005, 0.0014, 0.24, 0.6401, -0.0124, 0.08, 0.3223, -0.0413, 0.24, 0.3223, -0.0412, 0.2419, 1.2387, -0.0426, 0.3084, 1.1173, -0.3124, 0.3086, 1.2373, -0.313, 0.24, 1.7897, -0.1264, 0, 1.2771, -0.0432, 0.24, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0, 1.2771, -0.0432, 0, 0.9571, -0.0415, 0.2392, 0.9573, -0.0306
-            , 0, 0.6402, 0.0026, 0.2399, 0.6397, -0.0043, 0.3086, 1.2373, -0.313, 0.3635, 1.1159, -0.5868, 0.3634, 1.2359, -0.5875, 0.24, 0.3223, -0.0412, 0.08, 0.0043, -0.0092, 0.24, 0.0043, -0.0057, -0.08, 0.3224, -0.0418, -0.08, 0.64, -0.0149, -0.24, 0.64, -0.0161, -0.4391, 1.2006, -0.2456, -0.4389, 1.0828, -0.2229, -0.2362, 1.1178, -0.0355, 0, 1.2771, -0.0432, 0, 1.789, -0.1348, -0.24, 1.7897, -0.1267
-            , -0.2381, 0.9577, -0.0202, 0, 0.9571, -0.0415, 0, 1.2771, -0.0432, 0, 0.6402, 0.0026, 0, 0.9571, -0.0415, -0.2381, 0.9577, -0.0202, -0.5732, 1.0382, -0.4617, -0.4389, 1.0828, -0.2229, -0.4391, 1.2006, -0.2456, -0.08, 0.3224, -0.0418, -0.24, 0.3224, -0.0417, 0.24, 0.6401, -0.0124, 0.08, 0.64, -0.0087, 0.08, 0.3223, -0.0413, 0.2419, 1.2387, -0.0426, 0.2398, 1.1187, -0.0418, 0.3084, 1.1173, -0.3124
-            , 0.24, 1.7897, -0.1264, 0, 1.789, -0.1348, 0, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0.24, 1.2771, -0.0432, 0, 1.2771, -0.0432, 0.2392, 0.9573, -0.0306, 0, 0.9571, -0.0415, 0, 0.6402, 0.0026, 0.3086, 1.2373, -0.313, 0.3084, 1.1173, -0.3124, 0.3635, 1.1159, -0.5868, 0.24, 0.3223, -0.0412, 0.08, 0.3223, -0.0413, 0.08, 0.0043, -0.0092];
-        let skeletonUvs = [0.023, 0.47, 0.007, 0.941, 0.007, 0.47, 0.07, 0.468, 0.082, 0.932, 0.07, 0.932, 0.062, 0.001, 0.039, 0.875, 0.039, 0.001, 0.102, 0.499, 0.125, 1, 0.102, 0.998, 0.125, 0, 0.102, 0.499, 0.102, 0, 0.082, 0.004, 0.07, 0.468, 0.07, 0.004, 0.023, -0.001, 0.007, 0.47, 0.007, -0.001, 0.007, 0.941, 0.023, 0.47, 0.007, 0.47, 0.07, 0.932
-            , 0.082, 0.468, 0.07, 0.468, 0.039, 0.875, 0.062, 0.001, 0.039, 0.001, 0.102, 0.499, 0.125, 1, 0.125, 0.5, 0.102, 0.499, 0.125, 0, 0.102, 0, 0.07, 0.468, 0.082, 0.004, 0.07, 0.004, 0.007, 0.47, 0.023, -0.001, 0.007, -0.001, 0.023, 0.47, 0.023, 0.941, 0.007, 0.941, 0.07, 0.468, 0.082, 0.468, 0.082, 0.932, 0.062, 0.001, 0.062, 0.875
-            , 0.039, 0.875, 0.102, 0.499, 0.125, 0.5, 0.125, 1, 0.125, 0, 0.125, 0.5, 0.102, 0.499, 0.082, 0.004, 0.082, 0.468, 0.07, 0.468, 0.023, 0.47, 0.007, 0.47, 0.007, 0.941, 0.023, 0.941, 0.023, 0.47, 0.07, 0.932, 0.082, 0.932, 0.082, 0.468, 0.039, 0.875, 0.062, 0.875, 0.062, 0.001, 0.102, 0.499, 0.102, 0.998, 0.125, 1, 0.102, 0.499
-            , 0.125, 0.5, 0.125, 0, 0.07, 0.468, 0.082, 0.468, 0.082, 0.004, 0.007, 0.47, 0.023, 0.47, 0.023, -0.001];
-        let skeletonIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50
-            , 51, 52, 53, 54, 55, 56, 57, 58, 59, 18, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82];
 
-        let skeleton = this.createMesh('skeleton', skeletonPositions, skeletonIndices, skeletonUvs);
-        skeleton.translate(BABYLON.Vector3.Up(), .8)
-
-        let walkAnimation = BABYLON.Animation.Parse({ "name": "Walk", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 25, "values": [0.1, 0, 0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 50, "values": [0, 0.2, 0, [0, 0, 0], [0, 0, 0]] }, { "frame": 75, "values": [0.1, 0, -0.03, [0, 0, 0], [0, 0, 0]] }, { "frame": 100, "values": [0, -0.2, 0, [0, 0, 0], [0, 0, 0]] }] });
-        let riseAnimation = BABYLON.Animation.Parse({ "name": "Rise", "property": "rotation", "framePerSecond": 60, "dataType": 1, "loopBehavior": 1, "blendingSpeed": 0.01, "keys": [{ "frame": 0, "values": [2.14, 0, 0, [0, 0, 0], [-0.07, 0, 0]] }, { "frame": 100, "values": [0, 0, 0, [0, 0, 0], [0, 0, 0]] }] });
-        skeleton.animations.push(walkAnimation, riseAnimation);
-
-        // Add Spawners
-        this.spawner = new Spawner(this.scene, skeleton, 5000);      
-
+        BABYLON.SceneLoader.LoadAssetContainer("", 'skeleton3.glb', this.scene, (container) => {
+            // let skeleton = container.meshes[0];
+            // skeleton.material = this.spriteMat;      
+            this.spawner = new Spawner(this.scene, container, 5000,this.spriteMatFlipped);
+        });
+               
         // Create Tombstones
         let tsPos = [0.32, 0.64, 0, -0.32, 1.28, 0, -0.32, 0.64, 0, 0.32, 0, 0, -0.32, 0.64, 0, -0.32, 0, 0, 0.32, 1.28, 0, 0.32, 0.64, 0, -0.32, 0.64, 0];
         let tsInd = [0, 1, 2, 3, 4, 5, 0, 6, 1, 3, 7, 8];
@@ -493,7 +490,9 @@ class App {
                     ambience.start();
                     this.camera = xrHelper.baseExperience.camera.leftCamera;
                     this.camCol.parent = this.camera;
-                    xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.7, 0);
+                    //
+                    
+                    xrHelper.baseExperience.camera.position = new BABYLON.Vector3(0, 1.5, 0);
                     if (!this.tonemapPostProcessLeft) {
                         this.tonemapPostProcessLeft = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.leftCamera);
                         this.tonemapPostProcessRight = new BABYLON.TonemapPostProcess("tonemap", BABYLON.TonemappingOperator.Reinhard, 0, xrHelper.baseExperience.camera.rightCamera);
@@ -501,6 +500,7 @@ class App {
                     this.currentFade = 0;
                     this.fadeState = 1;
                     this.light.diffuse = BABYLON.Color3.FromHexString("#100080");
+                 //   this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
                     this.controllerParent.setEnabled(true);
                     break;
                 case BABYLON.WebXRState.NOT_IN_XR:
@@ -542,7 +542,7 @@ class App {
         this.currentFade = 1;
         this.fadeState = 0;
         this.light.diffuse = BABYLON.Color3.FromHexString("#a0a0FF");
-        //this.light.diffuse = BABYLON.Color3.FromHexString("#ffffff");
+        
     }
 
     createBackground() {
