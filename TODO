@@ -1,7 +1,7 @@
 TODO
 
 Big decisions to take:
-    - Use the audio design of the contest or add real background audio? or both? 
+    ✔ Use the audio design of the contest or add real background audio? or both? @done(22-10-26 22:53)
 
 Backlog:
     Clean up code and get back to WebPack build pipeline:
@@ -24,7 +24,7 @@ Backlog:
     ☐ More different skeletons    
     ✔ Better animations @done(22-10-26 13:18)
     ☐ Better sounds
-    ☐ spatial audio
+    ✔ spatial audio @done(22-10-26 22:53)
     ☐ A shovel instead of a bat to better sell the story of you working at the graveyard.
         ~ maybe let the player choose their weapon
     ✔ Add Webmonetization link @done(22-10-26 13:20)
