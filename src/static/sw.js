@@ -7,7 +7,19 @@ const files = [
   '/sprites.png',
   '/Level1.wav',
   '/Level2.wav',
-  '/Level3.wav'
+  '/Level3.wav',
+  '/skeleton_hit1.mp3',
+  '/skeleton_hit2.mp3',
+  '/skeleton_hit3.mp3',
+  '/skeleton_hit4.mp3',
+  '/favicon.ico',
+  '/manifest.json',
+  '/Ambience_Bell.wav',
+  '/Ambience_BirdsFlying.wav',
+  '/Ambience_Crow.wav',
+  '/Ambience_Crow2.wav',
+  '/Ambience_HowlingWind_Loop.wav',
+  '/Ambience_Thunder.wav'
 ];
 
 self.addEventListener('install', event => {
